@@ -1,0 +1,53 @@
+@namespace Dashboard.Components
+@using TransitAI.Components.Pages.Dashboard.Models
+
+<MudPaper Elevation="0" Class="pa-4" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+    @* <MudStack Row="true" Spacing="1" AlignItems="AlignItems.Center">
+        <MudIcon Icon="@Icons.Material.Filled.BarChart" Size="Size.Small" />
+        <MudText Typo="Typo.subtitle2" Class="font-weight-bold">Live Metrics</MudText>
+    </MudStack>
+
+    <MudGrid Class="mt-3">
+        <MudItem xs="6">
+            <MudText Typo="Typo.caption" Class="font-weight-bold" Style="color: #888;">ON-TIME PERFORMANCE</MudText>
+            <MudStack Row="true" Spacing="1" AlignItems="AlignItems.End">
+                <MudText Typo="Typo.h4" Class="font-weight-bold" Style="color: #4a90d9;">@Metrics?.OnTimePerformance.ToString("F1")%</MudText>
+                <MudText Typo="Typo.caption" Style="color: #27AE60;" Class="font-weight-bold">+@Metrics?.OnTimeChange.ToString("F1")%</MudText>
+            </MudStack>
+        </MudItem>
+        <MudItem xs="6">
+            <MudText Typo="Typo.caption" Class="font-weight-bold" Style="color: #888;">ACTIVE VEHICLES</MudText>
+            <div style="position: relative; width: 80px; height: 80px; margin: 0 auto;">
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#e0e0e0" stroke-width="10" />
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#4a90d9" stroke-width="10"
+                            stroke-dasharray="@GetDashArray()" stroke-linecap="round" />
+                </svg>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">@Metrics?.ActiveVehicles/@Metrics?.TotalVehicles</MudText>
+                </div>
+            </div>
+        </MudItem>
+    </MudGrid> *@
+
+    @* <div class="d-flex justify-center mt-2">
+        <svg viewBox="0 0 100 100" style="width: 60px; height: 60px;">
+            <circle cx="50" cy="50" r="40" fill="#27AE60" />
+            <path d="M50,50 L50,10 A40,40 0 0,1 90,50 Z" fill="#E74C3C" />
+            <circle cx="50" cy="50" r="25" fill="white" />
+        </svg>
+    </div> *@
+</MudPaper>
+
+@code {
+    [Parameter] public LiveMetrics? Metrics { get; set; }
+
+    private string GetDashArray()
+    {
+        if (Metrics == null || Metrics.TotalVehicles == 0) return "0 251";
+        double ratio = (double)Metrics.ActiveVehicles / Metrics.TotalVehicles;
+        double circumference = 2 * Math.PI * 40;
+        double active = ratio * circumference;
+        return $"{active:F1} {circumference - active:F1}";
+    }
+}

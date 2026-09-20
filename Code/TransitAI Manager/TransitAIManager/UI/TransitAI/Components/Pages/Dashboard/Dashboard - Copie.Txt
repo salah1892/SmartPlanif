@@ -1,0 +1,101 @@
+﻿@page "/planification"
+
+@using global::Dashboard.Components
+@using Pages.Dashboard
+@inject DashboardStateService State
+
+<MudLayout >
+    <MudMainContent Class="pa-0" Style="height: 100vh; overflow: hidden;">
+        @* <MudGrid Spacing="0" Class="ma-0" Style="height: 100vh;"> *@
+        @*     <!-- Toolbar --> *@
+        @*     <MudItem  Class="pa-2" Style="border-right: 1px solid var(--mud-palette-divider); background: var(--mud-palette-surface);"> *@
+        @*         <MapToolbar /> *@
+        @*     </MudItem> *@
+        @* *@
+        @*     <!-- Map Area --> *@
+        @*     <MudItem  Class="pa-0" Style="position: relative; background: var(--mud-palette-background-grey);"> *@
+        @*         <MudStack Row="true" Justify="Justify.FlexEnd" Spacing="1" Class="pa-3"> *@
+        @*             <MudChip T="string" Color="Color.Success" Size="Size.Small" StartIcon="@Icons.Material.Filled.Circle"> *@
+        @*                 11 active *@
+        @*             </MudChip> *@
+        @*             <MudChip T="string" Color="Color.Error" Size="Size.Small" Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Warning"> *@
+        @*                 1 breakdown *@
+        @*             </MudChip> *@
+        @*         </MudStack> *@
+        @* *@
+        @*         <MudContainer MaxWidth="MaxWidth.False" Class="px-4" Style="height: calc(100% - 120px); position: relative;"> *@
+        @*             <NetworkMap /> *@
+        @*         </MudContainer> *@
+        @* *@
+        @*         <MudContainer MaxWidth="MaxWidth.False" Class="px-4 pb-3"> *@
+        @*             <RouteLegend /> *@
+        @*         </MudContainer> *@
+        @*     </MudItem> *@
+        @* *@
+        @*     <!-- Sidebar --> *@
+        @*     <MudItem xs="12" md="3" lg="3" xl="2" Class="pa-3" Style="border-left: 1px solid var(--mud-palette-divider); background: var(--mud-palette-surface); overflow-y: auto;"> *@
+        @*         <MudStack Spacing="3"> *@
+        @*             <IncidentPanel Incident="State.CurrentIncident" /> *@
+        @*             <AiOptimizationPanel /> *@
+        @*             <LiveMetricsPanel Metrics="State.Metrics" /> *@
+        @*         </MudStack> *@
+        @*     </MudItem> *@
+        @* </MudGrid> *@
+        
+        <MudGrid Style="height: 100vh;">           ← hauteur fixe viewport, pas de scroll global
+            <MudItem xs="2">                    ← Toolbar (fixe)
+                <MapToolbar />
+            </MudItem>
+    
+            <MudItem xs="2" Style="position: relative; overflow: hidden; ">
+                ← Zone carte (overflow: hidden = jamais de scroll)
+                <MudStack>...chips...</MudStack>   ← Chips en haut à droite
+                <div style="position: absolute; top:48px; left:0; right:0; bottom:0;">
+                    <NetworkMap />                  ← SVG prend tout l'espace restant
+                </div>
+                <div style="position: absolute; bottom:16px; left:16px;">
+                    <RouteLegend />                 ← Légende flottante en bas-gauche
+                </div>
+            </MudItem>
+    
+            <MudItem xs="12" md="3" Style="overflow-y: visible; height: 100%;">
+                ← SEUL scroll ici
+                <MudStack>
+                    <IncidentPanel />
+                    <AiOptimizationPanel />
+                    <LiveMetricsPanel />
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    protected override void OnInitialized() => State.InitializeDemoData();
+}
+
+<style>
+    /* --- Design personnalisé pour la barre de défilement de CE composant --- */
+    
+    /* Pour Chrome, Safari, Edge, Opera */
+    .custom-scroll-design::-webkit-scrollbar {
+        width: 8px; /* Largeur de la barre */
+    }
+    .custom-scroll-design::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Couleur de l'arrière-plan */
+        border-radius: 4px;
+    }
+    .custom-scroll-design::-webkit-scrollbar-thumb {
+        background: #888; /* Couleur de la barre */
+        border-radius: 4px;
+    }
+    .custom-scroll-design::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Couleur au survol */
+    }
+    
+    /* Pour Firefox */
+    .custom-scroll-design {
+        scrollbar-width: thin;
+        scrollbar-color: #888 #f1f1f1;
+    }
+</style>

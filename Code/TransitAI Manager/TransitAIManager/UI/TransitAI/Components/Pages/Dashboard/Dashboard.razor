@@ -1,0 +1,41 @@
+﻿@page "/planificationn"
+@* @page "/"   *@
+@using global::Dashboard.Components
+
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-4" Style="height: 100%;">
+    
+    <MudGrid Spacing="4" Style="height: 100%;">
+        
+        <MudItem xs="12" md="9" Style="height: 100%;">
+            <MudPaper Elevation="1" Class="relative overflow-hidden" Style="height: 100%; background-color: #f9f9f9;">
+
+                <div style="position: absolute; top: 16px; right: 8px; z-index: 10; display: flex; gap: 8px;">
+                    <MudChip T="string" Color="Color.Success" Variant="Variant.Filled" Size="Size.Small">11 active</MudChip>
+                    <MudChip T="string" Color="Color.Error" Variant="Variant.Filled" Size="Size.Small" Icon="@Icons.Material.Filled.Warning">1 breakdown</MudChip>
+                </div>
+
+                <div style="position: absolute; top: 16px; left: 16px; z-index: 10;">
+                    @* <MapToolbar /> *@
+                </div>
+
+                <div style="position: absolute; bottom: 16px; left: 16px; z-index: 10;">
+                    @* <RoutesLegend /> *@
+                    @* <RealtimeMap/> *@
+                </div>
+                <RealtimeMap/>
+                @* <NetworkMap /> *@
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="3" Style="height: 100%; overflow-y: auto;">
+            <MudStack Spacing="2" Class="pe-2"> <AiOptimizationPanel />
+                <LiveMetricsPanel />
+                <NetworkMap />
+                <AiOptimizationPanel />
+                @* <LiveMetricsPanel />
+                <NetworkMap /> *@
+            </MudStack>
+        </MudItem>
+        
+    </MudGrid>
+</MudContainer>

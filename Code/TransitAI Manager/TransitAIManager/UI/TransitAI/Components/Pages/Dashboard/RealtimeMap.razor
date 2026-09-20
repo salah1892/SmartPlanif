@@ -1,0 +1,113 @@
+﻿@using BlazorLeaflet
+@using BlazorLeaflet.Models
+@using System.Drawing
+@using Size = System.Drawing.Size
+@inject IJSRuntime JsRuntime
+
+<div class="map-wrapper" style="height: 700px; width: 100%; position: relative; display: block;">
+
+    @* <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+        <Dashboard.Components.RouteLegend />
+    </div> *@
+
+    <LeafletMap Map="_map" />
+</div>
+
+@code {
+    private Map _map;
+
+    protected override void OnInitialized()
+    {
+        _map = new Map(JsRuntime);
+
+        var cartoDbTileLayer = new TileLayer
+        {
+            UrlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            Attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OSM</a>"
+        };
+        _map.Layers.Add(cartoDbTileLayer);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await Task.Delay(300);
+                
+                // Forcer le redimensionnement de la carte
+                await JsRuntime.InvokeVoidAsync("eval", "window.dispatchEvent(new Event('resize'));");
+
+                // Centrer sur Kairouan
+                var corner1 = new PointF(35.6750f, 10.0930f);
+                var corner2 = new PointF(35.6810f, 10.0990f);
+                _map.FitBounds(corner1, corner2, maxZoom: 14f);
+
+                // --- CHARGEMENT DES BUS ---
+                LoadVehicles();
+
+                // Rafraîchir l'UI pour afficher les marqueurs
+                StateHasChanged();
+            }
+            catch (JSDisconnectedException) { }
+            catch (JSException ex)
+            {
+                Console.WriteLine($"Erreur : {ex.Message}");
+            }
+        }
+    }
+
+    private void LoadVehicles()
+    {
+        // Définir une taille plus petite (la taille standard est souvent 25x41)
+        // Essayons une taille réduite (par exemple, la moitié)
+        //var customIconSize = new Size(130, 210); // Largeur, Hauteur
+        
+        // Il est aussi important de définir le point d'ancrage pour que le bas
+        // du marqueur pointe précisément vers les coordonnées
+        var customIconAnchor = new Point(6, 21); // Milieu horizontal, tout en bas vertical
+        
+        // Bus 1 placé près du centre de Kairouan
+        var bus1 = new Marker(35.6785f, 10.0952f)
+        {
+            Title = "Bus 42A - Central Express",
+            Icon = new Icon
+            {
+                Url = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+                ClassName = "map-icon",
+                //
+                // Size = customIconSize,
+                // Anchor = customIconAnchor
+            }
+        };
+
+        // Bus 2 placé un peu plus loin dans la même zone
+        var bus2 = new Marker(35.6798f, 10.0975f)
+        {
+            Title = "Bus 15B - Victoria Loop",
+            Icon = new Icon
+            {
+                Url = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+                ClassName = "map-icon",
+                // Size = customIconSize,
+                // Anchor = customIconAnchor
+            }
+        };
+
+        _map.Layers.Add(bus1);
+        _map.Layers.Add(bus2);
+    }
+}
+@* <style> *@
+@*     /* Force la taille des marqueurs portant la classe map-icon */ *@
+@*     .map-icon { *@
+@*         width: 25px !important; *@
+@*         height: 41px !important; *@
+@* *@
+@*         /* TRÈS IMPORTANT : Repositionne l'ancrage au milieu bas  *@
+@*            (Moitié de la largeur en négatif, et hauteur totale en négatif) */ *@
+@*         margin-left: -12.5px !important; *@
+@*         margin-top: -41px !important; *@
+@*     } *@
+@* </style> *@

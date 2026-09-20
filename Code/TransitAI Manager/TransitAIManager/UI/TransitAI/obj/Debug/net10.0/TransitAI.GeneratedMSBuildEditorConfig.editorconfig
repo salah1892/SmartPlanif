@@ -1,0 +1,183 @@
+is_global = true
+build_property.MudDebugAnalyzer = 
+build_property.MudAllowedAttributePattern = 
+build_property.MudAllowedAttributeList = 
+build_property.TargetFramework = net10.0
+build_property.TargetFramework = net10.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.EntryPointFilePath = 
+build_property.RootNamespace = TransitAI
+build_property.RootNamespace = TransitAI
+build_property.ProjectDir = D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\TransitAI Manager\TransitAIManager\UI\TransitAI\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 10.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\TransitAI Manager\TransitAIManager\UI\TransitAI
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Layout/AppTopBar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcQXBwVG9wQmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Layout/Sidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcU2lkZWJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Layout/UserProfile/UserProfileMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcVXNlclByb2ZpbGVcVXNlclByb2ZpbGVNZW51LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Agents/Agents.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZ2VudHNcQWdlbnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/AI-Assistant/AiAssistant.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBSS1Bc3Npc3RhbnRcQWlBc3Npc3RhbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/AiOptimizationPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcQWlPcHRpbWl6YXRpb25QYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/IncidentPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcSW5jaWRlbnRQYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/LiveMetricsPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcTGl2ZU1ldHJpY3NQYW5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/MapToolbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcTWFwVG9vbGJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/NetworkMap.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcTmV0d29ya01hcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/RealtimeMap.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcUmVhbHRpbWVNYXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/RouteLegend.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcUm91dGVMZWdlbmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/updatedInterface/PlanningDeBase.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcdXBkYXRlZEludGVyZmFjZVxQbGFubmluZ0RlQmFzZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Delegations/Delegations.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEZWxlZ2F0aW9uc1xEZWxlZ2F0aW9ucy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Lines-Stops/LinesStops.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMaW5lcy1TdG9wc1xMaW5lc1N0b3BzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/ActiveIncidentCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxBY3RpdmVJbmNpZGVudENhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/AiOptimizationCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxBaU9wdGltaXphdGlvbkNhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/LiveMetricsCard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxMaXZlTWV0cmljc0NhcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/NetworkDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxOZXR3b3JrRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/NetworkMapPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxOZXR3b3JrTWFwUGFuZWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/MyAPP/NotificationDrawer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xNeUFQUFxOb3RpZmljYXRpb25EcmF3ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3RGb3VuZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/OperationRealTime/OperationRealTime.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xPcGVyYXRpb25SZWFsVGltZVxPcGVyYXRpb25SZWFsVGltZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/VehiculeFleet/VehiculeFleet.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xWZWhpY3VsZUZsZWV0XFZlaGljdWxlRmxlZXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Weather.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xXZWF0aGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Shared/LanguageSwitcher.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTGFuZ3VhZ2VTd2l0Y2hlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Shared/NotificationDrawer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTm90aWZpY2F0aW9uRHJhd2VyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-98kuzpiz0l
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Layout/ReconnectModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-7j5jxif66z
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/updatedInterface/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcdXBkYXRlZEludGVyZmFjZVxEYXNoYm9hcmQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-v7wcvk70xz
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/TransitAI Manager/TransitAIManager/UI/TransitAI/Components/Pages/Dashboard/updatedInterface/PlanningOperationnel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmRcdXBkYXRlZEludGVyZmFjZVxQbGFubmluZ09wZXJhdGlvbm5lbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0lu1vc63jh

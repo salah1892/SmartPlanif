@@ -1,0 +1,58 @@
+@namespace Dashboard.Components
+@using TransitAI.Components.Pages.Dashboard.Models
+
+@if (Incident != null)
+{
+    <MudPaper Elevation="0" Class="pa-4" Style="border: 1px solid #ffcdd2; background: #fff5f5; border-radius: 12px;">
+        <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudText Typo="Typo.overline" Style="color: #E74C3C; letter-spacing: 1px;" Class="font-weight-bold">ACTIVE INCIDENT</MudText>
+            <MudStack Row="true" Spacing="1" AlignItems="AlignItems.Center">
+                <MudProgressCircular Size="Size.Small" Color="Color.Error" Indeterminate="true" Style="width: 8px; height: 8px;" />
+                <MudText Typo="Typo.caption" Style="color: #E74C3C;" Class="font-weight-bold">LIVE</MudText>
+            </MudStack>
+        </MudStack>
+
+        <MudStack Row="true" Spacing="1" AlignItems="AlignItems.Center" Class="mt-2">
+            <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Error" Size="Size.Small" />
+            <MudText Typo="Typo.h6" Class="font-weight-bold">Vehicle @Incident.VehicleId Breakdown</MudText>
+        </MudStack>
+
+        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-1">
+            Stop @Incident.StationId • Route @Incident.RouteId • Reported @Incident.TimeAgo
+        </MudText>
+
+        <MudGrid Class="mt-3">
+            <MudItem xs="6">
+                <MudText Typo="Typo.caption" Class="font-weight-bold">Passengers affected:</MudText>
+                <MudText Typo="Typo.h6" Class="font-weight-bold">@Incident.PassengersAffected</MudText>
+            </MudItem>
+            <MudItem xs="6">
+                <MudText Typo="Typo.caption" Class="font-weight-bold">Backup requested:</MudText>
+                <MudText Typo="Typo.h6" Class="font-weight-bold">@(Incident.BackupRequested ? "Yes" : "No")</MudText>
+            </MudItem>
+        </MudGrid>
+
+        <MudStack Spacing="1" Class="mt-3">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Style="border-radius: 8px; text-transform: none; font-weight: 600; background: linear-gradient(135deg, #4a90d9, #357abd);">
+                Dispatch V2
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" FullWidth="true" Style="border-radius: 8px; text-transform: none; font-weight: 600;">
+                Notify Passengers
+            </MudButton>
+        </MudStack>
+    </MudPaper>
+}
+else
+{
+    <MudPaper Elevation="0" Class="pa-4" Style="background: #f8f9fa; border-radius: 12px;">
+        <MudStack AlignItems="AlignItems.Center" Spacing="1">
+            <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Large" />
+            <MudText Typo="Typo.body1">No Active Incidents</MudText>
+            <MudText Typo="Typo.caption" Color="Color.Secondary">All systems operational</MudText>
+        </MudStack>
+    </MudPaper>
+}
+
+@code {
+    [Parameter] public Incident? Incident { get; set; }
+}

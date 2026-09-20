@@ -1,0 +1,332 @@
+﻿@page "/agents"
+@using Core.Application.Common.CQS.CqsModels.DrAgents.Queries
+@using Core.Application.Common.DtosModels.DrAgents
+@using Core.Domain.Entities
+@using Core.Domain.Entities.Metier
+@using Serilog.Core
+@inject ILogger<DrAgent> Logger
+
+<PageTitle>Agents</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Style="overflow-y: auto;" Class="mt-4">
+    @* <MudText Typo="Typo.h6" Class="mb-4">Liste des Agents</MudText> *@
+
+    @if (_errorMessage is not null)
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-3">
+            @_errorMessage
+        </MudAlert>
+    }
+
+    @if (_isLoading)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        <MudText Class="mt-2">Chargement des agents...</MudText>
+    }
+    else if (_agents is null || _agents.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">Aucun agent trouvé.</MudAlert>
+    }
+    else
+    {
+        <MudTable Items="FilteredAgents" Hover="true" Striped="true" Dense="true"
+                  Bordered="true" Elevation="2">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Liste des Agents</MudText>
+                <MudSpacer />
+                <MudTextField @bind-Value="_searchString" 
+                              Placeholder="Rechercher un agent (code, nom, délégation...)" 
+                              Adornment="Adornment.Start" 
+                              AdornmentIcon="@Icons.Material.Filled.Search" 
+                              IconSize="Size.Medium" 
+                              Class="mb-3"
+                              Immediate="true" 
+                              Clearable="true"
+                              >
+
+                </MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Code Agent</MudTh>
+                <MudTh>Nom (FR)</MudTh>
+                <MudTh>Nom (AR)</MudTh>
+                <MudTh>Délégation(Fr)</MudTh>
+                <MudTh>Délégation(Ar)</MudTh>
+                <MudTh>Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Code Agent">@context.CodeAgent</MudTd>
+                <MudTd DataLabel="Nom (FR)">@context.NomFr</MudTd>
+                <MudTd DataLabel="Nom (AR)" Style="direction: rtl;">@context.NomAr</MudTd>
+                <MudTd DataLabel="DelegationFr">@context.DelegationAr</MudTd>
+                <MudTd DataLabel="DelegationAr">@context.DelegationFr</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                   Color="Color.Info" Size="Size.Small"
+                                   OnClick="() => ViewAgent(context)"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                   Color="Color.Primary" Size="Size.Small"
+                                   OnClick="() => EditAgent(context)"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                   Color="Color.Error" Size="Size.Small"
+                                   OnClick="() => DeleteAgent(context.CodeAgent)"/>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }"/>
+            </PagerContent>
+        </MudTable>
+    }
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.Refresh"
+               OnClick="LoadAgentsAsync" Disabled="_isLoading"
+               Class="mt-3">
+        Rafraîchir
+    </MudButton>
+</MudContainer>
+
+@code {
+    private string _searchString = string.Empty;
+    private List<DrAgentDto>? _agents;
+
+    private bool _isLoading = true;
+
+    //private string _searchTerm = string.Empty;
+    private string? _errorMessage;
+    private IEnumerable<DrAgentDto> Elements = new List<DrAgentDto>();
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAgentsAsync();
+    }
+
+    private async Task LoadAgentsAsync()
+    {
+        try
+        {
+            _isLoading = true;
+            _errorMessage = null;
+            StateHasChanged();
+
+            // Envoi de la requête via MediatR (CQRS)
+            var request = new GetListAgentsRequest();
+            var result = await Mediator.Send(request);
+            _agents = result?.Data ?? new List<DrAgentDto>();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Erreur lors du chargement des agents");
+            _errorMessage = "Impossible de charger la liste des agents. Veuillez réessayer.";
+            _agents = new List<DrAgentDto>();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+    private IEnumerable<DrAgentDto> FilteredAgents
+    {
+        get
+        {
+            if (_agents is null) return Enumerable.Empty<DrAgentDto>();
+            
+            // Si la recherche est vide, on retourne toute la liste
+            if (string.IsNullOrWhiteSpace(_searchString)) return _agents;
+
+            // Sinon, on filtre sur toutes les colonnes
+            return _agents.Where(agent => 
+                agent.CodeAgent.ToString().Contains(_searchString, StringComparison.OrdinalIgnoreCase) ||
+                (agent.NomFr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (agent.NomAr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (agent.DelegationFr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (agent.DelegationAr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+            );
+        }
+    }
+    private void ViewAgent(DrAgentDto agent)
+    {
+        Logger.LogInformation("Visualisation de l'agent {CodeAgent}", agent.CodeAgent);
+        // TODO: Navigation vers la page de détail
+        // NavigationManager.NavigateTo($"/dragents/{agent.CodeAgent}");
+    }
+
+    private void EditAgent(DrAgentDto agent)
+    {
+        Logger.LogInformation("Édition de l'agent {CodeAgent}", agent.CodeAgent);
+        // TODO: Navigation vers la page d'édition
+        // NavigationManager.NavigateTo($"/dragents/edit/{agent.CodeAgent}");
+    }
+
+    private void DeleteAgent(long codeAgent)
+    {
+        Logger.LogInformation("Suppression de l'agent {CodeAgent}", codeAgent);
+        // TODO: Envoyer une Command via MediatR pour supprimer l'agent
+    }
+
+   }
+
+
+@* *@
+@* @page "/agents" *@
+@* @using Core.Application.Common.CQS.CqsModels.DrAgent.Queries *@
+@* @using Core.Domain.Entities *@
+@* @using Serilog.Core *@
+@* @inject ILogger<DrAgent> Logger *@
+@* *@
+@* <PageTitle>Agents</PageTitle> *@
+@* *@
+@* <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4"> *@
+@*     <MudText Typo="Typo.h4" Class="mb-4">Liste des Agents</MudText> *@
+@* *@
+@*     @if (_errorMessage is not null) *@
+@*     { *@
+@*         <MudAlert Severity="Severity.Error" Class="mb-3"> *@
+@*             @_errorMessage *@
+@*         </MudAlert> *@
+@*     } *@
+@* *@
+@*     @if (_isLoading) *@
+@*     { *@
+@*         <MudProgressCircular Color="Color.Primary" Indeterminate="true"/> *@
+@*         <MudText Class="mt-2">Chargement des agents...</MudText> *@
+@*     } *@
+@*     else if (_agents is null || _agents.Count == 0) *@
+@*     { *@
+@*         <MudAlert Severity="Severity.Info">Aucun agent trouvé.</MudAlert> *@
+@*     } *@
+@*     else *@
+@*     { *@
+@*         $1$ --- NOUVELLE BARRE DE RECHERCHE --- #1# *@
+@*         <MudTextField @bind-Value="_searchString"  *@
+@*                       Placeholder="Rechercher un agent (code, nom, délégation...)"  *@
+@*                       Adornment="Adornment.Start"  *@
+@*                       AdornmentIcon="@Icons.Material.Filled.Search"  *@
+@*                       Class="mb-3"  *@
+@*                       Immediate="true"  *@
+@*                       Clearable="true" /> *@
+@* *@
+@*         <MudTable Items="FilteredAgents" Hover="true" Striped="true" Dense="true" *@
+@*                   Bordered="true" Elevation="2"> *@
+@*             <HeaderContent> *@
+@*                 <MudTh>Code Agent</MudTh> *@
+@*                 <MudTh>Nom (FR)</MudTh> *@
+@*                 <MudTh>Nom (AR)</MudTh> *@
+@*                 <MudTh>Délégation (FR)</MudTh> *@
+@*                 <MudTh>Délégation (AR)</MudTh> $1$ Ajout de l'en-tête manquant #1# *@
+@*                 <MudTh>Actions</MudTh> *@
+@*             </HeaderContent> *@
+@*             <RowTemplate> *@
+@*                 <MudTd DataLabel="Code Agent">@context.CodeAgent</MudTd> *@
+@*                 <MudTd DataLabel="Nom (FR)">@context.NomFr</MudTd> *@
+@*                 <MudTd DataLabel="Nom (AR)" Style="direction: rtl;">@context.NomAr</MudTd> *@
+@*                 <MudTd DataLabel="Délégation (FR)">@context.DelegationFr</MudTd> *@
+@*                 <MudTd DataLabel="Délégation (AR)" Style="direction: rtl;">@context.DelegationAr</MudTd> *@
+@*                 <MudTd> *@
+@*                     <MudIconButton Icon="@Icons.Material.Filled.Visibility" *@
+@*                                    Color="Color.Info" Size="Size.Small" *@
+@*                                    OnClick="() => ViewAgent(context)"/> *@
+@*                     <MudIconButton Icon="@Icons.Material.Filled.Edit" *@
+@*                                    Color="Color.Primary" Size="Size.Small" *@
+@*                                    OnClick="() => EditAgent(context)"/> *@
+@*                     <MudIconButton Icon="@Icons.Material.Filled.Delete" *@
+@*                                    Color="Color.Error" Size="Size.Small" *@
+@*                                    OnClick="() => DeleteAgent(context.CodeAgent)"/> *@
+@*                 </MudTd> *@
+@*             </RowTemplate> *@
+@*              *@
+@*             $1$ Affiché si la recherche ne retourne aucun résultat #1# *@
+@*             <NoRecordsContent> *@
+@*                 <MudText Align="Align.Center">Aucun agent ne correspond à votre recherche.</MudText> *@
+@*             </NoRecordsContent> *@
+@* *@
+@*             <PagerContent> *@
+@*                 <MudTablePager PageSizeOptions="new int[]{10, 25, 50, 100}"/> *@
+@*             </PagerContent> *@
+@*         </MudTable> *@
+@*     } *@
+@* *@
+@*     <MudButton Variant="Variant.Filled" Color="Color.Primary" *@
+@*                StartIcon="@Icons.Material.Filled.Refresh" *@
+@*                OnClick="LoadAgentsAsync" Disabled="_isLoading" *@
+@*                Class="mt-3"> *@
+@*         Rafraîchir *@
+@*     </MudButton> *@
+@* </MudContainer> *@
+@* *@
+@* @code { *@
+@*     private List<DrAgentDto>? _agents; *@
+@*     private string _searchString = string.Empty; *@
+@*     private bool _isLoading = true; *@
+@*     private string? _errorMessage; *@
+@* *@
+@*     // Propriété calculée qui filtre la liste en temps réel *@
+@*     private IEnumerable<DrAgentDto> FilteredAgents *@
+@*     { *@
+@*         get *@
+@*         { *@
+@*             if (_agents is null) return Enumerable.Empty<DrAgentDto>(); *@
+@*              *@
+@*             // Si la recherche est vide, on retourne toute la liste *@
+@*             if (string.IsNullOrWhiteSpace(_searchString)) return _agents; *@
+@* *@
+@*             // Sinon, on filtre sur toutes les colonnes *@
+@*             return _agents.Where(agent =>  *@
+@*                 agent.CodeAgent.ToString().Contains(_searchString, StringComparison.OrdinalIgnoreCase) || *@
+@*                 (agent.NomFr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) || *@
+@*                 (agent.NomAr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) || *@
+@*                 (agent.DelegationFr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) || *@
+@*                 (agent.DelegationAr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) *@
+@*             ); *@
+@*         } *@
+@*     } *@
+@* *@
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         await LoadAgentsAsync(); *@
+@*     } *@
+@* *@
+@*     private async Task LoadAgentsAsync() *@
+@*     { *@
+@*         try *@
+@*         { *@
+@*             _isLoading = true; *@
+@*             _errorMessage = null; *@
+@*             StateHasChanged(); *@
+@* *@
+@*             // Envoi de la requête via MediatR (CQRS) *@
+@*             var request = new GetListAgentsRequest(); *@
+@*             var result = await Mediator.Send(request); *@
+@*             _agents = result?.Data ?? new List<DrAgentDto>(); *@
+@*         } *@
+@*         catch (Exception ex) *@
+@*         { *@
+@*             Logger.LogError(ex, "Erreur lors du chargement des agents"); *@
+@*             _errorMessage = "Impossible de charger la liste des agents. Veuillez réessayer."; *@
+@*             _agents = new List<DrAgentDto>(); *@
+@*         } *@
+@*         finally *@
+@*         { *@
+@*             _isLoading = false; *@
+@*             StateHasChanged(); *@
+@*         } *@
+@*     } *@
+@* *@
+@*     private void ViewAgent(DrAgentDto agent) *@
+@*     { *@
+@*         Logger.LogInformation("Visualisation de l'agent {CodeAgent}", agent.CodeAgent); *@
+@*         // TODO: Navigation vers la page de détail *@
+@*     } *@
+@* *@
+@*     private void EditAgent(DrAgentDto agent) *@
+@*     { *@
+@*         Logger.LogInformation("Édition de l'agent {CodeAgent}", agent.CodeAgent); *@
+@*         // TODO: Navigation vers la page d'édition *@
+@*     } *@
+@* *@
+@*     private void DeleteAgent(int codeAgent) *@
+@*     { *@
+@*         Logger.LogInformation("Suppression de l'agent {CodeAgent}", codeAgent); *@
+@*         // TODO: Envoyer une Command via MediatR pour supprimer l'agent *@
+@*     } *@
+@* } *@

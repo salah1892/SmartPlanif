@@ -1,0 +1,337 @@
+@using Core.Application.Common.CQS.CqsModels.DrDelegs.Queries
+@using Core.Application.Common.CQS.CqsModels.DrDelegs.Queries
+@using Core.Application.Common.CQS.CqsModels.DrDeparts.Queries
+@using Core.Application.Common.CQS.CqsModels.DrVehicules.Queries
+@using Core.Application.Common.CQS.CqsModels.DrVehicules.Queries
+@using Core.Application.Common.DtosModels.DrDelegation
+@using Core.Application.Common.DtosModels.DrDepart
+@using Core.Application.Common.DtosModels.DrVehicules
+@using Core.Application.Common.DtosModels.DrVehicules
+@using Core.Application.Services.Planning
+@using MudBlazor
+
+@* =============================================== KPI Cards =============================================== *@
+@* <MudGrid Class="px-0" Spacing="4" Style="overflow-y: auto;"> *@
+<MudGrid Spacing="4" Style="overflow-y: auto;">
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Class="d-flex align-center pa-2" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: white;">
+            <MudAvatar Rounded="true" Style="width: 36px; height: 36px; background-color: #1976d2; margin-right: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Color="Color.Surface" Size="Size.Medium" />
+            </MudAvatar>
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #333;">9000</MudText>
+                <MudText Typo="Typo.caption" Style="color: #757575;">Lignes au réseau</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Class="d-flex align-center pa-2" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: white;">
+            <MudAvatar Rounded="true" Style="width: 36px; height: 36px; background-color: #388e3c; margin-right: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Surface" Size="Size.Medium" />
+            </MudAvatar>
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #333;">164</MudText>
+                <MudText Typo="Typo.caption" Style="color: #757575;">Horaires publiés (échantillon)</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Class="d-flex align-center pa-2" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: white;">
+            <MudAvatar Rounded="true" Style="width: 36px; height: 36px; background-color: #f57c00; margin-right: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.AccessTime" Color="Color.Surface" Size="Size.Medium" />
+            </MudAvatar>
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #333;">76</MudText>
+                <MudText Typo="Typo.caption" Style="color: #757575;">En attente de publication</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="3">
+        <MudPaper Class="d-flex align-center pa-2" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: white;">
+            <MudAvatar Rounded="true" Style="width: 36px; height: 36px; background-color: #7b1fa2; margin-right: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Color="Color.Surface" Size="Size.Medium" />
+            </MudAvatar>
+            <MudStack Spacing="0">
+                <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #333;">20 000</MudText>
+                <MudText Typo="Typo.caption" Style="color: #757575;">Stations (drstati)</MudText>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@* =============================================== Toolbar =============================================== *@
+<MudPaper Elevation="0" Outlined="true" Class="d-flex align-center pa-2 my-4 mx-1" Style="border-radius: 8px; background-color: white;">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Class="flex-nowrap">
+
+        <!-- Recherche -->
+        <MudTextField T="string"
+                      @bind-Value="_searchBase"
+                      Placeholder="Rechercher par numéro ou nom de ligne..."
+                      Variant="Variant.Outlined"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      AdornmentColor="Color.Default"
+                      Immediate="true"
+                      Margin="Margin.Dense"
+                      Class="flex-1"
+                      Style="min-width: 220px; max-width: 320px; border-radius: 8px;font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" />
+
+        <!-- Délégation -->
+        <MudSelect T="string"
+                   @bind-Value="_delegation"
+                   ToStringFunc="@GetDelegationLabel"
+                   Variant="Variant.Outlined"
+                   Adornment="Adornment.End"
+                   AdornmentIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                   Margin="Margin.Dense"
+                   Dense="true"
+                   Class="custom-select"
+                   Style="min-width: 200px; border-radius: 8px;">
+
+            <!-- Option par défaut -->
+            <MudSelectItem Value="@("Toutes")">Toutes délégations</MudSelectItem>
+
+            <!-- Boucle dynamique sur vos données de la BDD -->
+            @foreach (var item in _delegations)
+            {
+                <MudSelectItem Value="@item.IdDelegation.ToString()" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+                    @item.NameDelegFr
+                </MudSelectItem>
+            }
+        </MudSelect>
+        <!-- Type -->
+        <MudSelect T="string"
+                   @bind-Value="_type"
+                   Variant="Variant.Outlined"
+                   Adornment="Adornment.End"
+                   AdornmentIcon="@Icons.Material.Filled.KeyboardArrowDown"
+                   AdornmentColor="Color.Default"
+                   Margin="Margin.Dense"
+                   Dense="true"
+                   Style="min-width: 200px; border-radius: 8px;font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+            <MudSelectItem Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" Value="@("Tous")">Tous types</MudSelectItem>
+            <MudSelectItem Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" Value="@("Interurbain")">Interurbain</MudSelectItem>
+            <MudSelectItem Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" Value="@("Urbaine")">Urbaine</MudSelectItem>
+            <MudSelectItem Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" Value="@("Scolaire")">Scolaire</MudSelectItem>
+            <MudSelectItem Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;" Value="@("Nocturne")">Nocturne</MudSelectItem>
+        </MudSelect>
+
+        <!-- Résultats -->
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1" Class="flex-none">
+            <MudIcon Icon="@Icons.Material.Outlined.FilterAlt"
+                     Size="Size.Small"
+                     Color="Color.Secondary" />
+            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                240 résultats
+            </MudText>
+        </MudStack>
+
+        <MudSpacer />
+
+        <!-- Bouton Générateur d'Horaires -->
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Outlined.AutoFixHigh"
+                   Style="height: 40px; border-radius: 8px; text-transform: none; font-weight: 500; font-size: 0.875rem; white-space: nowrap;">
+            Générateur d'Horaires
+        </MudButton>
+
+        <!-- Bouton Publier le Planning -->
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Outlined.Publish"
+                   Style="height: 40px; border-radius: 8px; text-transform: none; font-weight: 500; font-size: 0.875rem; white-space: nowrap;">
+            Publier le Planning
+        </MudButton>
+
+    </MudStack>
+</MudPaper>
+@* =============================================== Alert =============================================== *@
+@* <MudAlert Severity="Severity.Warning" Class="mb-2" Dense="true" Elevation="0" Variant="Variant.Outlined" Style="border-radius: 8px; background-color: #fff8e1; color: #e65100; border-color: #ffcc80;">
+    <MudText Typo="Typo.body2" Style="color: #e65100;">
+        <strong>76 ligne(s)</strong> avec un horaire théorique non publié dans le résultat filtré. La publication génère les voyages dynamiques (trips) dans le planning opérationnel.
+    </MudText>
+</MudAlert> *@
+
+@* =============================================== Table =============================================== *@
+
+<MudTable Items="@_Depart" Dense="true" Hover="true" Bordered="false" Striped="false" Fixed="true"
+          Class="mb-4" Elevation="0" Outlined="true" RowsPerPage="50" Style="border-radius: 8px; background-color: white;">
+    <HeaderContent>
+        <MudTh Style="width: 30px;"><MudCheckBox T="bool" Dense="true" /></MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">N° LIGNE</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">NOM</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">DÉLÉGATION</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">TYPE</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">DÉPART</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">ARRIVÉE</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">FRÉQ.</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">JOURS</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">VÉHICULES</MudTh>
+        <MudTh Style="font-weight: 600;font-size: 11px; color: #64748B;">STATUT</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd><MudCheckBox T="bool" Dense="true" /></MudTd>
+        <MudTd DataLabel="N° LIGNE" Style="padding: 8px 12px; vertical-align: middle; width: 92.825px; height: 36.8px;">
+            <MudText Typo="Typo.body2" Style="font-weight: 700; font-size: 12px; color: #0F1729; line-height: 16px; font-family: 'Inter', sans-serif;">
+                @context.drLigne?.Denumli
+                </MudText>
+        </MudTd>
+        <MudTd DataLabel="NOM">
+            <MudText Typo="Typo.body2" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #0F1729; word-spacing: 0px;">
+                @context.drLigne?.Denomla
+                </MudText>
+        </MudTd>
+        <MudTd DataLabel="DÉLÉGATION">
+            <MudText Typo="Typo.body2" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+                @context.drLigne?.Decdeleg</MudText>
+        </MudTd>
+        <MudTd DataLabel="TYPE">
+            @{
+                var (bg, fg) = context.drLigne?.Dectyli switch
+                {
+                    // "Interurbain" => ("#f3e5f5", "#7b1fa2"),
+                    // "Scolaire" => ("#fff3e0", "#e65100"),
+                    // "Urbaine" => ("#e3f2fd", "#1565c0"),
+                    // "Nocturne" => ("#eceff1", "#455a64"),
+                    1 => ("#f3e5f5", "#7b1fa2"),
+                    2 => ("#fff3e0", "#e65100"),
+                    3 => ("#e3f2fd", "#1565c0"),
+                    4 => ("#eceff1", "#455a64"),
+                    _ => ("#f5f5f5", "#333")
+                };
+            }
+            <MudChip T="string" Size="Size.Small" Label="true" Style="@($"background-color: {bg}; color: {fg}; border-radius: 12px; font-weight: 500;")">
+                @context.drLigne?.Dectyli
+            </MudChip>
+        </MudTd>
+        @* <MudTd DataLabel="DÉPART">@context.Depart</MudTd> *@
+        <MudTd DataLabel="DÉPART">
+            <MudText Typo="Typo.body2" Style="font-family: 'Menlo', monospace; font-size: 12px; line-height: 16px; color: #0F1729; word-spacing: 0px;">
+                @context.DEDATED
+                </MudText>
+        </MudTd>
+        <MudTd DataLabel="ARRIVÉE">
+            <MudText Typo="Typo.body2" Style="font-family: 'Menlo', monospace; font-size: 12px; line-height: 16px; color: #0F1729; word-spacing: 0px;">
+                @context.DEHEUAA
+                </MudText>
+        </MudTd>
+        @* <MudTd DataLabel="FRÉQ.">@context.Frequence</MudTd> *@
+        <MudTd DataLabel="FRÉQ.">
+            <MudText Typo="Typo.body2" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+                @context.DEHEUFS
+                </MudText>
+        </MudTd>
+        @* <MudTd DataLabel="JOURS">@context.Jours</MudTd> *@
+        <MudTd DataLabel="JOURS.">
+            <MudText Typo="Typo.body2" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+                @context.DEKMTH
+                </MudText>
+        </MudTd>
+        @* <MudTd DataLabel="VÉHICULES">@context.Vehicules</MudTd> *@
+        <MudTd DataLabel="VÉHICULES">
+            <MudText Typo="Typo.body2" Style="font-family: 'Inter', sans-serif; font-size: 12px; line-height: 16px; color: #64748B; word-spacing: 0px;">
+                @context.drVehic?.Decodvh
+                </MudText>
+        </MudTd>
+        <MudTd DataLabel="STATUT">
+            <div class="d-flex align-center gap-1">
+                @if (context.drLigne?.Deactif == 0)
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" />
+                    <MudText Typo="Typo.caption" Style="font-family: 'Inter',sans-serif; font-size: 12px;line-height: 16px;color: #2e7d32; font-weight: 500; word-spacing: 0px;">Brouillon</MudText>
+                }
+                else
+                {
+                    <MudIcon Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" Color="Color.Warning" />
+                    <MudText Typo="Typo.caption" Style="font-family: 'Inter',sans-serif; font-size: 12px;line-height: 16px;color: #f9a825; font-weight: 500; word-spacing: 0px;">Publié</MudText>
+                }
+            </div>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new[] { 25, 50, 100 }"
+                       InfoFormat="Affichage {first_item}-{last_item} sur {all_items}"
+                       RowsPerPageString="Résultats par page" />
+    </PagerContent>
+</MudTable>
+
+
+@code {
+    private string _searchBase = "";
+    private string _delegation = "Toutes";// Valeur par défaut
+    private string _type = "Tous";
+
+
+    // Liste qui va accueillir les données Délégations
+    private List<DrDelegDto> _delegations = new();
+
+    // Liste qui va accueillir les données Délégations
+    private List<DrVehiculeDto> _Vehicule = new();
+
+    // Liste qui va accueillir les données Depart et lignes
+    private List<DrDepartAllDetailsDto> _Depart = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Exemple de chargement depuis votre service de base de données
+        // Envoi de la requête via MediatR (CQRS)
+        var request = new GetListDelegationsRequest();
+        var result = await Mediator.Send(request);
+        _delegations = result?.Data ?? new List<DrDelegDto>();
+        var requestVehicule = new GetListDrVehiculesRequest();
+        var resultVehicule = await Mediator.Send(requestVehicule);
+        _Vehicule = resultVehicule?.Data ?? new List<DrVehiculeDto>();
+        var requestDepart = new GetListDepartAllDetailsRequest();
+        var resultDepart = await Mediator.Send(requestDepart);
+        _Depart = resultDepart?.Data ?? new List<DrDepartAllDetailsDto>();
+    }
+    // Cette fonction cherche DYNAMIQUEMENT le Libellé correspondant à l'ID sélectionné
+    private string GetDelegationLabel(string value)
+    {
+        if (value == "Toutes")
+            return "Toutes délégations";
+
+        // Recherche l'élément dans la liste de la BDD par son ID
+        var delegation = _delegations.FirstOrDefault(d => d.IdDelegation.ToString() == value);
+
+        // Si trouvé, affiche le Nom (Libellé), sinon affiche la valeur brute par sécurité
+        return delegation != null ? delegation.NameDelegFr : value;
+    }
+    // private List<LigneViewModel> _lignes = new()
+    // {
+    //     new("I001", "Ligne I001 — Sousse Ville", "Sousse Ville", "Interurbain", "07:30", "08:07", "30 min", "Tous les jours", 2, "Publié"),
+    //     new("I002", "Ligne I002 — Nabeul", "Nabeul", "Interurbain", "05:45", "07:02", "15 min", "Tous les jours", 1, "Publié"),
+    //     new("S003", "Ligne S003 — Sfax Ville", "Sfax Ville", "Scolaire", "05:15", "06:38", "10 min", "Lun-Ven", 3, "Brouillon"),
+    //     new("U004", "Ligne U004 — Ben Arous", "Ben Arous", "Urbaine", "05:45", "06:47", "10 min", "Tous les jours", 1, "Publié"),
+    //     new("N005", "Ligne N005 — Manouba", "Manouba", "Nocturne", "21:15", "21:42", "10 min", "Ven-Sam", 3, "Publié"),
+    //     new("S006", "Ligne S006 — Ariana", "Ariana", "Scolaire", "05:15", "06:31", "60 min", "Lun-Ven", 3, "Brouillon"),
+    //     new("I007", "Ligne I007 — Ben Arous", "Ben Arous", "Interurbain", "05:30", "06:42", "45 min", "Tous les jours", 5, "Brouillon"),
+    //     new("I008", "Ligne I008 — Monastir", "Monastir", "Interurbain", "07:00", "07:32", "10 min", "Tous les jours", 2, "Publié"),
+    //     new("U009", "Ligne U009 — Nabeul", "Nabeul", "Urbaine", "06:00", "06:35", "20 min", "Tous les jours", 1, "Publié"),
+    //     new("N010", "Ligne N010 — Manouba", "Manouba", "Nocturne", "20:45", "21:49", "60 min", "Ven-Sam", 3, "Publié"),
+    // };
+
+    // public record LigneViewModel(
+    //     string Numero,
+    //     string Nom,
+    //     string Delegation,
+    //     string Type,
+    //     string Depart,
+    //     string Arrivee,
+    //     string Frequence,
+    //     string Jours,
+    //     int Vehicules,
+    //     string Statut
+    // );
+}
+<style>
+    /* Cible précisément le texte de l'élément sélectionné à l'intérieur du MudSelect */
+    .custom-select-text .mud-input-slot {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        line-height: 16px !important;
+        color: #64748B !important; /* Modifiez cette couleur selon votre besoin */
+    }
+</style>

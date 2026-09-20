@@ -1,0 +1,13 @@
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\bin\Debug\net10.0\App.Domain.deps.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\bin\Debug\net10.0\App.Domain.dll
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\bin\Debug\net10.0\App.Domain.pdb
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.AssemblyInfoInputs.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.AssemblyInfo.cs
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.csproj.CoreCompileInputs.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.sourcelink.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.dll
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\refint\App.Domain.dll
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.pdb
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\ref\App.Domain.dll
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\Smart-Planif\code\TransitAI Manager\TransitAIManager\Core\App.Domain\obj\Debug\net10.0\App.Domain.csproj.AssemblyReference.cache

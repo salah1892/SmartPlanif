@@ -1,0 +1,420 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black,citecolor=blue!50!black}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{lastpage}
+
+\definecolor{codegray}{RGB}{245,245,245}
+\definecolor{darkblue}{RGB}{20,60,110}
+\lstset{
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!20},
+  columns=fullflexible,
+  keywordstyle=\color{darkblue},
+  commentstyle=\color{green!40!black},
+  showstringspaces=false
+}
+
+\pagestyle{fancy}
+\setlength{\headheight}{15pt}
+\fancyhf{}
+\lhead{Smart-Planif}
+\rhead{Rapport de cadrage scientifique}
+\cfoot{\thepage/\pageref{LastPage}}
+
+\titleformat{\section}{\Large\bfseries\color{darkblue}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\large\bfseries\color{darkblue}}{\thesubsection.}{0.6em}{}
+\setlist[itemize]{leftmargin=1.2cm}
+\setlist[enumerate]{leftmargin=1.2cm}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Ress}{\mathcal{R}}
+\newcommand{\Voy}{\mathcal{T}}
+\newcommand{\Bus}{\mathcal{B}}
+\newcommand{\Chauf}{\mathcal{C}}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{1.5cm}
+{\Large Faculté des Sciences de Bizerte\par}
+\vspace{1.5cm}
+{\Huge\bfseries Smart-Planif\par}
+\vspace{0.4cm}
+{\Large Système intelligent de planification automatique et adaptative\par}
+\vspace{1.6cm}
+{\LARGE\bfseries Rapport de cadrage scientifique\par}
+\vspace{0.8cm}
+{\large Définition et modélisation du problème de planification dynamique et adaptative \par}
+\vfill
+\begin{tabular}{ll}
+\textbf{Projet :} & Mastère 2 Recherche \\
+\textbf{Partenaire :} & Société Régionale de Transport de Kairouan \\
+\textbf{Cadre institutionnel :} & Ministère du Transport tunisien \\
+\textbf{Auteur :} & Salah Eddine Elbakkerri \\
+\textbf{Encadrant académique :} & Mr.MOHAMED BARKAOUI \\
+\textbf{Encadrant professionnel :} & Mr.FAKHRI KHARRAT \\
+\textbf{Version :} & Document de validation du périmètre \\
+\end{tabular}
+\vfill
+{\large Année universitaire 2025--2026\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section*{Résumé exécutif}
+\addcontentsline{toc}{section}{Résumé exécutif}
+
+Le présent document a pour objectif de fixer le périmètre scientifique et opérationnel du projet Smart-Planif avant toute implémentation algorithmique. L’analyse croisée de la fiche du projet, du plan de travail, de l’export des échanges avec les parties prenantes et du schéma SQL disponible conduit à distinguer deux familles de problèmes : d’une part, la conception des lignes et des horaires ; d’autre part, l’affectation et la réaffectation des ressources d’exploitation.
+
+La conclusion proposée est que Smart-Planif doit se concentrer prioritairement sur le second problème. Les lignes, les directions et les heures théoriques sont déjà présentes dans le système d’information. En revanche, la table \code{trips} conserve simultanément les ressources prévues et les ressources réellement utilisées : \code{BUS\_PR}/\code{BUS\_RE}, \code{CHAUFF\_PR}/\code{CHAUFF\_RE}, ainsi que l’indicateur \code{CHANGEMENT}. Le cœur du projet devient donc un problème de \emph{Dynamic Vehicle and Crew Rescheduling}, c’est-à-dire de réaffectation dynamique des bus et des chauffeurs sous contraintes, avec maintien des trajets prévus autant que possible.
+
+La problématique proposée est la suivante :
+
+\begin{quote}
+\textbf{Comment réaffecter dynamiquement les bus et les chauffeurs aux voyages déjà planifiés, en présence d’aléas opérationnels, tout en minimisant les changements par rapport au plan initial, les retards et les coûts d’exploitation, et en respectant les contraintes de disponibilité, de compatibilité, de succession temporelle et de repos ?}
+\end{quote}
+
+Cette formulation doit être soumise à la validation explicite de la Société Régionale de Transport de Kairouan. Le présent rapport fournit à la fois l’argumentaire de validation, une première modélisation mathématique, les indicateurs à produire pour le Dashboard Général Unifié et un protocole expérimental réaliste.
+
+\section{Contexte et origine du besoin}
+
+Le projet Smart-Planif s’inscrit dans une démarche d’amélioration de la qualité de service du transport public tunisien. La fiche de projet initiale mentionne la génération de plannings journaliers et hebdomadaires, l’affectation des bus et du personnel, ainsi que l’ajustement des planifications face aux pannes, retards, absences et autres imprévus. Elle prévoit également un outil d’aide à la décision et un Dashboard Général Unifié regroupant des indicateurs de qualité de service.
+
+Le besoin a été précisé par les échanges avec les responsables opérationnels. Le KPI relatif au \enquote{taux de changement des ressources planifiées et réellement exécutées} constitue un signal important : il ne mesure pas la qualité intrinsèque d’un itinéraire, mais l’écart entre le plan d’exploitation et sa réalisation effective. En parallèle, une orientation ministérielle a insisté sur la nécessité d’un tableau de bord unifié et comparable entre les sociétés régionales de transport. Le projet doit donc répondre à un besoin local, tout en produisant des indicateurs suffisamment standardisés pour une généralisation future.
+
+\begin{table}[ht]
+\centering
+\caption{Éléments de contexte et implications scientifiques}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Élément & Implication pour Smart-Planif \\
+\midrule
+Société Régionale de Transport de Kairouan & Le modèle doit refléter les contraintes réelles d’exploitation et être validé par les utilisateurs métier. \\
+KPI de changement des ressources & Le problème doit comparer les affectations prévues avec les affectations réalisées et optimiser la stabilité du planning. \\
+Dashboard Général Unifié & Les indicateurs doivent être définis de façon explicite, reproductible et comparable entre périodes ou sociétés. \\
+Réunion avec le Ministère du Transport & Le projet doit distinguer la preuve de concept locale de la perspective de déploiement institutionnel. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Diagnostic : planification des routes ou planification des ressources ?}
+
+\subsection{Deux problèmes distincts}
+
+La planification des routes et des horaires, parfois appelée conception du réseau ou planification du service, consiste à décider quelles lignes doivent exister, quels arrêts doivent être desservis, selon quelles directions et à quelles heures. Elle nécessite généralement des informations sur la demande des voyageurs, la fréquentation, les correspondances, les temps de parcours et les objectifs de couverture du territoire.
+
+La planification des ressources intervient lorsqu’un ensemble de voyages et d’horaires est déjà défini. Elle consiste à affecter des véhicules et des équipes aux voyages, puis à modifier ces affectations lorsqu’une panne, une absence, un retard ou une indisponibilité survient. C’est cette seconde famille qui est directement observable dans les données disponibles et qui correspond au KPI demandé par l’entreprise.
+
+\subsection{Éléments du schéma de données}
+
+Le schéma SQL fournit plusieurs indices convergents. La table \code{drligne} décrit les lignes, la table \code{dritin} décrit les séquences de stations au sein d’une ligne et la table \code{drstati} décrit les stations. Ces éléments peuvent être considérés comme une structure de réseau déjà constituée. La table \code{trips}, quant à elle, contient les voyages journaliers, leurs lignes, leurs directions et leurs heures théoriques.
+
+Surtout, la même table contient les affectations prévues et réalisées. Cette coexistence permet de mesurer les écarts opérationnels sans reconstruire le réseau de transport. La table \code{stop\_times} ajoute les heures prévues et réelles de passage aux arrêts, ce qui permet de relier les changements de ressources à la ponctualité observée.
+
+\begin{table}[ht]
+\centering
+\caption{Variables disponibles et rôle dans le cadrage}
+\begin{tabularx}{\textwidth}{>{\ttfamily}p{3.2cm} X}
+\toprule
+Champ ou table & Interprétation et utilisation \\
+\midrule
+\code{DENUMLI}, \code{DIRECTION\_ID} & Ligne et direction du voyage ; entrées du service déjà défini. \\
+\code{TIME\_DEPART} & Heure de départ prévue du voyage. \\
+\code{BUS\_PR}, \code{BUS\_RE} & Bus prévu et bus réellement utilisé. \\
+\code{CHAUFF\_PR}, \code{CHAUFF\_RE} & Chauffeur prévu et chauffeur réellement utilisé. \\
+\code{CHANGEMENT} & Indicateur opérationnel de changement à documenter et à valider. \\
+\code{AVANCE\_RETARD} & Écart temporel du voyage, exprimé en secondes selon le commentaire du schéma. \\
+\code{TIME\_DEPART\_R}, \code{TIME\_ARRIVE\_R} & Horaires réels de départ et d’arrivée. \\
+\code{drdepar} & Départs, affectations et états d’exploitation ; contient aussi les ressources prévues. \\
+\code{stop\_times} & Horaires prévus et réels à l’échelle des arrêts. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Décision de cadrage proposée}
+
+Le problème de conception des routes et des horaires est placé hors du cœur de la première version. Cela ne signifie pas que les routes sont sans importance : elles fournissent les contraintes de ligne, de direction, de séquence et de temps. Elles sont cependant considérées comme des données d’entrée du problème de réaffectation, et non comme des variables que le système doit redessiner.
+
+Le périmètre recommandé est donc : \textbf{affectation et réaffectation dynamique des bus et des chauffeurs aux voyages déjà planifiés}. La génération d’un planning initial peut être conservée comme un module de référence, mais la contribution scientifique principale doit porter sur l’adaptation du planning en situation perturbée.
+
+\section{Problématique scientifique fixée}
+
+\subsection{Formulation générale}
+
+La problématique retenue peut être formulée ainsi :
+
+\begin{quote}
+Dans un réseau de transport public où les lignes et les voyages sont planifiés à l’avance, comment construire une méthode d’affectation et de réaffectation dynamique des bus et des chauffeurs qui absorbe les aléas opérationnels, préserve la continuité du service et minimise simultanément les écarts au plan initial, les retards et les coûts supplémentaires, sous les contraintes de disponibilité, de compatibilité, de succession temporelle et de réglementation du travail ?
+\end{quote}
+
+Le problème relève d’un problème dynamique de planification des véhicules et des équipes, avec réoptimisation lorsqu’un événement modifie l’état du système. En anglais, il peut être désigné par \emph{Dynamic Vehicle and Crew Rescheduling Problem}. Cette appellation doit être présentée comme un cadre de modélisation et non comme une affirmation que toutes les variantes du problème seront traitées dans la première version.
+
+\subsection{Question principale et sous-questions}
+
+La question principale est complétée par quatre sous-questions. Premièrement, comment mesurer de manière fiable l’écart entre les ressources prévues et les ressources réellement mobilisées ? Deuxièmement, quelles contraintes doivent être impérativement respectées pour qu’une réaffectation soit exploitable par la société ? Troisièmement, quelle méthode permet de produire une solution suffisamment bonne dans un délai compatible avec l’exploitation ? Enfin, dans quelle mesure la réduction des changements améliore-t-elle la ponctualité et la régularité du service ?
+
+\subsection{Hypothèses de recherche}
+
+L’étude repose sur les hypothèses suivantes : les lignes, les arrêts et les voyages sont connus avant l’étape de réaffectation ; les ressources prévues constituent une solution de référence ; les aléas peuvent être représentés par des événements observés ou par des scénarios ; une réaffectation locale est préférable à une reconstruction complète du planning lorsque cela permet de préserver le service ; le changement d’une ressource engendre un coût ou une pénalité opérationnelle, même si ce coût doit être calibré avec l’entreprise.
+
+\section{Objectifs et périmètre}
+
+\subsection{Objectif général}
+
+L’objectif général est de concevoir un système d’aide à la décision capable de proposer une affectation initiale et une réaffectation dynamique des bus et des chauffeurs, en fournissant une solution faisable, explicable et mesurable au regard des indicateurs de qualité de service.
+
+\subsection{Objectifs spécifiques}
+
+\begin{enumerate}
+\item Formaliser le problème métier sous la forme d’un modèle d’optimisation combinatoire intégrant les voyages, les bus, les chauffeurs et les événements perturbateurs.
+\item Définir un indicateur reproductible du taux de changement des ressources, séparément pour les bus, les chauffeurs et l’ensemble des ressources.
+\item Construire une méthode de référence pour l’affectation initiale, puis une méthode de réoptimisation locale déclenchée par un aléa.
+\item Comparer les solutions selon la stabilité du planning, la ponctualité, le temps de calcul et la consommation de ressources.
+\item Alimenter un Dashboard Général Unifié avec des indicateurs interprétables par les responsables opérationnels et les décideurs.
+\end{enumerate}
+
+\subsection{Périmètre inclus et exclu}
+
+\begin{table}[ht]
+\centering
+\caption{Périmètre recommandé pour la première version}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3cm} X}
+\toprule
+Catégorie & Contenu \\
+\midrule
+Inclus & Affectation des bus et chauffeurs ; réaffectation après aléa ; maintien des voyages ; respect des disponibilités ; séquençage temporel ; contraintes de repos ; compatibilité véhicule--chauffeur ; indicateurs de changement et de ponctualité. \\
+Traité comme entrée & Lignes, stations, directions, horaires théoriques, durées et voyages planifiés. \\
+Optionnel pour une extension & Prédiction des pannes ou retards ; apprentissage par renforcement ; optimisation multi-dépôts ; intégration de données de trafic en temps réel. \\
+Exclu du cœur initial & Redesign du réseau, création de nouvelles lignes, optimisation de la fréquence selon la demande voyageurs, tarification et planification complète de la demande. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Modélisation mathématique proposée}
+
+\subsection{Ensembles et paramètres}
+
+On note \(\Voy\) l’ensemble des voyages à réaliser pendant l’horizon étudié, \(\Bus\) l’ensemble des bus disponibles et \(\Chauf\) l’ensemble des chauffeurs disponibles. Pour chaque voyage \(t\in\Voy\), on connaît notamment sa ligne, sa direction, son heure de départ prévue, sa durée estimée et, lorsque l’historique le permet, les ressources prévues.
+
+On introduit les paramètres suivants : \(a_t\) et \(b_t\) désignent respectivement le début et la fin prévus du voyage ; \(B_t^0\) est le bus prévu ; \(C_t^0\) est le chauffeur prévu ; \(\kappa_b\) est la capacité du bus \(b\) ; \(q_c\) représente la qualification du chauffeur \(c\) ; \(\delta_{ij}\) est le temps minimal de transition entre deux missions successives ; \(A\) désigne l’ensemble des aléas observés à l’instant de décision.
+
+\subsection{Variables de décision}
+
+La variable \(x_{tb}\in\{0,1\}\) vaut 1 si le bus \(b\) est affecté au voyage \(t\). La variable \(y_{tc}\in\{0,1\}\) vaut 1 si le chauffeur \(c\) est affecté au voyage \(t\). La variable \(z_t\in\{0,1\}\) indique qu’au moins une ressource s’écarte du plan initial. Une variable \(u_t\geq 0\) peut mesurer le retard ou l’écart temporel du voyage. Enfin, une variable \(v_{ijb}\in\{0,1\}\) peut représenter la succession du voyage \(i\) vers le voyage \(j\) pour un même bus ; une variable analogue peut être utilisée pour les chauffeurs.
+
+\subsection{Fonction objectif}
+
+Une fonction objectif pondérée peut être définie comme suit :
+
+\begin{equation}
+\min Z = \alpha \sum_{t\in\Voy} z_t
++ \beta \sum_{t\in\Voy} u_t
++ \gamma \sum_{t\in\Voy}\sum_{b\in\Bus} c^{B}_{tb}x_{tb}
++ \eta \sum_{t\in\Voy}\sum_{c\in\Chauf} c^{C}_{tc}y_{tc}
++ \lambda\,\Phi(A),
+\end{equation}
+
+où \(\alpha\) pénalise les changements de ressources, \(\beta\) pénalise les retards, \(\gamma\) et \(\eta\) représentent les coûts d’utilisation des bus et des chauffeurs, et \(\Phi(A)\) représente le coût associé à la gestion des aléas. Les poids doivent être calibrés avec les responsables métier ; ils ne doivent pas être choisis uniquement pour obtenir un résultat algorithmique favorable.
+
+Le terme de changement peut être détaillé en pénalisant directement les écarts par rapport aux affectations initiales :
+
+\begin{equation}
+z_t \geq 1-x_{tB_t^0},\qquad
+z_t \geq 1-y_{tC_t^0},\qquad \forall t\in\Voy.
+\end{equation}
+
+\subsection{Contraintes principales}
+
+Chaque voyage doit recevoir exactement un bus et un chauffeur :
+
+\begin{equation}
+\sum_{b\in\Bus}x_{tb}=1,\qquad
+\sum_{c\in\Chauf}y_{tc}=1,
+\qquad \forall t\in\Voy.
+\end{equation}
+
+Une ressource indisponible ne peut pas être affectée. Si \(I_b(t)\) vaut 1 lorsque le bus \(b\) est disponible pour le voyage \(t\), et si \(J_c(t)\) vaut 1 lorsque le chauffeur \(c\) est disponible, alors :
+
+\begin{equation}
+x_{tb}\leq I_b(t),\qquad y_{tc}\leq J_c(t).
+\end{equation}
+
+La contrainte de capacité peut être exprimée par \(\kappa_b\geq d_t\), où \(d_t\) est la demande estimée du voyage, lorsque cette donnée est disponible. La compatibilité entre un bus et un chauffeur peut être représentée par un paramètre \(M_{bc}\) égal à 1 si l’affectation est autorisée :
+
+\begin{equation}
+x_{tb}+y_{tc}\leq 1+M_{bc},
+\qquad \forall t\in\Voy,\ b\in\Bus,\ c\in\Chauf.
+\end{equation}
+
+Enfin, deux voyages incompatibles dans le temps ne peuvent pas utiliser la même ressource. Si le voyage \(i\) se termine avant le voyage \(j\), la condition de succession pour un même bus peut s’écrire sous forme logique :
+
+\begin{equation}
+x_{ib}+x_{jb}\leq 1
+\quad\text{lorsque}\quad
+b_i+\delta_{ij}>a_j.
+\end{equation}
+
+Les mêmes principes s’appliquent aux chauffeurs, auxquels il faut ajouter les contraintes de durée maximale de conduite et de repos réglementaire. La liste exacte des règles doit être confirmée par la société avant la version finale du modèle.
+
+\section{Indicateurs et validation empirique}
+
+\subsection{Définition du taux de changement}
+
+Le terme \enquote{taux de changement} doit être défini sans ambiguïté. Pour les bus, on propose :
+
+\begin{equation}
+R_{bus}=\frac{\#\{t: BUS\_PR_t\neq\varnothing \land BUS\_RE_t\neq BUS\_PR_t\}}{\#\{t: BUS\_PR_t\neq\varnothing\}}.
+\end{equation}
+
+De manière analogue :
+
+\begin{equation}
+R_{chauffeur}=\frac{\#\{t: CHAUFF\_PR_t\neq\varnothing \land CHAUFF\_RE_t\neq CHAUFF\_PR_t\}}{\#\{t: CHAUFF\_PR_t\neq\varnothing\}}.
+\end{equation}
+
+Le taux global peut être défini au niveau du voyage :
+
+\begin{equation}
+R_{ressources}=\frac{\#\{t: BUS\_RE_t\neq BUS\_PR_t\ \lor\ CHAUFF\_RE_t\neq CHAUFF\_PR_t\}}{\#\{t: BUS\_PR_t\neq\varnothing\ \lor\ CHAUFF\_PR_t\neq\varnothing\}}.
+\end{equation}
+
+La colonne \code{CHANGEMENT} doit être comparée à ces règles afin de vérifier sa sémantique réelle. Elle peut être utilisée comme indicateur fourni par le système, mais il est préférable de conserver aussi les indicateurs calculés directement à partir des identifiants prévus et réalisés.
+
+\subsection{Requête SQL de diagnostic}
+
+La requête suivante permet de produire une première mesure descriptive. Elle ne doit être exécutée qu’après vérification du sens des valeurs nulles et de la convention de stockage des identifiants :
+
+\begin{lstlisting}[language=SQL]
+SELECT
+    COUNT(*) AS total_voyages,
+    SUM(CASE WHEN BUS_PR IS NOT NULL
+              AND (BUS_RE IS NULL OR BUS_RE <> BUS_PR)
+             THEN 1 ELSE 0 END) AS changements_bus,
+    SUM(CASE WHEN CHAUFF_PR IS NOT NULL
+              AND (CHAUFF_RE IS NULL OR CHAUFF_RE <> CHAUFF_PR)
+             THEN 1 ELSE 0 END) AS changements_chauffeur,
+    SUM(CASE WHEN BUS_PR IS NOT NULL
+              AND (BUS_RE IS NULL OR BUS_RE <> BUS_PR)
+              OR CHAUFF_PR IS NOT NULL
+              AND (CHAUFF_RE IS NULL OR CHAUFF_RE <> CHAUFF_PR)
+             THEN 1 ELSE 0 END) AS voyages_avec_changement,
+    SUM(CASE WHEN CHANGEMENT = 1 THEN 1 ELSE 0 END)
+             AS voyages_signales_changement,
+    AVG(AVANCE_RETARD) AS ecart_moyen_secondes
+FROM trips;
+\end{lstlisting}
+
+
+\subsection{Indicateurs du Dashboard Général Unifié}
+
+\begin{table}[ht]
+\centering
+\caption{Indicateurs prioritaires proposés}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4cm} X p{3cm}}
+\toprule
+Indicateur & Définition & Niveau \\
+\midrule
+Taux de changement bus & Part des voyages dont le bus réel diffère du bus prévu. & Opérationnel \\
+Taux de changement chauffeur & Part des voyages dont le chauffeur réel diffère du chauffeur prévu. & Opérationnel \\
+Taux global de changement & Part des voyages affectés par au moins un changement de ressource. & Synthétique \\
+Retard moyen & Moyenne de \code{AVANCE\_RETARD} sur les voyages valides, avec convention de signe documentée. & Qualité de service \\
+Part des voyages à l’heure & Proportion de voyages dont l’écart absolu reste inférieur à un seuil validé. & Qualité de service \\
+Temps de réoptimisation & Durée entre le déclenchement de l’aléa et la production d’une solution. & Système \\
+Taux de couverture & Part des voyages recevant un bus et un chauffeur compatibles. & Faisabilité \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Méthodologie de réalisation}
+
+La démarche recommandée suit une progression contrôlée. La première étape consiste à valider le vocabulaire métier, les règles d’affectation et la définition du changement avec la société. La deuxième consiste à nettoyer et documenter les données, notamment les valeurs nulles, les doublons, les voyages annulés et la différence entre changement planifié, changement réalisé et changement signalé. La troisième consiste à construire une ligne de base déterministe, puis à formaliser le modèle d’optimisation. La quatrième consiste à implémenter une réoptimisation locale et à la comparer au plan historique ou à une stratégie gloutonne. La dernière étape consiste à intégrer les résultats dans le tableau de bord et à organiser une évaluation avec des scénarios contrôlés.
+
+\begin{table}[ht]
+\centering
+\caption{Plan expérimental minimal}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{3.5cm} X}
+\toprule
+Étape & Contenu \\
+\midrule
+Diagnostic historique & Calcul des taux de changement et des retards par période, ligne, centre et type de ressource. \\
+Cas nominal & Affectation sans aléa, servant de référence pour la faisabilité et le temps de calcul. \\
+Cas perturbé & Panne d’un bus, absence d’un chauffeur, retard d’un voyage ou indisponibilité simultanée. \\
+Comparaison & Mesure de la stabilité, de la ponctualité, du nombre de voyages couverts et du temps de réoptimisation. \\
+Analyse de sensibilité & Variation des poids de la fonction objectif et des pénalités de changement. \\
+Validation métier & Présentation des solutions et des indicateurs à un responsable opérationnel. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Validation attendue de la société de transport}
+
+Avant de figer le modèle, une validation courte mais explicite doit être obtenue. Les questions suivantes doivent être adressées au responsable opérationnel : les lignes et les horaires sont-ils considérés comme fixes dans le périmètre du projet ? Le problème prioritaire est-il bien l’affectation des bus et des chauffeurs aux voyages existants ? Que signifie exactement \code{CHANGEMENT} ? Une valeur nulle de \code{BUS\_RE} ou \code{CHAUFF\_RE} indique-t-elle une absence, une donnée manquante ou une mission non exécutée ? Quelles contraintes de repos, de qualification, de maintenance et de disponibilité doivent être obligatoirement intégrées ? Quel délai maximal est acceptable pour proposer une réaffectation ?
+
+Le message de validation peut être formulé ainsi :
+
+\begin{quote}
+Dans le cadre du projet Smart-Planif et de la perspective d’un Dashboard Général Unifié pour les sociétés régionales de transport, nous proposons de concentrer la modélisation sur l’affectation et la réaffectation dynamique des bus et des chauffeurs aux voyages déjà planifiés. Les champs \code{BUS\_PR}, \code{BUS\_RE}, \code{CHAUFF\_PR}, \code{CHAUFF\_RE} et \code{CHANGEMENT} permettent de mesurer l’écart entre le plan et l’exécution. Pouvez-vous confirmer que la priorité opérationnelle est bien de réduire les changements de ressources, les retards et les effets en chaîne liés aux aléas, plutôt que de redéfinir les lignes et les horaires ?
+\end{quote}
+
+Cette validation constitue une condition de qualité scientifique : elle garantit que le modèle ne résout pas un problème mathématiquement intéressant mais éloigné de la réalité d’exploitation.
+
+\section{Risques, limites et décisions à prendre}
+
+La première limite concerne la disponibilité des données réelles. Le schéma décrit les colonnes mais ne permet pas, à lui seul, de connaître la fréquence des changements ni leur cause. La seconde limite concerne l’interprétation causale : un écart entre ressource prévue et ressource réelle peut provenir d’une panne, d’une absence, d’une modification volontaire, d’une erreur de saisie ou d’une règle d’exploitation non documentée. La troisième limite concerne la mesure de la demande voyageurs, qui n’est pas nécessaire pour le problème de réaffectation mais le deviendrait pour optimiser les routes ou les fréquences.
+
+Les principales décisions à obtenir sont donc l’unité d’analyse, la définition des voyages annulés, les règles de disponibilité, la hiérarchie des objectifs et le seuil de retard considéré comme acceptable. Tant que ces points ne sont pas confirmés, les paramètres de l’algorithme doivent être présentés comme des hypothèses expérimentales et non comme des règles officielles.
+
+\section{Conclusion et recommandation finale}
+
+L’analyse du projet, de la discussion avec les parties prenantes et du schéma SQL conduit à une recommandation claire : Smart-Planif doit être cadré comme un système de planification et de réaffectation dynamique des ressources d’exploitation, principalement les bus et les chauffeurs, sur un ensemble de voyages dont les lignes et les horaires sont déjà définis.
+
+Le problème scientifique n’est donc pas, dans sa première version, de concevoir un nouveau réseau de transport. Il consiste à décider, lorsqu’un aléa perturbe l’exploitation, quelles ressources doivent être maintenues, remplacées ou réaffectées afin de couvrir les voyages avec le moins de changements, de retards et de coûts possible. Cette formulation est cohérente avec la structure des données, avec le KPI demandé par l’entreprise et avec la perspective ministérielle d’un Dashboard Général Unifié.
+
+
+\appendix
+\newpage
+\section{Résumé}
+
+\begin{table}[ht]
+\centering
+\caption{Synthèse de cadrage en une page}
+\begin{tabularx}{\textwidth}{>{\bfseries}p{4cm} X}
+\toprule
+Question & Réponse proposée \\
+\midrule
+Quel est le problème ? & Réaffectation dynamique des bus et des chauffeurs sous contraintes. \\
+Pourquoi ce problème ? & Les données contiennent les affectations prévues et réalisées, ainsi que les horaires réels. \\
+Quel est le KPI central ? & Taux de changement entre ressources planifiées et ressources exécutées. \\
+Que cherche-t-on à minimiser ? & Les changements, les retards et les coûts supplémentaires, sous contraintes de faisabilité. \\
+Que considère-t-on comme donné ? & Les lignes, les arrêts, les directions et les voyages planifiés. \\
+Que faut-il valider ? & La priorité métier, la sémantique des changements et les règles d’exploitation. \\
+Quel est le livrable ? & Un modèle, un réoptimiseur et un dashboard d’aide à la décision. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+
+\end{document}

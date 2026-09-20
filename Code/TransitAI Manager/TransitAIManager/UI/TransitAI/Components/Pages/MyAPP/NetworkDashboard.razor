@@ -1,0 +1,28 @@
+﻿@page "/network-dashboard"
+
+<Topbar Title="Tableau de bord réseau" />
+
+<div class="dashboard-grid">
+    <section class="map-area">
+        <NetworkMap />
+    </section>
+
+    <aside class="monitoring-sidebar">
+        <IncidentPanel />
+        <AIEnginePanel />
+        <LiveMetricsPanel />
+    </aside>
+</div>
+
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px; /* Carte prend tout l'espace, le panneau prend 350px */
+        gap: 20px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        flex: 1;
+    }
+    .map-area { position: relative; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .monitoring-sidebar { display: flex; flex-direction: column; gap: 20px; }
+</style>

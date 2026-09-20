@@ -1,0 +1,11 @@
+﻿dragent ==> liste des agent
+drcatve==> categorie vehicule
+drdeleg ==>  delegation
+drdentr ==> centre ou sont affecté les lignes
+drligne ==> ligne ou route selon gtfs
+dritin ==> les stations de chaque ligne
+drstati => les stations equivalent gtfs stops
+drtyli ==> type ligne
+drvehic ==> liste des vehicules par categorie
+trips les voyages
+stop_times ==> les horaire prevu des arrets par voyage

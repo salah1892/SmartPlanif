@@ -1,0 +1,1105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\drlignesservices\\drlignesservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\drlignesservices\\drlignesservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\drstation\\drstationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\drstation\\drstationservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\drlignes\\queries\\getalldrlignesquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\drlignes\\queries\\getalldrlignesquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\drstations\\queries\\getalldrstationsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\drstations\\queries\\getalldrstationsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\lines-stops\\linesstops.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\lines-stops\\linesstops.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\di.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\di.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\drdepartservices\\drdepartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\drdepartservices\\drdepartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\transitai.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\transitai.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\layout\\sidebar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\layout\\sidebar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\planningdebase.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\planningdebase.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\planningoperationnel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\planningoperationnel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\shared\\notificationdrawer.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\shared\\notificationdrawer.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\layout\\apptopbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\layout\\apptopbar.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drdepar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drdepar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\operationrealtime\\operationrealtime.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\operationrealtime\\operationrealtime.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\dtosmodels\\drlignes\\drlignedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\dtosmodels\\drlignes\\drlignedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\dragentservices\\dragentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\dragentservices\\dragentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\dtosmodels\\drdepart\\drdepartalldetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\dtosmodels\\drdepart\\drdepartalldetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drvehic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drvehic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drligne.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drligne.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\vehiculefleet\\vehiculefleet.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\vehiculefleet\\vehiculefleet.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\drvehiculeservices\\drvehiculeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\drvehiculeservices\\drvehiculeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\dtosmodels\\drvehicules\\drvehiculedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\dtosmodels\\drvehicules\\drvehiculedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\dragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\dragent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\agents\\agents.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\agents\\agents.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\dtosmodels\\dragents\\dragentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\dtosmodels\\dragents\\dragentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\drdelegationservices\\drdelegationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\drdelegationservices\\drdelegationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drdeleg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drdeleg.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drcatve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drcatve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drdentr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drdentr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\dritin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\dritin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drstati.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drstati.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\drtyli.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\drtyli.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\fareattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\fareattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\farerule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\farerule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\stoptime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\stoptime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.domain\\entities\\metier\\trip.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20153AC3-5D6E-4F4F-899B-08CB4612A0C6}|Core\\Core.Domain\\Core.Domain.csproj|solutionrelative:core\\core.domain\\entities\\metier\\trip.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\drvehicules\\queries\\getallvehiculessquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\drvehicules\\queries\\getallvehiculessquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\drdelegs\\queries\\getalldrdelegationsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\drdelegs\\queries\\getalldrdelegationsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\incidentpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\incidentpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\livemetricspanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\livemetricspanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\delegations\\delegations.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\delegations\\delegations.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\services\\drvehiculeservices\\idrvehiculeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\services\\drvehiculeservices\\idrvehiculeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\services\\drdepartservices\\idrdepartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\services\\drdepartservices\\idrdepartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\services\\dragentservices\\idragentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\services\\dragentservices\\idragentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\drdeparts\\queries\\getalldrdepartdetailsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\drdeparts\\queries\\getalldrdepartdetailsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\dtosmodels\\drvehicules\\drvehiculecategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\dtosmodels\\drvehicules\\drvehiculecategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\common\\cqs\\cqsmodels\\dragents\\queries\\getalldragentsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\common\\cqs\\cqsmodels\\dragents\\queries\\getalldragentsquery.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\services\\planning\\iplanningstaticorchestratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\services\\planning\\iplanningstaticorchestratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\infrastructure\\app.infrastructure\\services\\planning\\planningstaticorchestratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AC61CE83-A18E-4143-A8EA-4F948926778C}|Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj|solutionrelative:infrastructure\\app.infrastructure\\services\\planning\\planningstaticorchestratorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\core\\core.application\\services\\drdelegationservices\\idrdelegationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36E57EC5-C362-4C28-A89F-5327FDDCAAF6}|Core\\Core.Application\\Core.Application.csproj|solutionrelative:core\\core.application\\services\\drdelegationservices\\idrdelegationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\dashboard.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\updatedinterface\\dashboard.razor.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\dashboard - copie.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\dashboard - copie.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\realtimemap.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\realtimemap.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\DELL\\AppData\\Local\\Temp\\MetadataAsSource\\70adcc253fba4fd286002cf78feaba8b\\DecompilationMetadataAsSourceFileProvider\\e1bebbe234254e0fbdbaf9295f73e214\\LeafletMap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\aioptimizationpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\aioptimizationpanel.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\pages\\dashboard\\networkmap.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\pages\\dashboard\\networkmap.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\smart-planif\\code\\transitai manager\\transitaimanager\\ui\\transitai\\components\\layout\\userprofile\\userprofilemenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A65E6769-D50F-4EA7-8040-E1AB18629F8A}|UI\\TransitAI\\TransitAI.csproj|solutionrelative:ui\\transitai\\components\\layout\\userprofile\\userprofilemenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 13,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Agents.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Agents\\Agents.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Agents\\Agents.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Agents\\Agents.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Agents\\Agents.razor",
+              "ViewState": "AgIAAJUAAAAAAAAAAAAqwKAAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-08T19:44:11.743Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "VehiculeFleet.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\VehiculeFleet\\VehiculeFleet.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\VehiculeFleet\\VehiculeFleet.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\VehiculeFleet\\VehiculeFleet.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\VehiculeFleet\\VehiculeFleet.razor",
+              "ViewState": "AgIAANIAAAAAAAAAAAAawNwAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-08T19:44:26.78Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "OperationRealTime.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\OperationRealTime\\OperationRealTime.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\OperationRealTime\\OperationRealTime.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\OperationRealTime\\OperationRealTime.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\OperationRealTime\\OperationRealTime.razor",
+              "ViewState": "AgIAADYAAAAAAAAAAAASwFUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-09T22:18:00.991Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "DrDepartService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrDepartServices\\DrDepartService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrDepartServices\\DrDepartService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrDepartServices\\DrDepartService.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrDepartServices\\DrDepartService.cs",
+              "ViewState": "AgIAAFIAAAAAAAAAAAASwGAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:03:31.348Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DrDepar.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDepar.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrDepar.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDepar.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrDepar.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAkwA0AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T20:56:26.637Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "DrDepartAllDetailsDto.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrDepart\\DrDepartAllDetailsDto.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\DtosModels\\DrDepart\\DrDepartAllDetailsDto.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrDepart\\DrDepartAllDetailsDto.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\DtosModels\\DrDepart\\DrDepartAllDetailsDto.cs",
+              "ViewState": "AgIAAMEAAAAAAAAAAIA9wM0AAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T22:44:24.706Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "DrLigne.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrLigne.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrLigne.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrLigne.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrLigne.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAADwvwsAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:26.886Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "PlanningDeBase.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningDeBase.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningDeBase.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningDeBase.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningDeBase.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJkAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-11T18:50:15.286Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GetAllDrStationsQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrStations\\Queries\\GetAllDrStationsQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrStations\\Queries\\GetAllDrStationsQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrStations\\Queries\\GetAllDrStationsQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrStations\\Queries\\GetAllDrStationsQuery.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAkwCYAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-15T10:32:25.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GetAllDrLignesQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrLignes\\Queries\\GetAllDrLignesQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrLignes\\Queries\\GetAllDrLignesQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrLignes\\Queries\\GetAllDrLignesQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrLignes\\Queries\\GetAllDrLignesQuery.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAowCgAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-15T10:28:16.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DI.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\DI.cs",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\DI.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\DI.cs",
+              "RelativeToolTip": "UI\\TransitAI\\DI.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-15T10:23:50.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DrLignesServices.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrLignesServices\\DrLignesServices.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrLignesServices\\DrLignesServices.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrLignesServices\\DrLignesServices.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrLignesServices\\DrLignesServices.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAAwCMAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T23:42:47.457Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DrStationServices.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrStation\\DrStationServices.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrStation\\DrStationServices.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrStation\\DrStationServices.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrStation\\DrStationServices.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA9wBoAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T21:20:26.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\DependencyInjection.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\DependencyInjection.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\DependencyInjection.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAASwBgAAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T23:42:35.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\appsettings.Development.json",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\appsettings.Development.json",
+              "RelativeToolTip": "UI\\TransitAI\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-15T10:03:26.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "LinesStops.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Lines-Stops\\LinesStops.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Lines-Stops\\LinesStops.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Lines-Stops\\LinesStops.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Lines-Stops\\LinesStops.razor",
+              "ViewState": "AgIAACEBAAAAAAAAAAAlwCkBAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-09T21:29:35.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "DrVehic.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrVehic.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrVehic.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrVehic.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrVehic.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBQAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:39.316Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "DrAgent.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrAgent.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrAgent.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrAgent.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrAgent.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAADwvzwAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T07:52:39.181Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Sidebar.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\Sidebar.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Layout\\Sidebar.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\Sidebar.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Layout\\Sidebar.razor",
+              "ViewState": "AgIAACkAAAAAAAAAAAAAADMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:37:01.164Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Program.cs",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Program.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Program.cs",
+              "RelativeToolTip": "UI\\TransitAI\\Program.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-08T12:45:19.247Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "DrAgentService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrAgentServices\\DrAgentService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrAgentServices\\DrAgentService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrAgentServices\\DrAgentService.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrAgentServices\\DrAgentService.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAEwCoAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T21:19:51.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AppTopBar.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\AppTopBar.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Layout\\AppTopBar.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\AppTopBar.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Layout\\AppTopBar.razor",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAC8AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-13T09:48:03.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "App.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\App.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\App.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\App.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\App.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-08-08T12:43:05.787Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "TransitAI.csproj",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\TransitAI.csproj",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+              "RelativeToolTip": "UI\\TransitAI\\TransitAI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-08-08T12:45:55.021Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\_Imports.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\_Imports.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-12T23:48:19.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "NotificationDrawer.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Shared\\NotificationDrawer.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Shared\\NotificationDrawer.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Shared\\NotificationDrawer.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Shared\\NotificationDrawer.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-13T09:49:28.368Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "PlanningOperationnel.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningOperationnel.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningOperationnel.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningOperationnel.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\PlanningOperationnel.razor",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAFwBAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-14T06:41:39.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "DrAgentDto.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrAgents\\DrAgentDto.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\DtosModels\\DrAgents\\DrAgentDto.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrAgents\\DrAgentDto.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\DtosModels\\DrAgents\\DrAgentDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T22:51:40.055Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "DrVehiculeService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrVehiculeServices\\DrVehiculeService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrVehiculeServices\\DrVehiculeService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrVehiculeServices\\DrVehiculeService.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrVehiculeServices\\DrVehiculeService.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAvwDcAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:00:51.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "DrVehiculeDto.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeDto.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeDto.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeDto.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeDto.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAwwD8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:56:43.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "DrLigneDto.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrLignes\\DrLigneDto.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\DtosModels\\DrLignes\\DrLigneDto.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrLignes\\DrLigneDto.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\DtosModels\\DrLignes\\DrLigneDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T07:54:52.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "DrItin.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrItin.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrItin.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrItin.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrItin.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:58.396Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "DrDeleg.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDeleg.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrDeleg.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDeleg.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrDeleg.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T21:26:03.542Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "DrDelegationService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrDelegationServices\\DrDelegationService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\DrDelegationServices\\DrDelegationService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\DrDelegationServices\\DrDelegationService.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\DrDelegationServices\\DrDelegationService.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAewDAAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:06:46.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "FareRule.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\FareRule.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\FareRule.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\FareRule.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\FareRule.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:47.579Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "FareAttribute.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\FareAttribute.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\FareAttribute.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\FareAttribute.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\FareAttribute.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:48.945Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "DrTyLi.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrTyLi.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrTyLi.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrTyLi.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrTyLi.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:53.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "DrStati.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrStati.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrStati.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrStati.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrStati.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:54.406Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "DrDentr.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDentr.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrDentr.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrDentr.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrDentr.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:26:04.826Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "DrCatVe.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrCatVe.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\DrCatVe.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\DrCatVe.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\DrCatVe.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwBMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:59:37.951Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "StopTime.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\StopTime.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\StopTime.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\StopTime.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\StopTime.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:46.092Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "Trip.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\Trip.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Domain\\Entities\\Metier\\Trip.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Entities\\Metier\\Trip.cs",
+              "RelativeToolTip": "Core\\Core.Domain\\Entities\\Metier\\Trip.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-13T06:25:42.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "GetAllVehiculessQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrVehicules\\Queries\\GetAllVehiculessQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrVehicules\\Queries\\GetAllVehiculessQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrVehicules\\Queries\\GetAllVehiculessQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrVehicules\\Queries\\GetAllVehiculessQuery.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAiwCsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:07:41.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "GetAllDrDelegationsQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDelegs\\Queries\\GetAllDrDelegationsQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDelegs\\Queries\\GetAllDrDelegationsQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDelegs\\Queries\\GetAllDrDelegationsQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDelegs\\Queries\\GetAllDrDelegationsQuery.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAiwCkAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:48:35.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "IncidentPanel.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\IncidentPanel.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\IncidentPanel.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\IncidentPanel.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\IncidentPanel.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-12T23:43:26.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "LiveMetricsPanel.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\LiveMetricsPanel.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\LiveMetricsPanel.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\LiveMetricsPanel.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\LiveMetricsPanel.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:46:31.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Delegations.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Delegations\\Delegations.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Delegations\\Delegations.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Delegations\\Delegations.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Delegations\\Delegations.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T18:38:58.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "IDrDepartService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrDepartServices\\IDrDepartService.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Services\\DrDepartServices\\IDrDepartService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrDepartServices\\IDrDepartService.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Services\\DrDepartServices\\IDrDepartService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:04:48.004Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "IDrVehiculeService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrVehiculeServices\\IDrVehiculeService.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Services\\DrVehiculeServices\\IDrVehiculeService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrVehiculeServices\\IDrVehiculeService.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Services\\DrVehiculeServices\\IDrVehiculeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T11:00:54.801Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "IDrAgentService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrAgentServices\\IDrAgentService.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Services\\DrAgentServices\\IDrAgentService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrAgentServices\\IDrAgentService.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Services\\DrAgentServices\\IDrAgentService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T22:42:10.127Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "GetAllDrDepartDetailsQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDeparts\\Queries\\GetAllDrDepartDetailsQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDeparts\\Queries\\GetAllDrDepartDetailsQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDeparts\\Queries\\GetAllDrDepartDetailsQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrDeparts\\Queries\\GetAllDrDepartDetailsQuery.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAYwBMAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T22:56:46.928Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "DrVehiculeCategoryDto.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeCategoryDto.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeCategoryDto.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeCategoryDto.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\DtosModels\\DrVehicules\\DrVehiculeCategoryDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:56:31.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "GetAllDrAgentsQuery.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrAgents\\Queries\\GetAllDrAgentsQuery.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrAgents\\Queries\\GetAllDrAgentsQuery.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Common\\CQS\\CqsModels\\DrAgents\\Queries\\GetAllDrAgentsQuery.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Common\\CQS\\CqsModels\\DrAgents\\Queries\\GetAllDrAgentsQuery.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAxwCkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T22:57:00.145Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "IPlanningStaticOrchestratorService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\Planning\\IPlanningStaticOrchestratorService.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Services\\Planning\\IPlanningStaticOrchestratorService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\Planning\\IPlanningStaticOrchestratorService.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Services\\Planning\\IPlanningStaticOrchestratorService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAUAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:49:08.057Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "PlanningStaticOrchestratorService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\Planning\\PlanningStaticOrchestratorService.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\App.Infrastructure\\Services\\Planning\\PlanningStaticOrchestratorService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\Services\\Planning\\PlanningStaticOrchestratorService.cs",
+              "RelativeToolTip": "Infrastructure\\App.Infrastructure\\Services\\Planning\\PlanningStaticOrchestratorService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAABTAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:51:48.984Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "IDrDelegationService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrDelegationServices\\IDrDelegationService.cs",
+              "RelativeDocumentMoniker": "Core\\Core.Application\\Services\\DrDelegationServices\\IDrDelegationService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Services\\DrDelegationServices\\IDrDelegationService.cs",
+              "RelativeToolTip": "Core\\Core.Application\\Services\\DrDelegationServices\\IDrDelegationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-12T10:44:45.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "Dashboard.razor.css",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor.css",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor.css",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor.css",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor.css",
+              "ViewState": "AgIAAOEAAAAAAAAAAAAkwPwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-10T21:45:10.287Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "Dashboard.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\updatedInterface\\Dashboard.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-11T12:06:35.121Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "app.css",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\wwwroot\\app.css",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\wwwroot\\app.css",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\wwwroot\\app.css",
+              "RelativeToolTip": "UI\\TransitAI\\wwwroot\\app.css",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAkwEsAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-11T10:54:55.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "Dashboard.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:46:19.427Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "Dashboard - Copie.Txt",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard - Copie.Txt",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard - Copie.Txt",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard - Copie.Txt",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\Dashboard - Copie.Txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-07-10T09:17:22.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "LeafletMap.cs",
+              "DocumentMoniker": "C:\\Users\\DELL\\AppData\\Local\\Temp\\MetadataAsSource\\70adcc253fba4fd286002cf78feaba8b\\DecompilationMetadataAsSourceFileProvider\\e1bebbe234254e0fbdbaf9295f73e214\\LeafletMap.cs",
+              "ToolTip": "C:\\Users\\DELL\\AppData\\Local\\Temp\\MetadataAsSource\\70adcc253fba4fd286002cf78feaba8b\\DecompilationMetadataAsSourceFileProvider\\e1bebbe234254e0fbdbaf9295f73e214\\LeafletMap.cs [Lecture seule]",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAAAwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-10T08:51:27.216Z",
+              "EditorCaption": " [Lecture seule]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "RealtimeMap.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\RealtimeMap.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\RealtimeMap.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\RealtimeMap.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\RealtimeMap.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:49:30.898Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "AiOptimizationPanel.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\AiOptimizationPanel.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\AiOptimizationPanel.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\AiOptimizationPanel.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\AiOptimizationPanel.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:48:22.78Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "NetworkMap.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\NetworkMap.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Pages\\Dashboard\\NetworkMap.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Pages\\Dashboard\\NetworkMap.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Pages\\Dashboard\\NetworkMap.razor",
+              "ViewState": "AgIAADoAAAAAAAAAAAAAAGkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:47:26.716Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "UserProfileMenu.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\UserProfile\\UserProfileMenu.razor",
+              "RelativeDocumentMoniker": "UI\\TransitAI\\Components\\Layout\\UserProfile\\UserProfileMenu.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\Smart-Planif\\code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\Components\\Layout\\UserProfile\\UserProfileMenu.razor",
+              "RelativeToolTip": "UI\\TransitAI\\Components\\Layout\\UserProfile\\UserProfileMenu.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-10T08:35:09.492Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

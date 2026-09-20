@@ -1,0 +1,86 @@
+﻿@using TransitAI.Components.LogicMetier
+@using TransitAI.Components.Shared
+@using TransitAI.Services.MenuServices
+@inject NotificationDrawerState State
+@inject MenuStateService MenuStateService
+@implements IDisposable
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="px-2" Style="width:100%;background-color: #FFFFFF;">
+    @* Section Gauche - Breadcrumbs *@
+    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+        <MudBreadcrumbs Items="_breadcrumbs" Separator=">" Class="pa-0" Style="font-size: 0.825rem;"/>
+
+    </MudStack>
+
+    <MudSpacer/>
+    @* Section Centre - Titre *@
+    <MudText Typo="Typo.h6" Class="font-weight-bold" Color="Color.Dark" Style="font-size: 0.95rem; text-align: center;">
+        @* @MenuStateService.CurrentMenuTitle *@
+        @Title
+    </MudText>
+
+    <MudSpacer/>
+    @* Section Droite - Boutons *@
+    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+
+        <MudButton Variant="Variant.Outlined"
+                   StartIcon="@Icons.Material.Outlined.CheckCircleOutline"
+                   Color="Color.Default"
+                   Size="Size.Small"
+                   Style="text-transform: none; border-color: #e0e0e0; color: #1e1e1e; font-weight: 500; font-size: 0.85rem;">
+            Valider GTFS
+        </MudButton>
+
+        <MudButton Variant="Variant.Filled"
+                   StartIcon="@Icons.Material.Filled.Download"
+                   Color="Color.Primary"
+                   Size="Size.Small"
+                   Style="text-transform: none; font-weight: 500; font-size: 0.85rem;">
+            Exporter GTFS .zip
+        </MudButton>
+
+        <LanguageSwitcher @bind-SelectedLanguage="currentLang"/>
+
+        <MudBadge Content="1" Color="Color.Error" Overlap="true" Class="mx-1" Size="Size.Small">
+            <MudIconButton
+                Icon="@Icons.Material.Outlined.Notifications"
+                Color="Color.Default"
+                Size="Size.Small"
+                OnClick="State.ToggleNotification"/>
+        </MudBadge>
+    </MudStack>
+
+</MudStack>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Tableau de bord réseau";
+    private string currentLang = "fr";
+    protected override void OnInitialized()
+    {
+        // S'abonner aux changements de menu pour rafraîchir le titre
+        MenuStateService.OnMenuChanged += HandleMenuChanged;
+    }
+    private void HandleMenuChanged()
+    {
+        Console.WriteLine($"[AppTopBar] Mise à jour du titre → {MenuStateService.CurrentMenuTitle}");
+        InvokeAsync(StateHasChanged);
+    }
+    // Transformez _breadcrumbs en propriété calculée (notez l'utilisation de => au lieu de = )
+    private List<BreadcrumbItem> _breadcrumbs => new()
+    {
+        new BreadcrumbItem("Accueil", href: "/"),
+        // On utilise la variable Title ici :
+        new BreadcrumbItem(Title, href: "#", disabled: true)
+    };
+
+    protected override void OnParametersSet()
+    {
+        // Synchronise si le parent change le Title
+        base.OnParametersSet();
+    }
+
+    public void Dispose()
+    {
+        MenuStateService.OnMenuChanged -= HandleMenuChanged;
+    }
+
+}

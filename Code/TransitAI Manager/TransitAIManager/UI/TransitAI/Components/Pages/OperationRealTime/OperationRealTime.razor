@@ -1,0 +1,111 @@
+﻿@page "/realtime-operation"
+
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-4" Style="background-color: #f3f4f6; overflow-x: auto;">
+    <MudGrid Spacing="4">
+
+        <!-- Total Routes -->
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex align-center" Elevation="0"
+                      Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px; gap: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.Route"
+                         Size="Size.Medium"
+                         Color="Color.Primary"
+                         Style="font-size: 1.75rem;" />
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold" Style="color: #1f2937; font-size: 1.5rem; line-height: 1.2;">6</MudText>
+                    <MudText Style="color: #6b7280; font-size: 0.85rem; margin-top: 2px;">Total des itinéraires</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Active Routes -->
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex align-center" Elevation="0"
+                      Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px; gap: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.ShowChart"
+                         Size="Size.Medium"
+                         Color="Color.Success"
+                         Style="font-size: 1.75rem; color: #16a34a;" />
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold" Style="color: #1f2937; font-size: 1.5rem; line-height: 1.2;">3</MudText>
+                    <MudText Style="color: #6b7280; font-size: 0.85rem; margin-top: 2px;">Itinéraires actifs</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Total Stops -->
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex align-center" Elevation="0"
+                      Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px; gap: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.Place"
+                         Size="Size.Medium"
+                         Color="Color.Default"
+                         Style="font-size: 1.75rem; color: #2563eb;" />
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold" Style="color: #1f2937; font-size: 1.5rem; line-height: 1.2;">11</MudText>
+                    <MudText Style="color: #6b7280; font-size: 0.85rem; margin-top: 2px;">Total des arrêts</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Active Incidents -->
+        @* <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex align-center" Elevation="0"
+                      Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px; gap: 12px;">
+                <MudIcon Icon="@Icons.Material.Filled.WarningAmber"
+                         Size="Size.Medium"
+                         Color="Color.Error"
+                         Style="font-size: 1.75rem; color: #dc2626;" />
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold" Style="color: #1f2937; font-size: 1.5rem; line-height: 1.2;">0</MudText>
+                    <MudText Style="color: #6b7280; font-size: 0.85rem; margin-top: 2px;">Incidents actifs</MudText>
+                </div>
+            </MudPaper>
+        </MudItem> *@
+
+        <MudItem xs="12" sm="9">
+            @* <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudText Typo="Typo.h6">Active Incidents</MudText>
+                <MudDataGrid Items="@employees" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+                    <Columns>
+                        <PropertyColumn Property="x => x.Name" />
+                        <PropertyColumn Property="x => x.Position" />
+                        <PropertyColumn Property="x => x.YearsEmployed" Title="Years Employed" />
+                        <PropertyColumn Property="x => x.Salary" Format="C" />
+                        <PropertyColumn Property="x => x.Salary * x.YearsEmployed" Title="Total Earned" Format="C" />
+                        <TemplateColumn CellClass="d-flex justify-end">
+                            <CellTemplate>
+                                <MudStack Row>
+                                    <MudRating Size="@Size.Small" SelectedValue="@context.Item.Rating" />
+                                    <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Hire</MudButton>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudPaper> *@
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudText Typo="Typo.h6">Flux en direct</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    @*  </MudPaper> *@
+</MudContainer>
+
+@code {
+    public record Employee(string Name, string Position, int YearsEmployed, int Salary, int Rating);
+    public IEnumerable<Employee> employees;
+
+    protected override void OnInitialized()
+    {
+        employees = new List<Employee>
+        {
+            new Employee("Sam", "CPA", 23, 87_000, 4),
+            new Employee("Alicia", "Product Manager", 11, 143_000, 5),
+            new Employee("Ira", "Developer", 4, 92_000, 3),
+            new Employee("John", "IT Director", 17, 229_000, 4),
+        };
+    }
+}

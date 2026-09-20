@@ -1,0 +1,386 @@
+﻿@page "/lines"
+@using Core.Application.Common.CQS.CqsModels.DrAgents.Queries
+@using Core.Application.Common.CQS.CqsModels.DrLignes.Queries
+@using Core.Application.Common.CQS.CqsModels.DrStations.Queries
+@using Core.Application.Common.DtosModels.DrLignes
+@using Core.Application.Common.DtosModels.DrStation
+@using Core.Domain.Entities
+@using Core.Domain.Entities.Metier
+@inject ILogger<DrLigne> Logger
+
+<MudTabs Class="pa-4" Elevation="0" Rounded="true" ApplyEffectsToContainer="true"
+         TabPanelsClass="pa-1" Style="overflow-y: auto; height: 100%;">
+
+    <!-- ==================== TAB LIGNES ==================== -->
+    <MudTabPanel Text="Lignes">
+        <MudPaper Elevation="2" Class="pa-4 ">
+            @* EN-TÊTE *@
+            <div class="d-flex align-center justify-between mb-4 flex-wrap gap-4">
+                <div class="d-flex align-center gap-2 flex-wrap">
+                    <MudIcon Icon="@Icons.Material.Filled.Timeline" Color="Color.Info" Size="Size.Small" />
+                    <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">Lignes</MudText>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Filled" Color="Color.Primary">
+                        @_displayedLignesCount / @(_allLignes?.Count ?? 0)
+                    </MudChip>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default">
+                        Total: @(_allLignes?.Count ?? 0)
+                    </MudChip>
+                </div>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           Size="Size.Small" Style="text-transform: none; border-radius: 8px;">
+                    Ajouter Ligne
+                </MudButton>
+            </div>
+
+            @* ÉTAT DE CHARGEMENT INITIAL *@
+            @if (_isLoading)
+            {
+                <div class="d-flex flex-column align-center pa-8">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+                    <MudText Class="mt-4" Typo="Typo.body2">Chargement des lignes...</MudText>
+                </div>
+            }
+            else if (_allLignes is null || _allLignes.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info">Aucune ligne trouvée.</MudAlert>
+            }
+            else
+            {
+                @* TABLEAU - On affiche seulement les _displayedLignesCount premiers éléments *@
+                <MudTable Items="@_allLignes.Take(_displayedLignesCount).ToList()"
+                          Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0" Dense="true"
+                          Class="mb-3">
+                    <HeaderContent>
+                        <MudTh>Code</MudTh>
+                        <MudTh>Nom (Fr)</MudTh>
+                        <MudTh>Nom (AR)</MudTh>
+                        <MudTh Style="text-align: right;">Actions</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="code" Style="font-weight: bold;">@context.IdLigne</MudTd>
+                        <MudTd DataLabel="NameFr">@context.NomligneFr</MudTd>
+                        <MudTd DataLabel="NameAr">@context.NomligneAr</MudTd>
+                        <MudTd DataLabel="Actions" Style="text-align: right;">
+                            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Size="Size.Small" />
+                            <MudIconButton Icon="@Icons.Material.Outlined.Delete" Size="Size.Small" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                @* ==================== BOUTON VOIR PLUS ==================== *@
+                @if (_displayedLignesCount < _allLignes.Count)
+                {
+                    <div class="d-flex justify-center pa-2" style="background: #fafafa; border-radius: 12px; margin-top: 12px;">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Secondary"
+                                   Disabled="_isLoadingMoreLignes"
+                                   OnClick="@VoirPlusLignes"
+                                   StartIcon="@(_isLoadingMoreLignes ? null : Icons.Material.Filled.ExpandMore)"
+                                   Style="border-radius: 25px; padding: 12px 32px;">
+
+                            @if (_isLoadingMoreLignes)
+                            {
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                                    <span>Chargement...</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span>Voir Plus (@Math.Min(10, _allLignes.Count - _displayedLignesCount) éléments)</span>
+                            }
+                        </MudButton>
+                    </div>
+                }
+                else
+                {
+                    @* MESSAGE FIN - Tous affichés *@
+                    <MudAlert Severity="Severity.Success" Class="mt-3" Dense="true" Variant="Variant.Text">
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
+                        Tous les @_allLignes.Count lignes sont affichées ✓
+                    </MudAlert>
+                }
+
+                @* BARRE DE PROGRESSION (optionnel) *@
+                <MudProgressLinear Value="@((_displayedLignesCount * 100.0) / _allLignes.Count)"
+                                   Color="Color.Primary" Class="mt-3" Striped="true" />
+            }
+        </MudPaper>
+    </MudTabPanel>
+
+    <!-- ==================== TAB ARRÊTS ==================== -->
+    <MudTabPanel Text="Arrets">
+        <MudPaper Elevation="0" Class="pa-4 ">
+            @* EN-TÊTE *@
+            <div class="d-flex align-center justify-between mb-4 flex-wrap gap-2">
+                <div class="d-flex align-center gap-2 flex-wrap">
+                    <MudIcon Icon="@Icons.Material.Filled.LocationOn" Color="Color.Success" Size="Size.Small" />
+                    <MudText Typo="Typo.subtitle1" Style="font-weight: bold;">Arrêts</MudText>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Filled" Color="Color.Success">
+                        @_displayedStopsCount / @(_allStops?.Count ?? 0)
+                    </MudChip>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Default">
+                        Total: @(_allStops?.Count ?? 0)
+                    </MudChip>
+                </div>
+                <MudButton Variant="Variant.Filled" Color="Color.Success"
+                           StartIcon="@Icons.Material.Filled.Add"
+                           Size="Size.Small" Style="text-transform: none; border-radius: 8px;">
+                    Ajouter Arrêt
+                </MudButton>
+            </div>
+
+            @* ÉTAT DE CHARGEMENT INITIAL *@
+            @if (_isLoadingStation)
+            {
+                <div class="d-flex flex-column align-center pa-8">
+                    <MudProgressCircular Color="Color.Success" Indeterminate="true" Size="Size.Large" />
+                    <MudText Class="mt-4" Typo="Typo.body2">Chargement des arrêts...</MudText>
+                </div>
+            }
+            else if (_allStops is null || _allStops.Count == 0)
+            {
+                <MudAlert Severity="Severity.Info">Aucun arrêt trouvé.</MudAlert>
+            }
+            else
+            {
+                @* TABLEAU - On affiche seulement les _displayedStopsCount premiers éléments *@
+                <MudTable Items="@_allStops.Take(_displayedStopsCount).ToList()"
+                          Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0" Dense="true"
+                          Class="mb-3">
+                    <HeaderContent>
+                        <MudTh>Code</MudTh>
+                        <MudTh>Nom (Fr)</MudTh>
+                        <MudTh>Nom (Ar)</MudTh>
+                        <MudTh>Longitude</MudTh>
+                        <MudTh>Latitude</MudTh>
+                        <MudTh Style="text-align: right;">Actions</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Code" Style="font-weight: bold; color: #1E88E5;">@context.CodeStation</MudTd>
+                        <MudTd DataLabel="Name">@context.NomStationFr</MudTd>
+                        <MudTd DataLabel="NameAr">@context.NomStationAr</MudTd>
+                        <MudTd DataLabel="Longitude">
+                            <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Success"
+                                     Style="font-weight: bold;">@context.StopLongtitude</MudChip>
+                        </MudTd>
+                        <MudTd DataLabel="Latitude">
+                            <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Success"
+                                     Style="font-weight: bold;">@context.StopLatitude</MudChip>
+                        </MudTd>
+                        <MudTd DataLabel="Actions" Style="text-align: right;">
+                            <MudIconButton Icon="@Icons.Material.Outlined.Edit" Size="Size.Small" />
+                            <MudIconButton Icon="@Icons.Material.Outlined.Delete" Size="Size.Small" />
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                @* ==================== BOUTON VOIR PLUS ==================== *@
+                @if (_displayedStopsCount < _allStops.Count)
+                {
+                    <div class="d-flex justify-center pa-2" style="background: #f0fdf4; border-radius: 12px; margin-top: 12px;">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Success"
+                                   Disabled="_isLoadingMoreStops"
+                                   OnClick="@VoirPlusStops"
+                                   StartIcon="@(_isLoadingMoreStops ? null : Icons.Material.Filled.ExpandMore)"
+                                   Style="border-radius: 25px; padding: 12px 32px;">
+
+                            @if (_isLoadingMoreStops)
+                            {
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                                    <span>Chargement...</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span>Voir Plus (@Math.Min(10, _allStops.Count - _displayedStopsCount) éléments)</span>
+                            }
+                        </MudButton>
+                    </div>
+                }
+                else
+                {
+                    @* MESSAGE FIN - Tous affichés *@
+                    <MudAlert Severity="Severity.Success" Class="mt-3" Dense="true" Variant="Variant.Text">
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Class="mr-2" />
+                        Tous les @_allStops.Count arrêts sont affichés ✓
+                    </MudAlert>
+                }
+
+                @* BARRE DE PROGRESSION (optionnel) *@
+                <MudProgressLinear Value="@((_displayedStopsCount * 100.0) / _allStops.Count)"
+                                   Color="Color.Success" Class="mt-3" Striped="true" />
+            }
+        </MudPaper>
+    </MudTabPanel>
+
+</MudTabs>
+
+@code {
+    // ==========================================
+    // 🔴 VARIABLES - TOUTES LES DONNÉES CHARGÉES
+    // ==========================================
+
+    // --- LIGNES ---
+    private List<DrLigneDto>? _allLignes;           // ← Toutes les données (chargées 1 seule fois)
+    private int _displayedLignesCount = 10;          // ← Nombre d'éléments à afficher (commence à 10)
+    private const int PAGE_SIZE_LIGNES = 10;         // ← +10 à chaque "Voir Plus"
+    private bool _isLoadingMoreLignes = false;
+
+    // --- ARRÊTS ---
+    private List<DrStationDto>? _allStops;           // ← Toutes les données (chargées 1 seule fois)
+    private int _displayedStopsCount = 10;           // ← Nombre d'éléments à afficher (commence à 10)
+    private const int PAGE_SIZE_STOPS = 10;          // ← +10 à chaque "Voir Plus"
+    private bool _isLoadingMoreStops = false;
+
+    // --- États de chargement initial ---
+    private bool _isLoading = true;
+    private bool _isLoadingStation = true;
+    private string? _errorMessage;
+    private string? _errorMessageStation;
+
+    // ==========================================
+    // 🔄 INITIALIZATION
+    // ==========================================
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Charge TOUT en une seule fois
+        await LoadAllLignesAsync();
+        await LoadAllStationsAsync();
+    }
+
+    // ==========================================
+    // 📥 CHARGEMENT UNIQUE (toute la base)
+    // ==========================================
+
+    private async Task LoadAllLignesAsync()
+    {
+        try
+        {
+            _isLoading = true;
+            StateHasChanged();
+
+            // 👉 1 SEULE REQUÊTE - On charge TOUTES les lignes
+            var request = new GetListDrLignesRequest();  // Sans pagination !
+            var result = await Mediator.Send(request);
+
+            _allLignes = result?.Data?.ToList() ?? new List<DrLigneDto>();
+
+            // Si moins de 10 éléments, on affiche tout
+            if (_allLignes.Count < 10)
+                _displayedLignesCount = _allLignes.Count;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Erreur lors du chargement des lignes");
+            _errorMessage = "Impossible de charger les lignes.";
+            _allLignes = new List<DrLigneDto>();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadAllStationsAsync()
+    {
+        try
+        {
+            _isLoadingStation = true;
+            StateHasChanged();
+
+            // 👉 1 SEULE REQUÊTE - On charge TOUS les arrêts
+            var request = new GetListDrStationsRequest();  // Sans pagination !
+            var result = await Mediator.Send(request);
+
+            _allStops = result?.Data?.ToList() ?? new List<DrStationDto>();
+
+            // Si moins de 10 éléments, on affiche tout
+            if (_allStops.Count < 10)
+                _displayedStopsCount = _allStops.Count;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Erreur lors du chargement des arrêts");
+            _errorMessageStation = "Impossible de charger les arrêts.";
+            _allStops = new List<DrStationDto>();
+        }
+        finally
+        {
+            _isLoadingStation = false;
+            StateHasChanged();
+        }
+    }
+
+    // ==========================================
+    // ➕ VOIR PLUS - CÔTÉ CLIENT UNIQUEMENT
+    // ==========================================
+
+    /// <summary>
+    /// Affiche 10 lignes supplémentaires (PAS d'appel API/DB !)
+    /// </summary>
+    private async Task VoirPlusLignes()
+    {
+        if (_isLoadingMoreLignes || _allLignes == null) return;
+
+        _isLoadingMoreLignes = true;
+        StateHasChanged();
+
+        // Simuler un léger effet visuel (optionnel - peut être retiré)
+        await Task.Delay(400);
+
+        // 👇 On ajoute simplement 10 au compteur d'affichage
+        _displayedLignesCount += PAGE_SIZE_LIGNES;
+
+        // Ne pas dépasser le total
+        if (_displayedLignesCount > _allLignes.Count)
+            _displayedLignesCount = _allLignes.Count;
+
+        _isLoadingMoreLignes = false;
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Affiche 10 arrêts supplémentaires (PAS d'appel API/DB !)
+    /// </summary>
+    private async Task VoirPlusStops()
+    {
+        if (_isLoadingMoreStops || _allStops == null) return;
+
+        _isLoadingMoreStops = true;
+        StateHasChanged();
+
+        // Simuler un léger effet visuel (optionnel - peut être retiré)
+        await Task.Delay(400);
+
+        // 👇 On ajoute simplement 10 au compteur d'affichage
+        _displayedStopsCount += PAGE_SIZE_STOPS;
+
+        // Ne pas dépasser le total
+        if (_displayedStopsCount > _allStops.Count)
+            _displayedStopsCount = _allStops.Count;
+
+        _isLoadingMoreStops = false;
+        StateHasChanged();
+    }
+
+    // ==========================================
+    // 🎨 UTILITAIRES
+    // ==========================================
+
+    public record RouteModel(string ShortName, string Name, string Status, string ColorCode, int StopCount);
+    public record StopModel(string Code, string Name, string Coordinates, string Status);
+
+    private Color GetStatusColor(string status) => status switch
+    {
+        "Active" => Color.Success,
+        "Planned" => Color.Info,
+        "Suspended" => Color.Error,
+        _ => Color.Default
+    };
+}

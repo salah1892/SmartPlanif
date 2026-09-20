@@ -1,0 +1,104 @@
+﻿@* @using MudBlazor *@
+@* <MudPaper Class="d-inline-flex pa-1"  *@
+@*           Style="background-color: #f0f2f5; border-radius: 12px; gap: 4px;" *@
+@*           Elevation="0"> *@
+@*      *@
+@*     <MudButton Variant="@(SelectedLanguage == "fr" ? Variant.Filled : Variant.Text)" *@
+@*                Color="Color.Default" *@
+@*                Style="@(GetButtonStyle("fr"))" *@
+@*                OnClick="@(() => SetLanguage("fr"))"> *@
+@*         FR *@
+@*     </MudButton> *@
+@*      *@
+@*     <MudButton Variant="@(SelectedLanguage == "en" ? Variant.Filled : Variant.Text)" *@
+@*                Color="Color.Default" *@
+@*                Style="@(GetButtonStyle("en"))" *@
+@*                OnClick="@(() => SetLanguage("en"))"> *@
+@*         EN *@
+@*     </MudButton> *@
+@* </MudPaper> *@
+@* *@
+@* @code { *@
+@*     [Parameter]  *@
+@*     public string SelectedLanguage { get; set; } = "fr"; *@
+@* *@
+@*     [Parameter]  *@
+@*     public EventCallback<string> SelectedLanguageChanged { get; set; } *@
+@* *@
+@*     private async Task SetLanguage(string lang) *@
+@*     {Console.WriteLine("avant clic " + SelectedLanguage); *@
+@*         if (SelectedLanguage != lang) *@
+@*         { *@
+@*             SelectedLanguage = lang; *@
+@*             await SelectedLanguageChanged.InvokeAsync(lang); *@
+@*             Console.WriteLine("après clic " + SelectedLanguage); *@
+@*             StateHasChanged(); *@
+@*         } *@
+@*     } *@
+@* *@
+@*     private string GetButtonStyle(string lang) *@
+@*     { *@
+@*         if (SelectedLanguage == lang) *@
+@*         { *@
+@*             return "background-color: white !important; color: #1f2937 !important; " + *@
+@*                    "box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-weight: 600; " + *@
+@*                    "border-radius: 8px; text-transform: none; min-width: 60px;"; *@
+@*         } *@
+@*         return "background-color: transparent !important; color: #6b7280 !important; " + *@
+@*                "font-weight: 600; border-radius: 8px; text-transform: none; min-width: 60px;"; *@
+@*     } *@
+@* } *@
+
+@using MudBlazor
+
+<MudPaper Class="d-inline-flex pa-1 align-center" 
+          Style="background-color: #f1f3f5; border-radius: 8px; gap: 2px; height: 32px;"
+          Elevation="0">
+    
+    <MudButton Variant="@(SelectedLanguage == "fr" ? Variant.Filled : Variant.Text)"
+               Color="Color.Default"
+               Size="Size.Small"
+               Style="@(GetButtonStyle("fr"))"
+               OnClick="@(() => SetLanguage("fr"))">
+        FR
+    </MudButton>
+    
+    <MudButton Variant="@(SelectedLanguage == "en" ? Variant.Filled : Variant.Text)"
+               Color="Color.Default"
+               Size="Size.Small"
+               Style="@(GetButtonStyle("en"))"
+               OnClick="@(() => SetLanguage("en"))">
+        EN
+    </MudButton>
+</MudPaper>
+
+@code {
+    [Parameter] 
+    public string SelectedLanguage { get; set; } = "fr";
+
+    [Parameter] 
+    public EventCallback<string> SelectedLanguageChanged { get; set; }
+
+    private async Task SetLanguage(string lang)
+    {
+        if (SelectedLanguage != lang)
+        {
+            SelectedLanguage = lang;
+            await SelectedLanguageChanged.InvokeAsync(lang);
+            StateHasChanged();
+        }
+    }
+
+    private string GetButtonStyle(string lang)
+    {
+        // Base commune pour un rendu mini et propre
+        string baseStyle = "text-transform: none; min-width: 40px; height: 24px; font-size: 0.8rem; font-weight: 600; border-radius: 6px; padding: 0px 8px;";
+
+        if (SelectedLanguage == lang)
+        {
+            return baseStyle + "background-color: #ffffff !important; color: #1a1a1a !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1);";
+        }
+        
+        return baseStyle + "background-color: transparent !important; color: #757575 !important;";
+    }
+}

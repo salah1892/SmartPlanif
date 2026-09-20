@@ -1,0 +1,62 @@
+﻿@using TransitAI.Components.LogicMetier
+@inject NotificationDrawerState State
+
+<div class="d-flex flex-column h-100 bg-white">
+    <div class="d-flex align-center justify-space-between pa-4 border-b">
+        @* <div class="d-flex align-center gap-2">
+            <div class="live-dot-red"></div>
+            <MudText Typo="Typo.h6" Class="font-weight-bold">Incidents en direct</MudText>
+        </div> *@
+        <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="State.ToggleNotification" Dense="true" />
+    </div>
+
+    <div class="flex-grow-1 pa-4 overflow-y-auto d-flex flex-column gap-3" style="background-color: #fcfcfc;">
+        
+        <MudCard Elevation="0" Class="pa-4 alert-card" Style="border: 1px solid #ffeae8; background-color: #fff8f7;">
+            @* <div class="d-flex align-center justify-space-between mb-2">
+                <div class="d-flex gap-1">
+                    <MudChip T="string" Color="Color.Error" Size="Size.Small" Variant="Variant.Filled">Critique</MudChip>
+                    <MudChip T="string" Color="Color.Default" Size="Size.Small" Variant="Variant.Outlined">Incident</MudChip>
+                </div>
+                <MudText Typo="Typo.caption" Class="text-secondary">il y a 140h</MudText>
+            </div>
+            
+            <MudText Typo="Typo.body2" Class="font-weight-bold mb-4" Style="color: #333;">
+                Engine failure reported at stop S2. Passengers stranded...
+            </MudText>
+
+            <div class="d-flex gap-2">
+                <MudButton Variant="Variant.Outlined" Size="Size.Small" StartIcon="@Icons.Material.Filled.Check" IconColor="Color.Default">Résoudre</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" Size="Size.Small" StartIcon="@Icons.Material.Filled.FlashOn">Escalader</MudButton>
+            </div> *@
+        </MudCard>
+
+    </div>
+
+    <div class="pa-4 border-t d-flex justify-center bg-white">
+        <MudLink href="/alerts" Underline="Underline.None" Class="d-flex align-center gap-1 font-weight-bold">
+            Voir toutes les alertes <MudIcon Icon="@Icons.Material.Filled.ArrowForward" Size="Size.Small" />
+        </MudLink>
+    </div>
+</div>
+
+<style>
+    .h-100 { height: 100%; }
+    .border-b { border-bottom: 1px solid #eaeaea; }
+    .border-t { border-top: 1px solid #eaeaea; }
+    .overflow-y-auto { overflow-y: auto; }
+    .alert-card { border-radius: 8px; }
+    
+    .live-dot-red {
+        width: 10px;
+        height: 10px;
+        background-color: #f44336;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    @@keyframes pulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(244, 67, 54, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+    }
+</style>

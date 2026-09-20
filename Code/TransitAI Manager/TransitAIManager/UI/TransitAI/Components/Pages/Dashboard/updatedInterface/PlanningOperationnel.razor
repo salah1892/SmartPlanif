@@ -1,0 +1,352 @@
+@using MudBlazor
+
+<MudPaper Class="pa-4 mb-4 d-flex align-center gap-3 flex-wrap" Elevation="0" Outlined="true" Style="border-radius: 8px;">
+    <MudTextField @bind-Value="_searchOp" Placeholder="Rechercher par numéro de ligne..."
+                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                  Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width: 400px;" />
+
+    <MudSelect T="string" Label="Toutes délégations" Variant="Variant.Outlined" Margin="Margin.Dense" Dense="true" Style="width: 160px;">
+        <MudSelectItem Value="@("Toutes")">Toutes délégations</MudSelectItem>
+    </MudSelect>
+
+    <MudSelect T="string" Label="Tous types" Variant="Variant.Outlined" Margin="Margin.Dense" Dense="true" Style="width: 140px;">
+        <MudSelectItem Value="@("Tous")">Tous types</MudSelectItem>
+    </MudSelect>
+
+    <MudText Typo="Typo.caption" Style="color: #757575;" Class="d-flex align-center gap-1">
+        <MudIcon Icon="@Icons.Material.Filled.FilterList" Size="Size.Small" /> 7 / 7 lignes affichées
+    </MudText>
+
+    <MudSpacer />
+
+    <div class="d-flex gap-2">
+        <MudChip T="string" Size="Size.Small" Style="background-color: #4caf50; color: white;" Variant="Variant.Filled">42A</MudChip>
+        <MudChip T="string" Size="Size.Small" Style="background-color: #9c27b0; color: white;" Variant="Variant.Filled">15B</MudChip>
+        <MudChip T="string" Size="Size.Small" Style="background-color: #ff9800; color: white;" Variant="Variant.Filled">88C</MudChip>
+        <MudChip T="string" Size="Size.Small" Style="background-color: #ffc107; color: black;" Variant="Variant.Filled">12U</MudChip>
+        <MudChip T="string" Size="Size.Small" Style="background-color: #37474f; color: white;" Variant="Variant.Filled">N1</MudChip>
+        <MudChip T="string" Size="Size.Small" Style="background-color: #e0e0e0; color: #333;" Variant="Variant.Filled">32356</MudChip>
+    </div>
+</MudPaper>
+
+@* <MudGrid Class="px-4" Spacing="3">
+    <MudItem xs="12" md="2">
+        <MudPaper Class="pa-3" Elevation="0" Outlined="true" Style="border-radius: 8px; height: 100%;">
+            <div class="d-flex flex-column gap-3 mb-4">
+                <div class="d-flex align-center gap-2">
+                    <div style="background-color: #4caf50; width: 24px; height: 4px; border-radius: 2px; min-width: 20px;"></div>
+                    <MudText Typo="Typo.body2"><strong>42A</strong> Victoria Loop</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="background-color: #9c27b0; width: 24px; height: 4px; border-radius: 2px; min-width: 20px;"></div>
+                    <MudText Typo="Typo.body2"><strong>15B</strong> Victoria Loop</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="background-color: #ff9800; width: 24px; height: 4px; border-radius: 2px; min-width: 20px;"></div>
+                    <MudText Typo="Typo.body2"><strong>88C</strong> Airport Shuttle</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="background-color: #ffc107; width: 24px; height: 4px; border-radius: 2px; min-width: 20px;"></div>
+                    <MudText Typo="Typo.body2"><strong>12U</strong> University Line</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="background-color: #37474f; width: 24px; height: 4px; border-radius: 2px; min-width: 20px;"></div>
+                    <MudText Typo="Typo.body2"><strong>N1</strong> Night Owl</MudText>
+                </div>
+            </div>
+
+            <MudDivider Class="mb-3" />
+
+            <MudText Typo="Typo.caption" Style="color: #757575; font-weight: bold;" Class="mb-2 d-block">LÉGENDE</MudText>
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-center gap-2">
+                    <div style="width: 10px; height: 10px; background-color: #4caf50; border-radius: 50%;"></div>
+                    <MudText Typo="Typo.caption">Active vehicle</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="width: 10px; height: 10px; background-color: #f44336; border-radius: 50%;"></div>
+                    <MudText Typo="Typo.caption">Breakdown</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <div style="width: 10px; height: 10px; background-color: #2196f3; border-radius: 0;"></div>
+                    <MudText Typo="Typo.caption">Stop</MudText>
+                </div>
+                <div class="d-flex align-center gap-2">
+                    <MudIcon Icon="@Icons.Material.Filled.ArrowDropDownCircle" Size="Size.Small" Color="Color.Primary" />
+                    <MudText Typo="Typo.caption">Cluster / séquence</MudText>
+                </div>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="7">
+        <MudPaper Class="pa-4 d-flex flex-column align-center justify-center" Elevation="0" Outlined="true" Style="border-radius: 8px; min-height: 320px; position: relative;">
+            <div class="d-flex align-center gap-2" style="position: absolute; top: 12px; right: 12px;">
+                <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsBus">12 active</MudChip>
+                <MudChip T="string" Size="Size.Small" Color="Color.Error" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Warning">1 breakdown</MudChip>
+            </div>
+
+            <svg viewBox="0 0 600 280" style="width: 100%; max-width: 600px; height: auto;">
+                <line x1="80" y1="60" x2="180" y2="60" stroke="#4caf50" stroke-width="3" />
+                <line x1="180" y1="60" x2="280" y2="60" stroke="#4caf50" stroke-width="3" />
+                <line x1="280" y1="60" x2="380" y2="60" stroke="#f44336" stroke-width="3" />
+                <line x1="380" y1="60" x2="480" y2="60" stroke="#4caf50" stroke-width="3" />
+
+                <line x1="80" y1="140" x2="180" y2="140" stroke="#9c27b0" stroke-width="3" />
+                <line x1="180" y1="140" x2="280" y2="140" stroke="#9c27b0" stroke-width="3" />
+                <line x1="280" y1="140" x2="380" y2="140" stroke="#9c27b0" stroke-width="3" />
+                <line x1="380" y1="140" x2="480" y2="140" stroke="#9c27b0" stroke-width="3" />
+
+                <line x1="80" y1="220" x2="180" y2="220" stroke="#ffc107" stroke-width="3" />
+                <line x1="180" y1="220" x2="280" y2="220" stroke="#ffc107" stroke-width="3" />
+                <line x1="280" y1="220" x2="380" y2="220" stroke="#2196f3" stroke-width="3" />
+                <line x1="380" y1="220" x2="480" y2="220" stroke="#2196f3" stroke-width="3" />
+
+                <line x1="180" y1="60" x2="180" y2="140" stroke="#ff9800" stroke-width="2" />
+                <line x1="280" y1="60" x2="280" y2="140" stroke="#ff9800" stroke-width="2" />
+                <line x1="280" y1="140" x2="380" y2="220" stroke="#37474f" stroke-width="2" stroke-dasharray="4" />
+
+                <circle cx="80" cy="60" r="6" fill="white" stroke="#4caf50" stroke-width="2" />
+                <circle cx="180" cy="60" r="6" fill="white" stroke="#4caf50" stroke-width="2" />
+                <circle cx="280" cy="60" r="8" fill="#f44336" stroke="white" stroke-width="2" />
+                <circle cx="380" cy="60" r="6" fill="white" stroke="#4caf50" stroke-width="2" />
+                <circle cx="480" cy="60" r="6" fill="white" stroke="#4caf50" stroke-width="2" />
+
+                <circle cx="80" cy="140" r="6" fill="white" stroke="#9c27b0" stroke-width="2" />
+                <circle cx="180" cy="140" r="6" fill="white" stroke="#9c27b0" stroke-width="2" />
+                <circle cx="280" cy="140" r="6" fill="white" stroke="#9c27b0" stroke-width="2" />
+                <circle cx="380" cy="140" r="6" fill="white" stroke="#9c27b0" stroke-width="2" />
+                <circle cx="480" cy="140" r="6" fill="white" stroke="#9c27b0" stroke-width="2" />
+
+                <circle cx="80" cy="220" r="6" fill="white" stroke="#ffc107" stroke-width="2" />
+                <circle cx="180" cy="220" r="6" fill="white" stroke="#ffc107" stroke-width="2" />
+                <circle cx="280" cy="220" r="6" fill="white" stroke="#2196f3" stroke-width="2" />
+                <circle cx="380" cy="220" r="6" fill="white" stroke="#2196f3" stroke-width="2" />
+                <circle cx="480" cy="220" r="6" fill="white" stroke="#2196f3" stroke-width="2" />
+
+                <text x="80" y="50" text-anchor="middle" font-size="10" fill="#666">S1</text>
+                <text x="180" y="50" text-anchor="middle" font-size="10" fill="#666">S2</text>
+                <text x="280" y="50" text-anchor="middle" font-size="10" fill="#666">S3</text>
+                <text x="380" y="50" text-anchor="middle" font-size="10" fill="#666">S4</text>
+                <text x="480" y="50" text-anchor="middle" font-size="10" fill="#666">S5</text>
+            </svg>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="3">
+        <MudPaper Class="pa-4 mb-3" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: #ffebee; border-left: 4px solid #f44336;">
+            <div class="d-flex align-center justify-space-between mb-2">
+                <MudChip T="string" Size="Size.Small" Color="Color.Error" Variant="Variant.Text" Class="font-weight-bold">ACTIVE INCIDENT</MudChip>
+                <MudChip T="string" Size="Size.Small" Color="Color.Error" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Circle" Style="font-size: 10px;">LIVE</MudChip>
+            </div>
+            <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-1 d-flex align-center gap-1">
+                <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small" Color="Color.Error" /> Vehicle V1 Breakdown
+            </MudText>
+            <MudText Typo="Typo.caption" Style="color: #757575;" Class="mb-3 d-block">
+                Stop S2 • Route 42A • Reported 4 mins ago
+            </MudText>
+
+            <div class="d-flex justify-space-between mb-3">
+                <div>
+                    <MudText Typo="Typo.caption" Style="color: #757575;">Passengers affected:</MudText>
+                    <MudText Typo="Typo.body2" Class="font-weight-bold">23</MudText>
+                </div>
+                <div>
+                    <MudText Typo="Typo.caption" Style="color: #757575;">Backup requested:</MudText>
+                    <MudText Typo="Typo.body2" Class="font-weight-bold" Style="color: #d32f2f;">Yes</MudText>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Size="Size.Small">Dispatch V2</MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Error" FullWidth="true" Size="Size.Small">Notify Passengers</MudButton>
+            </div>
+        </MudPaper>
+
+        <MudPaper Class="pa-4 mb-3" Elevation="0" Outlined="true" Style="border-radius: 8px; background-color: #e3f2fd; border-left: 4px solid #2196f3;">
+            <div class="d-flex align-center gap-2 mb-2">
+                <MudIcon Icon="@Icons.Material.Filled.Bolt" Color="Color.Info" />
+                <MudText Typo="Typo.subtitle2" Class="font-weight-bold">AI Optimization Engine</MudText>
+                <MudChip T="string" Size="Size.Small" Style="background-color: #f5f5f5; color: #666;" Label="true">OR-TOOLS V9.8</MudChip>
+            </div>
+            <MudText Typo="Typo.caption" Style="color: #757575;" Class="mb-2 d-flex align-center gap-1">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Color="Color.Warning" Style="font-size: 8px;" /> Monitoring network — Ready to optimize
+            </MudText>
+            <MudText Typo="Typo.caption" Style="color: #757575;" Class="mb-3 d-block">
+                Click "Dispatch V2" to trigger OR-Tools rerouting algorithm.
+            </MudText>
+            <MudDivider Class="mb-2" />
+            <MudText Typo="Typo.caption" Style="color: #0288d1;">
+                L'IA compare le planning théorique (statique) aux conditions réelles du terrain et propose des réajustements de fréquence en continu.
+            </MudText>
+        </MudPaper>
+
+        <MudPaper Class="pa-4" Elevation="0" Outlined="true" Style="border-radius: 8px;">
+            <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-3 d-flex align-center gap-1">
+                <MudIcon Icon="@Icons.Material.Filled.Timeline" Size="Size.Small" /> Live Metrics
+            </MudText>
+
+            <div class="d-flex justify-space-between align-start mb-4">
+                <div class="text-center">
+                    <MudText Typo="Typo.caption" Style="color: #757575;">ON-TIME</MudText>
+                    <MudText Typo="Typo.caption" Style="color: #757575;">PERFORMANCE</MudText>
+                    <MudText Typo="Typo.h4" Class="font-weight-bold" Style="color: #1976d2;">73.3%</MudText>
+                    <MudText Typo="Typo.caption" Style="color: #4caf50;">+2.1%</MudText>
+                </div>
+                <div class="text-center">
+                    <MudText Typo="Typo.caption" Style="color: #757575;">ACTIVE VEHICLES</MudText>
+                    <svg viewBox="0 0 100 100" width="80" height="80">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#e0e0e0" stroke-width="8" />
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#1976d2" stroke-width="8"
+                                stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-linecap="round"
+                                transform="rotate(-90 50 50)" />
+                        <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" font-size="18" font-weight="bold" fill="#333">12/15</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="d-flex justify-center">
+                <svg viewBox="0 0 100 100" width="60" height="60">
+                    <circle cx="50" cy="50" r="50" fill="#4caf50" />
+                    <path d="M50,50 L50,0 A50,50 0 0,1 95,25 Z" fill="#ffc107" />
+                    <path d="M50,50 L95,25 A50,50 0 0,1 85,65 Z" fill="#f44336" />
+                </svg>
+            </div>
+            <div class="d-flex justify-center gap-3 mt-2">
+                <div class="d-flex align-center gap-1">
+                    <div style="width: 8px; height: 8px; background-color: #4caf50; border-radius: 50%;"></div>
+                    <MudText Typo="Typo.caption">On-time</MudText>
+                </div>
+                <div class="d-flex align-center gap-1">
+                    <div style="width: 8px; height: 8px; background-color: #ffc107; border-radius: 50%;"></div>
+                    <MudText Typo="Typo.caption">Delayed</MudText>
+                </div>
+                <div class="d-flex align-center gap-1">
+                    <div style="width: 8px; height: 8px; background-color: #f44336; border-radius: 50%;"></div>
+                    <MudText Typo="Typo.caption">Maintenance</MudText>
+                </div>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+<MudPaper Class="mx-4 mt-3 mb-4 pa-4" Elevation="0" Outlined="true" Style="border-radius: 8px;">
+    <div class="d-flex align-center justify-space-between mb-4 flex-wrap gap-2">
+        <div class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.ViewTimeline" Color="Color.Primary" />
+            <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Occupation Véhicules & Chauffeurs</MudText>
+            <MudChip T="string" Size="Size.Small" Color="Color.Error" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Warning">2 chevauchement(s)</MudChip>
+        </div>
+        <div class="d-flex gap-2">
+            <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Tous</MudButton>
+            <MudButton Variant="Variant.Text" Size="Size.Small">Véhicules</MudButton>
+            <MudButton Variant="Variant.Text" Size="Size.Small">Chauffeurs</MudButton>
+        </div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <div class="timeline-label"></div>
+            <div class="timeline-hours">
+                @foreach (var h in new[] { "00h", "03h", "06h", "09h", "12h", "15h", "18h", "21h" })
+                {
+                    <div class="hour-mark">@h</div>
+                }
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Véhicule V1</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 25%; width: 12%; background-color: #f44336;">
+                    <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small" Class="mr-1" /> U001
+                </div>
+                <div class="timeline-bar" style="left: 37%; width: 12%; background-color: #f44336;">
+                    <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small" Class="mr-1" /> U014
+                </div>
+                <div class="timeline-bar" style="left: 58%; width: 16%; background-color: #1976d2;">I002</div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Véhicule V2</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 29%; width: 12%; background-color: #1976d2;">U003</div>
+                <div class="timeline-bar" style="left: 46%; width: 16%; background-color: #1976d2;">S005</div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Véhicule V3</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 29%; width: 14%; background-color: #1976d2;">U007</div>
+                <div class="timeline-bar" style="left: 70%; width: 14%; background-color: #1976d2;">N002</div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Véhicule V4</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 25%; width: 12%; background-color: #1976d2;">I009</div>
+                <div class="timeline-bar" style="left: 37%; width: 14%; background-color: #1976d2;">U021</div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Chauffeur Ali B.</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 25%; width: 12%; background-color: #1976d2;">U001</div>
+                <div class="timeline-bar" style="left: 58%; width: 16%; background-color: #1976d2;">I002</div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Chauffeur Sami K.</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 29%; width: 12%; background-color: #f44336;">
+                    <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small" Class="mr-1" /> U003
+                </div>
+                <div class="timeline-bar" style="left: 41%; width: 12%; background-color: #f44336;">
+                    <MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small" Class="mr-1" /> U007
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="timeline-label">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-1" />
+                <MudText Typo="Typo.caption">Chauffeur Karim T.</MudText>
+            </div>
+            <div class="timeline-track">
+                <div class="timeline-bar" style="left: 25%; width: 12%; background-color: #1976d2;">I009</div>
+                <div class="timeline-bar" style="left: 37%; width: 14%; background-color: #1976d2;">U021</div>
+            </div>
+        </div>
+    </div>
+
+    <MudText Typo="Typo.caption" Style="color: #757575;" Class="mt-3 d-block">
+        Les blocs en rouge indiquent un chevauchement d'affectation (même véhicule ou chauffeur réservé sur deux lignes en même temps) à corriger avant publication.
+    </MudText>
+</MudPaper>
+ *@
+@code {
+    private string _searchOp = "";
+}

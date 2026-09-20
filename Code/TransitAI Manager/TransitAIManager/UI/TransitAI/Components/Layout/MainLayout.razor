@@ -1,0 +1,105 @@
+﻿@using MudBlazor
+@using TransitAI.Components.LogicMetier
+@using TransitAI.Components.Shared
+@using TransitAI.Services.MenuServices
+
+@inherits LayoutComponentBase
+@inject NotificationDrawerState State
+@inject MenuStateService MenuStateService
+@implements IDisposable
+@rendermode InteractiveServer
+
+<MudThemeProvider/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+
+    <MudDrawer @bind-Open="_sidebarOpen"
+               Variant="DrawerVariant.Persistent"
+               ClipMode="DrawerClipMode.Never"
+               Width="280px"
+               Elevation="1">
+
+        <Sidebar/>
+
+    </MudDrawer>
+
+    <MudAppBar Fixed="true"
+               Elevation="1"
+               Dense="false"
+               Color="Color.Transparent">
+
+
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="@ToggleSidebar"
+                       Class="mr-4"/>
+
+        <AppTopBar Title="@_currentTitle"/>
+
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="State.IsNotificationOpen"
+               Anchor="Anchor.End"
+               Variant="DrawerVariant.Temporary"
+               Width="400px"
+               Elevation="4">
+
+        <NotificationDrawer/>
+
+    </MudDrawer>
+
+
+    <MudMainContent>
+
+        <!-- Le conteneur prend 100% de la hauteur restante et cache son propre overflow -->
+
+        <MudContainer MaxWidth="MaxWidth.False" Class="pa-1" Style="background-color:#F3F4F6; height: calc(100vh - var(--mud-appbar-height)); overflow: hidden; display: flex; flex-direction: column;">
+        
+
+            @Body
+        </MudContainer>
+
+        @* </MudContainer> *@
+
+    </MudMainContent>
+
+</MudLayout>
+
+@code
+{
+    private string _currentTitle = "Tableau de bord réseau";
+    private bool _sidebarOpen = true;
+
+    private void ToggleSidebar()
+    {
+        _sidebarOpen = !_sidebarOpen;
+    }
+
+    protected override void OnInitialized()
+    {
+        State.OnChange += StateHasChanged;
+        
+        // Abonnement CORRECT
+         MenuStateService.OnMenuChanged += HandleMenuChanged;
+        
+        // Synchronisation initiale
+         _currentTitle = MenuStateService.CurrentMenuTitle;
+    }
+
+    private void HandleMenuChanged()
+    {
+        Console.WriteLine($"[MainLayout] Mise à jour du titre → {MenuStateService.CurrentMenuTitle}");
+        _currentTitle = MenuStateService.CurrentMenuTitle;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        State.OnChange -= StateHasChanged;
+        MenuStateService.OnMenuChanged -= HandleMenuChanged;
+    }
+}

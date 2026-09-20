@@ -1,0 +1,248 @@
+﻿@page "/fleet"
+@using Core.Application.Common.CQS.CqsModels.DrVehicules.Queries
+@using Core.Application.Common.DtosModels.DrVehicules
+@using Core.Domain.Entities
+@using Core.Domain.Entities.Metier
+@inject ILogger<DrVehic> Logger
+<MudContainer MaxWidth="MaxWidth.False" Class="pa-4" Style="background-color: #f3f4f6; overflow-x: auto;">
+    <!-- Stats Cards -->
+    <MudGrid Spacing="4">
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex flex-column justify-center" Elevation="0" Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px;">
+                <MudText Class="font-weight-bold mb-1" Style="color: #1f2937; font-size: 1.5rem; line-height: 1;">@TotalVehicules </MudText>
+                <MudText Style="color: #6b7280; font-size: 0.8rem;">Flotte totale</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex flex-column justify-center" Elevation="0" Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px;">
+                <MudText Class="font-weight-bold mb-1" Style="color: #16a34a; font-size: 1.5rem; line-height: 1;">@ActiveVehicules </MudText>
+                <MudText Style="color: #6b7280; font-size: 0.8rem;">Active</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex flex-column justify-center" Elevation="0" Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px;">
+                <MudText Class="font-weight-bold mb-1" Style="color: #d97706; font-size: 1.5rem; line-height: 1;">@MaintenanceVehicules </MudText>
+                <MudText Style="color: #6b7280; font-size: 0.8rem;">Maintenance</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 d-flex flex-column justify-center" Elevation="0" Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; min-height: 80px;">
+                <MudText Class="font-weight-bold mb-1" Style="color: #dc2626; font-size: 1.5rem; line-height: 1;">@PanneVehicules </MudText>
+                <MudText Style="color: #6b7280; font-size: 0.8rem;">Panne</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Vehicle Fleet Card -->
+    <MudPaper Class="mt-4" Elevation="0" Style="border-radius: 10px; border: 1px solid #e5e7eb; background-color: #ffffff; overflow: hidden;">
+        <!-- Header -->
+        <div class="d-flex align-center justify-space-between pa-3" style="border-bottom: 1px solid #e5e7eb;">
+            <div class="d-flex align-center">
+                <MudIcon Icon="@Icons.Material.Filled.DirectionsBus" Class="mr-2" Size="Size.Small" Color="Color.Primary" />
+                <MudText Class="font-weight-bold" Style="color: #1f2937; font-size: 0.95rem;">Flotte de véhicules</MudText>
+            </div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
+                       Size="Size.Small"
+                       Style="background-color: #2563eb; border-radius: 8px; text-transform: none; font-weight: 500; padding: 6px 16px; font-size: 0.8rem;">
+                Ajouter Véhicule
+            </MudButton>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="d-flex align-center px-3 pt-3 pb-2" style="gap: 8px; flex-wrap: wrap;">
+            @foreach (var filter in filters)
+            {
+                @if (activeFilter == filter.Label)
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Filled"
+                             Rounded="true"
+                             Style="background-color: #2563eb; color: white; font-weight: 500; cursor: pointer; font-size: 0.75rem;"
+                             OnClick="@(() => activeFilter = filter.Label)">
+                        @filter.Label (@filter.Count)
+                    </MudChip>
+                }
+                else
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Text"
+                             Rounded="true"
+                             Style="color: #6b7280; cursor: pointer; font-weight: 400; font-size: 0.75rem;"
+                             OnClick="@(() => activeFilter = filter.Label)">
+                        @filter.Label (@filter.Count)
+                    </MudChip>
+                }
+            }
+        </div>
+
+        <!-- Data Table -->
+        <MudTable Items="@GetFilteredVehicles()" Hover="true" Dense="true" Breakpoint="Breakpoint.Sm"
+                  FixedHeader="false" Elevation="0">
+            <HeaderContent>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Code</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Type Fr</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Type Ar</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Statut</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Capacité</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Route</MudTh>
+                <MudTh Style="font-weight: 600; font-size: 0.75rem; color: #374151; background-color: #f9fafb; padding: 10px 14px; text-transform: none; letter-spacing: normal;">Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Code" Style="padding: 8px 14px;">
+                    <MudText Class="font-weight-bold" Style="color: #1f2937; font-size: 0.8rem;">@context.Decodvh</MudText>
+                </MudTd>
+                <MudTd DataLabel="Type" Style="padding: 8px 14px;">
+                    <span style="display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 6px; background-color: #f3f4f6; color: #4b5563; font-size: 0.7rem; font-weight: 500;">
+                        @context.CategFr
+                    </span>
+                </MudTd>
+                <MudTd DataLabel="Type" Style="padding: 8px 14px;">
+                    <span style="display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 6px; background-color: #f3f4f6; color: #4b5563; font-size: 0.7rem; font-weight: 500;">
+                        @context.CategAr
+                    </span>
+                </MudTd>
+                <MudTd DataLabel="Status" Style="padding: 8px 14px;">
+                    <span style="@GetStatusBadgeStyle(context.Deactif)">
+                        <MudIcon Icon="@GetStatusIcon(context.Deactif)" Style="font-size: 0.8rem; margin-right: 4px;" />
+                        @context.Deactif
+                    </span>
+                </MudTd>
+                <MudTd DataLabel="Capacity" Style="padding: 8px 14px; color: #6b7280; font-size: 0.8rem;">@context.Denbrpa p</MudTd>
+                <MudTd DataLabel="Route" Style="padding: 8px 14px; color: #6b7280; font-size: 0.8rem;">@(context.Decdeleg)</MudTd>
+                <MudTd DataLabel="Actions" Style="padding: 8px 14px;">
+                    <div class="d-flex" style="gap: 2px;">
+                        <MudIconButton Icon="@Icons.Material.Outlined.Edit" Size="Size.Small"
+                                       Style="color: #6b7280;" Title="Edit" />
+                        <MudIconButton Icon="@Icons.Material.Outlined.Delete" Size="Size.Small"
+                                       Style="color: #6b7280;" Title="Delete" />
+                    </div>
+                </MudTd>
+            </RowTemplate>
+            @* <PagerContent>
+                <MudTablePager InfoFormat="{first_item}-{last_item} sur {all_items}" RowsPerPageString="Lignes par page :" />
+            </PagerContent> *@
+        </MudTable>
+    </MudPaper>
+</MudContainer>
+
+@code {
+
+    private List<DrVehiculeDto>? _vehicules;
+
+    private bool _isLoading = true;
+    private List<FilterItem> filters = new();
+    private string? _errorMessage;
+    private IEnumerable<DrVehiculeDto> Elements = new List<DrVehiculeDto>();
+    private string activeFilter = "Tous";
+
+    private int TotalVehicules { get; set; }
+    private int ActiveVehicules { get; set; }
+    private int InactiveVehicules { get; set; }
+    private int MaintenanceVehicules { get; set; }
+    private int PanneVehicules { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadVehiculesAsync();
+    }
+    // private List<FilterItem> filters = new();
+    //     private List<FilterItem> filters = new()
+    // {
+    //     new() { Label = "Tous", Count = 0 },
+    //     new() { Label = "Active", Count = 0 },
+    //     new() { Label = "Inactive", Count = 0 },
+    //     new() { Label = "Maintenance", Count = 0 },
+    //     new() { Label = "Panne", Count = 0 }
+    // };
+    private async Task LoadVehiculesAsync()
+    {
+        try
+        {
+            _isLoading = true;
+            _errorMessage = null;
+            StateHasChanged();
+
+            // Envoi de la requête via MediatR (CQRS)
+            var request = new GetListDrVehiculesRequest();
+            var result = await Mediator.Send(request);
+            _vehicules = result?.Data ?? new List<DrVehiculeDto>();
+            UpdateFiltersCount();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Erreur lors du chargement des véhicules");
+            _errorMessage = "Impossible de charger la liste des véhicules. Veuillez réessayer.";
+            _vehicules = new List<DrVehiculeDto>();
+
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+    private void UpdateFiltersCount()
+    {
+        if (_vehicules == null) return;
+
+        // Conversion en int si besoin
+        TotalVehicules = _vehicules.Count();
+        ActiveVehicules = _vehicules.Count(v => Convert.ToInt32(v.Deactif) == 0);
+        InactiveVehicules = _vehicules.Count(v => Convert.ToInt32(v.Deactif) == 1);
+        MaintenanceVehicules = _vehicules.Count(v => Convert.ToInt32(v.Deactif) == 2);
+        PanneVehicules = _vehicules.Count(v => Convert.ToInt32(v.Deactif) == 3);
+
+        //Logger.LogInformation($"Total={TotalVehicules}, Active={ActiveVehicules}, Inactive={InactiveVehicules}, Maintenance={MaintenanceVehicules}, Panne={PanneVehicules}");
+        // Mettre à jour la liste existante (ou la recréer)
+        filters = new List<FilterItem>
+        {
+        new() { Label = "Tous", Count = TotalVehicules },
+            new() { Label = "Active", Count = ActiveVehicules },
+            new() { Label = "Inactive", Count = InactiveVehicules },
+            new() { Label = "Maintenance", Count = MaintenanceVehicules },
+            new() { Label = "Panne", Count = PanneVehicules }
+        };
+    }
+
+
+    private IEnumerable<DrVehiculeDto> GetFilteredVehicles()
+    {
+        if (_vehicules == null) return Enumerable.Empty<DrVehiculeDto>();
+
+        return activeFilter switch
+        {
+            "Tous" => _vehicules,
+            "Active" => _vehicules.Where(v => v.Deactif == 0),
+            "Inactive" => _vehicules.Where(v => v.Deactif == 1),
+            "Maintenance" => _vehicules.Where(v => v.Deactif == 2),
+            "Panne" => _vehicules.Where(v => v.Deactif == 3), // à adapter
+            _ => _vehicules
+        };
+    }
+    private string GetStatusBadgeStyle(int? deactif)
+    {
+        var (bg, color) = deactif switch
+        {
+            0 => ("#dcfce7", "#16a34a"),
+            1 => ("#fee2e2", "#dc2626"),
+            2 => ("#fef3c7", "#d97706"),
+            _ => ("#f3f4f6", "#6b7280")
+        };
+        return $"display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; " +
+               $"background-color: {bg}; color: {color}; font-size: 0.7rem; font-weight: 500; line-height: 1.4;";
+    }
+
+    private string GetStatusIcon(int? deactif) => deactif switch
+    {
+        0 => Icons.Material.Filled.ShowChart,
+        1 => Icons.Material.Filled.Warning,
+        2 => Icons.Material.Filled.Build,
+        _ => ""
+    };
+
+    private class FilterItem
+    {
+        public string Label { get; set; } = string.Empty;
+        public int Count { get; set; }
+    }
+
+}

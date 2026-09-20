@@ -1,0 +1,121 @@
+﻿@using MudBlazor
+@using TransitAI.Components.Layout.UserProfile
+@using TransitAI.Services.MenuServices
+@inject MenuStateService MenuStateService
+@inject NavigationManager NavigationManager
+<MudStack Spacing="0" Style="height: 100vh; background-color: #FFFFFF;overflow: hidden;">
+
+    <MudStack Justify="Justify.Center" Class="px-6"
+              Style="height: var(--mud-appbar-height, 64px); border-bottom: 1px solid #eaeaea; flex-shrink: 0;">
+        <MudText Typo="Typo.h6" Color="Color.Primary" Class="font-weight-bold" Style="line-height: 1.2;">
+            TransitAI
+        </MudText>
+        <MudText Typo="Typo.caption" Class="text-secondary" Style="margin-top: -2px;">
+            Manager
+        </MudText>
+    </MudStack>
+
+    <MudStack Class="flex-grow-1 px-4 py-2 list-container" Style="overflow-y: auto; overflow-x: hidden;">
+        <MudNavMenu Rounded="true" Margin="Margin.Normal" Color="Color.Primary">
+
+            <MudNavLink Href="/planification" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Map">
+                Planification réseau
+            </MudNavLink>
+            <MudNavLink Href="/realtime-operation" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Sensors">
+                Opérations temps réel
+            </MudNavLink>
+
+            <MudNavLink Href="/ai-assistant" Icon="@Icons.Material.Filled.Psychology">
+                Assistant IA
+            </MudNavLink>
+
+            <MudNavGroup Title="Personel" Icon="@Icons.Material.Filled.SupervisorAccount" Expanded="false">
+                <MudNavLink Href="/agents" Icon="@Icons.Material.Filled.VerifiedUser">
+                    Chauffeurs de bus
+                </MudNavLink>
+                <MudNavLink Href="/delegations" Icon="@Icons.Material.Filled.LocationCity">Délégations</MudNavLink>
+                <MudNavLink Href="/security">Security</MudNavLink>
+            </MudNavGroup>
+
+            <MudNavLink Href="/lines" Icon="@Icons.Material.Filled.AltRoute">
+                Lignes & Arrêts
+            </MudNavLink>
+
+            <MudNavLink Href="/fleet" Icon="@Icons.Material.Filled.DirectionsBus" >
+                Flotte de véhicules
+            </MudNavLink>
+
+            <MudNavLink Href="/analytics" Icon="@Icons.Material.Filled.BarChart">
+                Fréquentation
+            </MudNavLink>
+
+            <MudNavLink Href="/horaires" Icon="@Icons.Material.Filled.TableView" >
+                Respect des horaires
+            </MudNavLink>
+
+            <MudNavLink Href="/dispatching" Icon="@Icons.Material.Filled.BarChart" >
+                Dispatching
+            </MudNavLink>
+
+            <MudNavLink Href="/alertes" Icon="@Icons.Material.Filled.Notifications" >
+                Alertes
+            </MudNavLink>
+
+            <MudNavLink Href="/parametres" Icon="@Icons.Material.Filled.Settings" >
+                Paramètres
+            </MudNavLink>
+
+        </MudNavMenu>
+    </MudStack>
+
+    @* <MudStack Class="pa-4" Style="height: 64px; flex-shrink: 0; border-top: 1px solid #eaeaea;"> *@
+    <MudStack Justify="Justify.Center" Class="px-4 py-0"
+              Style="height: 64px; flex-shrink: 0; border-top: 1px solid #eaeaea;">
+        <UserProfileMenu UserName="Sté Agent"
+                         UserRole="Opérateur Transit"
+                         UserEmail="agent@transitai.com"
+
+                         SelectedLanguage="@currentLang"
+                         SelectedLanguageChanged="OnLanguageChanged"/>
+    </MudStack>
+</MudStack>
+
+@code {
+    private string currentLang = "fr";
+
+    // Méthode déclenchée lorsque la langue change dans le sous-composant
+    private void OnLanguageChanged(string newLang)
+    {
+        currentLang = newLang;
+        StateHasChanged(); // Force la mise à jour de la Sidebar si nécessaire
+    }
+
+    private void SelectMenu(string menuTitle)
+    {
+        Console.WriteLine("-----------------------");
+        MenuStateService.SetMenuTitle(menuTitle);
+    }
+
+}
+
+<style>
+    /* Masquer la barre de défilement par défaut, n'apparaît que si nécessaire */
+    .list-container::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .list-container::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .list-container::-webkit-scrollbar-thumb {
+        background: #e0e0e0;
+        border-radius: 4px;
+    }
+
+    .list-container::-webkit-scrollbar-thumb:hover {
+        background: #bdbdbd;
+    }
+</style>
+
+@*---------------------------------------------------------------*@

@@ -1,0 +1,167 @@
+﻿@page "/delegations"
+@using Core.Application.Common.CQS.CqsModels.DrAgents.Queries
+@using Core.Application.Common.CQS.CqsModels.DrDelegs.Queries
+@using Core.Application.Common.CQS.CqsModels.DrDelegs.Queries
+@using Core.Application.Common.DtosModels.DrAgents
+@using Core.Application.Common.DtosModels.DrDelegation
+@using Core.Domain.Entities
+@using Core.Domain.Entities.Metier
+@using Serilog.Core
+@inject ILogger<DrAgent> Logger
+
+<PageTitle>Delegations</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    @* <MudText Typo="Typo.h6" Class="mb-4">Liste des Agents</MudText> *@
+
+    @if (_errorMessage is not null)
+    {
+        <MudAlert Severity="Severity.Error" Class="mb-3">
+            @_errorMessage
+        </MudAlert>
+    }
+
+    @if (_isLoading)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        <MudText Class="mt-2">Chargement des Délégations...</MudText>
+    }
+    else if (_delagations is null || _delagations.Count == 0)
+    {
+        <MudAlert Severity="Severity.Info">Aucun délégation trouvé.</MudAlert>
+    }
+    else
+    {
+        <MudTable Items="FilteredAgents" Hover="true" Striped="true" Dense="true"
+                  Bordered="true" Elevation="2">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Liste des Délégations</MudText>
+                <MudSpacer/>
+                <MudTextField @bind-Value="_searchString"
+                              Placeholder="Rechercher une délégation (code, nom AR...)"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              IconSize="Size.Medium"
+                              Class="mb-3"
+                              Immediate="true"
+                              Clearable="true"
+                >
+
+                </MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh>Code</MudTh>
+                <MudTh>Nom (FR)</MudTh>
+                <MudTh>Nom (AR)</MudTh>
+                <MudTh>Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Code">@context.IdDelegation</MudTd>
+                <MudTd DataLabel="Nom (FR)">@context.NameDelegFr</MudTd>
+                <MudTd DataLabel="Nom (AR)" Style="direction: rtl;">@context.NameDelegAr</MudTd>
+                <MudTd>
+                    <MudIconButton Icon="@Icons.Material.Filled.Visibility"
+                                   Color="Color.Info" Size="Size.Small"
+                                   OnClick="() => ViewAgent(context)"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                   Color="Color.Primary" Size="Size.Small"
+                                   OnClick="() => EditAgent(context)"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                   Color="Color.Error" Size="Size.Small"
+                                   OnClick="() => DeleteAgent(context.IdDelegation)"/>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100 }"/>
+            </PagerContent>
+        </MudTable>
+    }
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary"
+               StartIcon="@Icons.Material.Filled.Refresh"
+               OnClick="LoadDelegationsAsync" Disabled="_isLoading"
+               Class="mt-3">
+        Rafraîchir
+    </MudButton>
+</MudContainer>
+
+@code {
+    private string _searchString = string.Empty;
+    private List<DrDelegDto>? _delagations;
+
+    private bool _isLoading = true;
+
+    //private string _searchTerm = string.Empty;
+    private string? _errorMessage;
+    private IEnumerable<DrAgentDto> Elements = new List<DrAgentDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDelegationsAsync();
+    }
+
+    private async Task LoadDelegationsAsync()
+    {
+        try
+        {
+            _isLoading = true;
+            _errorMessage = null;
+            StateHasChanged();
+
+            // Envoi de la requête via MediatR (CQRS)
+            var request = new GetListDelegationsRequest();
+            var result = await Mediator.Send(request);
+            _delagations = result?.Data ?? new List<DrDelegDto>();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Erreur lors du chargement des délégations");
+            _errorMessage = "Impossible de charger la liste des délégations. Veuillez réessayer.";
+            _delagations = new List<DrDelegDto>();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private IEnumerable<DrDelegDto> FilteredAgents
+    {
+        get
+        {
+            if (_delagations is null) return Enumerable.Empty<DrDelegDto>();
+
+            // Si la recherche est vide, on retourne toute la liste
+            if (string.IsNullOrWhiteSpace(_searchString)) return _delagations;
+
+            // Sinon, on filtre sur toutes les colonnes
+            return _delagations.Where(
+                delegation =>
+                (delegation.NameDelegFr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (delegation.NameDelegAr?.Contains(_searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                );
+        }
+    }
+
+    private void ViewAgent(DrDelegDto deleg)
+    {
+        Logger.LogInformation("Visualisation de Délégation {CodeAgent}", deleg.IdDelegation);
+        // TODO: Navigation vers la page de détail
+        // NavigationManager.NavigateTo($"/dragents/{agent.CodeAgent}");
+    }
+
+    private void EditAgent(DrDelegDto deleg)
+    {
+        Logger.LogInformation("Édition de Délégation {CodeAgent}", deleg.IdDelegation);
+        // TODO: Navigation vers la page d'édition
+        // NavigationManager.NavigateTo($"/dragents/edit/{agent.CodeAgent}");
+    }
+
+    private void DeleteAgent(int codeDeleg)
+    {
+        Logger.LogInformation("Suppression de Délégation {CodeAgent}", codeDeleg);
+        // TODO: Envoyer une Command via MediatR pour supprimer l'agent
+    }
+
+}

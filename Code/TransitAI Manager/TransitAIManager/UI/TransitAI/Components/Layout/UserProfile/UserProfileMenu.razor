@@ -1,0 +1,163 @@
+﻿@using MudBlazor
+
+<MudMenu @ref="_menu"
+         AnchorOrigin="Origin.TopCenter"
+         TransformOrigin="Origin.BottomCenter"
+         PopoverClass="user-profile-popover"
+         Class="user-profile-menu">
+
+    <ActivatorContent>
+        <MudPaper Elevation="0"
+                  @onclick="ToggleMenuAsync"
+                  Class="d-flex align-center justify-space-between pa-3"
+                  Style="background-color: #FFFFFF; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; min-width: 280px; user-select: none;">
+            @* Style="background-color: #f8f9fa; border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer; min-width: 280px; user-select: none;" *@
+
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                <MudAvatar Variant="Variant.Filled"
+                           Style="background-color: #dbeafe !important; width: 36px; height: 36px;">
+                    <MudIcon Icon="@Icons.Material.Outlined.Person"
+                             Style="color: #2563eb;"
+                             Size="Size.Small"/>
+                </MudAvatar>
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.subtitle2"
+                             Class="font-weight-bold"
+                             Style="color: #111827; font-size: 0.875rem; line-height: 1.25;">@UserName</MudText>
+                    <MudText Typo="Typo.caption"
+                             Style="color: #6b7280; font-size: 0.75rem;">@UserRole</MudText>
+                </MudStack>
+            </MudStack>
+
+            @* Flèche qui tourne selon l'état du menu *@
+            <MudIcon Icon="@(_isOpen ? Icons.Material.Filled.KeyboardArrowUp : Icons.Material.Filled.KeyboardArrowDown)"
+                     Size="Size.Small"
+                     Style="color: #9ca3af; margin-left: 8px; transition: transform 0.2s ease;"/>
+        </MudPaper>
+    </ActivatorContent>
+
+    <ChildContent>
+        <!-- Header du menu avec avatar et email -->
+        <MudStack Class="px-4 py-3" Spacing="1">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                <MudAvatar Variant="Variant.Filled"
+                           Style="background-color: #dbeafe; width: 40px; height: 40px;">
+                    <MudIcon Icon="@Icons.Material.Outlined.Person"
+                             Style="color: #2563eb;"
+                             Size="Size.Medium" />
+                </MudAvatar>
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.subtitle1"
+                             Class="font-weight-bold"
+                             Style="color: #111827; font-size: 0.875rem;">@UserName</MudText>
+                    <MudText Typo="Typo.body2"
+                             Style="color: #6b7280; font-size: 0.75rem;">@UserEmail</MudText>
+                </MudStack>
+            </MudStack>
+        </MudStack>
+
+        <MudDivider />
+
+        <!-- Paramètres -->
+        <MudMenuItem Icon="@Icons.Material.Outlined.Settings"
+                     Class="py-2 px-4"
+                     Style="min-height: 44px;">
+            <MudText Typo="Typo.body1" Style="color: #111827; font-size: 0.875rem;">Paramètres</MudText>
+        </MudMenuItem>
+
+        <MudDivider />
+
+        <!-- Section Langue -->
+        <MudStack Class="px-4 py-3" Spacing="2">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <MudIcon Icon="@Icons.Material.Outlined.Language"
+                         Size="Size.Small"
+                         Style="color: #6b7280;" />
+                <MudText Typo="Typo.body2"
+                         Style="color: #6b7280; font-size: 0.75rem;">Langue</MudText>
+            </MudStack>
+
+            <MudStack Row="true" Spacing="2" Class="w-100">
+                <MudButton Variant="@(SelectedLanguage == "fr" ? Variant.Filled : Variant.Outlined)"
+                           Size="Size.Small"
+                           Class="flex-grow-1"
+                           Style="@(SelectedLanguage == "fr"
+                              ? "text-transform: none; font-weight: 600; font-size: 0.8rem; border-radius: 6px; background-color: #2563eb !important; color: white !important; border: none; box-shadow: none; min-height: 36px;"
+                              : "text-transform: none; font-weight: 500; font-size: 0.8rem; border-radius: 6px; color: #4b5563 !important; border: 1px solid #e5e7eb; background-color: #f9fafb !important; min-height: 36px;")"
+                           OnClick="@(() => SetLanguage("fr"))">
+                    <MudText>FR</MudText>
+                </MudButton>
+
+                <MudButton Variant="@(SelectedLanguage == "en" ? Variant.Filled : Variant.Outlined)"
+                           Size="Size.Small"
+                           Class="flex-grow-1"
+                           Style="@(SelectedLanguage == "en"
+                              ? "text-transform: none; font-weight: 600; font-size: 0.8rem; border-radius: 6px; background-color: #2563eb !important; color: white !important; border: none; box-shadow: none; min-height: 36px;"
+                              : "text-transform: none; font-weight: 500; font-size: 0.8rem; border-radius: 6px; color: #4b5563 !important; border: 1px solid #e5e7eb; background-color: #f9fafb !important; min-height: 36px;")"
+                           OnClick="@(() => SetLanguage("en"))">
+                    <MudText>EN</MudText>
+                </MudButton>
+            </MudStack>
+        </MudStack>
+
+        <MudDivider />
+
+        <!-- Déconnexion -->
+        <MudMenuItem Icon="@Icons.Material.Outlined.Logout"
+                     Class="py-2 px-4"
+                     Style="min-height: 44px;"
+                     OnClick="OnLogoutClick">
+            <MudText Typo="Typo.body1"
+                     Color="Color.Error"
+                     Class="font-weight-bold"
+                     Style="font-size: 0.875rem;">Se déconnecter</MudText>
+        </MudMenuItem>
+    </ChildContent>
+</MudMenu>
+
+@code {
+    private MudMenu _menu = default!;
+    private bool _isOpen = false;
+
+    [Parameter] public string UserName { get; set; } = "Sté Agent";
+    [Parameter] public string UserRole { get; set; } = "Opérateur Transit";
+    [Parameter] public string UserEmail { get; set; } = "agent@transitai.com";
+
+    [Parameter] public string SelectedLanguage { get; set; } = "fr";
+    [Parameter] public EventCallback<string> SelectedLanguageChanged { get; set; }
+
+    private async Task ToggleMenuAsync(MouseEventArgs e)
+    {
+        if (_isOpen)
+        {
+            await _menu.CloseMenuAsync();
+            _isOpen = false;
+        }
+        else
+        {
+            await _menu.OpenMenuAsync(e);
+            _isOpen = true;
+        }
+    }
+
+    // Remet la flèche vers le bas quand le menu se ferme en cliquant ailleurs
+    private void OnLogoutClick()
+    {
+        _isOpen = false;
+    }
+
+    private async Task SetLanguage(string lang)
+    {
+        if (SelectedLanguage != lang)
+        {
+            SelectedLanguage = lang;
+            await SelectedLanguageChanged.InvokeAsync(lang);
+        }
+    }
+}
+
+<style>
+    .user-profile-popover {
+        z-index: 9999 !important;
+    }
+</style>
