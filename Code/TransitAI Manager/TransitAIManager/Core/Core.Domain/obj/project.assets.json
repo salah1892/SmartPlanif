@@ -839,11 +839,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Core.Domain.csproj",
+      "projectUniqueName": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Core.Domain.csproj",
       "projectName": "Core.Domain",
-      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Core.Domain.csproj",
+      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\Core.Domain.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\obj\\",
+      "outputPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

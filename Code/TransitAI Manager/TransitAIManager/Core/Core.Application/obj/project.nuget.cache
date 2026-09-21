@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GiX4ZukGjxA=",
+  "dgSpecHash": "AOB0mu55vg4=",
   "success": true,
-  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
+  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\csvhelper\\33.1.0\\csvhelper.33.1.0.nupkg.sha512",
@@ -38,9 +38,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'AutoMapper' 14.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
+      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
+      "filePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj",
       "libraryId": "AutoMapper",
       "targetGraphs": [
         "net10.0"

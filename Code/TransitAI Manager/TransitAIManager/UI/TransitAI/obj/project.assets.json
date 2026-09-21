@@ -2718,11 +2718,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+      "projectUniqueName": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
       "projectName": "TransitAI",
-      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\obj\\",
+      "outputPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2744,11 +2744,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj": {
-              "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj"
+            "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj": {
+              "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Core\\Core.Application\\Core.Application.csproj"
             },
-            "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj": {
-              "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj"
+            "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj": {
+              "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj"
             }
           }
         }

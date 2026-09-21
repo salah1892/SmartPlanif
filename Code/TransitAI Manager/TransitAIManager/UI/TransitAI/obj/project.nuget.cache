@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A7ZeHzS7AOY=",
+  "dgSpecHash": "HqTeoPhFFOk=",
   "success": true,
-  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\automapper\\14.0.0\\automapper.14.0.0.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\blazorleaflet\\0.4.0-alpha\\blazorleaflet.0.4.0-alpha.nupkg.sha512",
@@ -54,9 +54,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'AutoMapper' 14.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
+      "filePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\UI\\TransitAI\\TransitAI.csproj",
       "libraryId": "AutoMapper",
       "targetGraphs": [
         "net10.0"
