@@ -47,6 +47,7 @@ namespace TransitAI.Services.MenuServices
             {
                 "/planification" => "Planification réseau",
                 "/realtime-operation" => "Opérations temps réel",
+                "/rules-contraints" => "Règles & Contraintes",
                 "/ai-assistant" => "Assistant IA",
                 "/agents" => "Utilisateurs",
                 "/security" => "Sécurité",

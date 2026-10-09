@@ -74,7 +74,7 @@
     {
       "code": "NU1903",
       "level": "Warning",
-      "message": "Package 'AutoMapper' 14.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
+      "message": "Le package 'AutoMapper' 14.0.0 présente une vulnérabilité de gravité élevé(e) connue, https://github.com/advisories/GHSA-rvv3-g6hj-g44x.",
       "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj",
       "warningLevel": 1,
       "filePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\TransitAI Manager\\TransitAIManager\\Infrastructure\\App.Infrastructure\\App.Infrastructure.csproj",

@@ -1,0 +1,391 @@
+﻿@* @page "/daily-planning"
+<h3>DailyPlanning</h3>
+
+@code {
+
+}
+ *@
+ 
+ @*====================================================================*@
+ 
+@* @page "/daily-planning"
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6" Style="overflow-y: auto;">
+    
+    <!-- En-tête de la page -->
+    <MudGrid Class="mb-6">
+        <!-- Partie gauche : Titres -->
+        <MudItem xs="12" sm="8">
+            <!-- Petit sur-titre avec la puce -->
+            <div class="d-flex align-center mb-2">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Style="font-size: 8px; color: #0d9488;" Class="mr-2" />
+                <MudText Typo="Typo.overline" Class="font-weight-bold" Style="color: #0d9488; letter-spacing: 1px;">
+                    Jour de service / Espace local
+                </MudText>
+            </div>
+            
+            <!-- Titre principal -->
+            <MudText Typo="Typo.h3" Class="font-weight-bold" Style="color: #1e293b;">
+                Planification journalière
+            </MudText>
+            
+            <!-- Sous-titre -->
+            <MudText Typo="Typo.subtitle1" Style="color: #64748b;" Class="mt-2">
+                Construisez un plan de service avec le profil d'allocation enregistré.
+            </MudText>
+        </MudItem>
+
+        <!-- Partie droite : Bouton Historique -->
+        <MudItem xs="12" sm="4" Class="d-flex justify-sm-end align-start mt-4 mt-sm-0">
+            <MudButton Variant="Variant.Outlined" 
+                       Color="Color.Default" 
+                       EndIcon="@Icons.Material.Filled.ArrowForward"
+                       Style="border-color: #e2e8f0; color: #1e293b; text-transform: none; font-weight: bold;">
+                Historique
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Panneau d'information (Étapes de planification) -->
+    <MudPaper Elevation="0" 
+              Class="pa-4" 
+              Style="background-color: #f0fdfa; border: 1px solid #ccfbf1; border-radius: 8px;">
+        
+        <MudGrid>
+            <!-- Partie gauche du panneau : Icône et étapes -->
+            <MudItem xs="12" md="8">
+                <div class="d-flex align-start">
+                    <!-- Boîte de l'icône calendrier -->
+                    <MudPaper Elevation="0" 
+                              Class="d-flex align-center justify-center pa-2 mr-4" 
+                              Style="background-color: #0f766e; border-radius: 8px; min-width: 48px; height: 48px;">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Style="color: white;" />
+                    </MudPaper>
+                    
+                    <div>
+                        <!-- Titre du panneau -->
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold" Style="color: #0f172a; letter-spacing: 0.5px;">
+                            ÉTAPES DE PLANIFICATION
+                        </MudText>
+                        
+                        <!-- Liste des étapes -->
+                        <MudStack Row="true" Spacing="4" Class="mt-2 flex-wrap">
+                            <MudText Typo="Typo.body2" Style="color: #334155;">
+                                <strong style="color: #0f766e;">01</strong> Choisir la date et les trajets
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="color: #334155;">
+                                <strong style="color: #0f766e;">02</strong> Appliquer le profil NORMAL enregistré
+                            </MudText>
+                            <MudText Typo="Typo.body2" Style="color: #334155;">
+                                <strong style="color: #0f766e;">03</strong> Examiner, corriger, valider
+                            </MudText>
+                        </MudStack>
+                    </div>
+                </div>
+            </MudItem>
+
+            <!-- Partie droite du panneau : Texte d'information -->
+            <MudItem xs="12" md="4" Class="d-flex align-start mt-4 mt-md-0">
+                <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="mr-2 mt-1" Style="color: #475569;" />
+                <MudText Typo="Typo.caption" Style="color: #475569; line-height: 1.5;">
+                    La date choisie sert uniquement à ce flux de démonstration local. Le même échantillon représentatif fixe est réutilisé pour chaque date.
+                </MudText>
+            </MudItem>
+        </MudGrid>
+        
+    </MudPaper>
+</MudContainer>
+
+@code {
+    // Vous pouvez ajouter votre logique ici (ex: chargement des données, gestion du clic sur Historique)
+} *@
+
+ @*====================================================================*@
+
+@page "/daily-planning"
+@using MudBlazor
+@using System.Collections.Generic
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-8" Style="overflow-y: auto;">
+    
+    <!-- Fil d'Ariane et Titre de la page -->
+    <div class="d-flex justify-space-between align-center mb-4">
+        <MudBreadcrumbs Items="_breadcrumbs" Separator=">" Class="pa-0 ma-0" />
+        <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Planification quotidienne</MudText>
+    </div>
+
+    <!-- En-tête de la page -->
+    <MudGrid Class="mb-6">
+        <MudItem xs="12" sm="8">
+            <div class="d-flex align-center mb-2">
+                <MudIcon Icon="@Icons.Material.Filled.Circle" Size="Size.Small" Style="font-size: 8px; color: #0d9488;" Class="mr-2" />
+                <MudText Typo="Typo.overline" Class="font-weight-bold" Style="color: #0d9488; letter-spacing: 1px;">
+                    Jour de service / Espace local
+                </MudText>
+            </div>
+            <MudText Typo="Typo.h3" Class="font-weight-bold" Style="color: #1e293b;">
+                Planification journalière
+            </MudText>
+            <MudText Typo="Typo.subtitle1" Style="color: #64748b;" Class="mt-2">
+                Construisez un plan de service avec le profil d'allocation enregistré.
+            </MudText>
+        </MudItem>
+        <MudItem xs="12" sm="4" Class="d-flex justify-sm-end align-start mt-4 mt-sm-0">
+            <MudButton Variant="Variant.Outlined" 
+                       Color="Color.Default" 
+                       StartIcon="@Icons.Material.Filled.History"
+                       EndIcon="@Icons.Material.Filled.ArrowForward"
+                       Style="border-color: #e2e8f0; color: #1e293b; text-transform: none; font-weight: bold;">
+                Historique
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+
+    <!-- Panneau d'information (Étapes de planification) -->
+    <MudPaper Elevation="0" Class="pa-4 mb-6" Style="background-color: #f0fdfa; border: 1px solid #ccfbf1; border-radius: 8px;">
+        <MudGrid>
+            <MudItem xs="12" md="8">
+                <div class="d-flex align-start">
+                    <MudPaper Elevation="0" Class="d-flex align-center justify-center pa-2 mr-4" Style="background-color: #0f766e; border-radius: 8px; min-width: 48px; height: 48px;">
+                        <MudIcon Icon="@Icons.Material.Filled.CalendarToday" Style="color: white;" />
+                    </MudPaper>
+                    <div>
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold" Style="color: #0f172a; letter-spacing: 0.5px;">
+                            ÉTAPES DE PLANIFICATION
+                        </MudText>
+                        <MudStack Row="true" Spacing="4" Class="mt-2 flex-wrap">
+                            <MudText Typo="Typo.body2" Style="color: #334155;"><strong style="color: #0f766e;">01</strong> Choisir la date et les trajets</MudText>
+                            <MudText Typo="Typo.body2" Style="color: #334155;"><strong style="color: #0f766e;">02</strong> Appliquer le profil NORMAL enregistré</MudText>
+                            <MudText Typo="Typo.body2" Style="color: #334155;"><strong style="color: #0f766e;">03</strong> Examiner, corriger, valider</MudText>
+                        </MudStack>
+                    </div>
+                </div>
+            </MudItem>
+            <MudItem xs="12" md="4" Class="d-flex align-start mt-4 mt-md-0">
+                <MudIcon Icon="@Icons.Material.Outlined.Info" Size="Size.Small" Class="mr-2 mt-1" Style="color: #475569;" />
+                <MudText Typo="Typo.caption" Style="color: #475569; line-height: 1.5;">
+                    La date choisie sert uniquement à ce flux de démonstration local. Le même échantillon représentatif fixe est réutilisé pour chaque date.
+                </MudText>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    <!-- Contenu principal : Tableau et Barre latérale -->
+    <MudGrid>
+        <!-- Colonne de gauche : Tableau des trajets -->
+        <MudItem xs="12" md="9">
+            <MudPaper Elevation="0" Class="pa-4" Style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                
+                <!-- En-tête de l'échantillon -->
+                <div class="d-flex justify-space-between align-start mb-4 flex-wrap">
+                    <div>
+                        <MudText Typo="Typo.h6" Class="font-weight-bold" Style="color: #1e293b;">
+                            Échantillon 
+                            <MudChip T="string" Size="Size.Small" Style="background-color: #f1f5f9; color: #475569; height: 20px;">8</MudChip>
+                        </MudText>
+                        <MudText Typo="Typo.body2" Style="color: #64748b;">7 trajets actifs dans l'échantillon</MudText>
+                    </div>
+                    <MudChip T="string" Variant="Variant.Outlined" Style="border-color: #f59e0b; color: #b45309; background-color: #fffbeb; font-weight: bold;">
+                        ÉCHANTILLON REPRÉSENTATIF - 8 TRAJETS
+                    </MudChip>
+                </div>
+
+                <!-- Filtres -->
+                <MudGrid Class="mb-4">
+                    <MudItem xs="12" sm="4">
+                        <MudTextField @bind-Value="searchString" Placeholder="Rechercher trajet, ligne, centre..." Variant="Variant.Outlined" Margin="Margin.Dense" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+                    </MudItem>
+                    <MudItem xs="12" sm="2">
+                        <MudSelect T="string" @bind-Value="selectedSession" Variant="Variant.Outlined" Margin="Margin.Dense" Label="Session" />
+                    </MudItem>
+                    <MudItem xs="12" sm="3">
+                        <MudSelect T="string" @bind-Value="selectedAffectation" Variant="Variant.Outlined" Margin="Margin.Dense" Label="État d'affectation" />
+                    </MudItem>
+                    <MudItem xs="12" sm="3" Class="d-flex align-center">
+                        <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Style="border-color: #e2e8f0;">
+                            <MudButton Style="text-transform: none;">Affectés</MudButton>
+                            <MudButton Style="background-color: #1e293b; color: white; text-transform: none;">Non affectés</MudButton>
+                        </MudButtonGroup>
+                    </MudItem>
+                </MudGrid>
+
+                <MudGrid Class="mb-4">
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedLigne" Label="Ligne" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedCentre" Label="Centre" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedDelegation" Label="Délégation" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedSens" Label="Sens" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedEtat" Label="État du trajet" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                    <MudItem xs="6" sm="2"><MudSelect T="string" @bind-Value="selectedHeure" Label="Heure de départ" Variant="Variant.Outlined" Margin="Margin.Dense" /></MudItem>
+                </MudGrid>
+
+                <!-- Actions du tableau -->
+                <div class="d-flex justify-space-between align-center mb-2">
+                    <div>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Style="text-transform: none; font-weight: bold;">Tout sélectionner (non affectés)</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Default" Style="text-transform: none;">Effacer la sélection</MudButton>
+                    </div>
+                    <MudText Typo="Typo.caption" Style="color: #64748b;">@selectedItems.Count sélectionnés</MudText>
+                </div>
+
+                <!-- Tableau de données -->
+                <MudTable Items="@trajets" MultiSelection="true" @bind-SelectedItems="selectedItems" Hover="true" Elevation="0" Class="mt-2">
+                    <HeaderContent>
+                        <MudTh>Ligne</MudTh>
+                        <MudTh>Centre</MudTh>
+                        <MudTh>Délégation</MudTh>
+                        <MudTh>Sens</MudTh>
+                        <MudTh>Heure de départ</MudTh>
+                        <MudTh>Places</MudTh>
+                        <MudTh>Statut</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Ligne">
+                            <MudText Typo="Typo.body2" Class="font-weight-bold">@context.Ligne</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #0d9488;">@context.Etat</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Centre">
+                            <MudText Typo="Typo.body2" Class="font-weight-bold">@context.Centre</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #64748b;">@context.CentreNom</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Délégation">
+                            <MudText Typo="Typo.body2">@context.Delegation</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Sens">
+                            <MudText Typo="Typo.body2">@context.Sens</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Heure de départ">
+                            <MudText Typo="Typo.body2">@context.HeureDepart — @context.HeureArrivee</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #64748b;">@context.Periode</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Places">
+                            <MudText Typo="Typo.body2">@context.Places places</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Statut">
+                            @if (context.Statut == "Non affectés")
+                            {
+                                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Style="border-color: #f59e0b; color: #b45309; background-color: #fffbeb;">Non affectés</MudChip>
+                            }
+                            else if (context.Statut == "Annulés")
+                            {
+                                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Style="border-color: #cbd5e1; color: #64748b; background-color: #f8fafc;">Annulés</MudChip>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.caption" Style="color: #64748b;">@context.Statut</MudText>
+                            }
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+
+                <!-- Bouton de simulation -->
+                <div class="d-flex flex-column align-center mt-6">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" StartIcon="@Icons.Material.Filled.PlayArrow" Disabled="@(selectedItems.Count == 0)" Style="background-color: #0f766e; text-transform: none; font-weight: bold;">
+                        Lancer la simulation locale
+                    </MudButton>
+                    <MudText Typo="Typo.caption" Style="color: #64748b;" Class="mt-2">
+                        Sélectionnez au moins un trajet actif non affecté.
+                    </MudText>
+                </div>
+
+            </MudPaper>
+        </MudItem>
+
+        <!-- Colonne de droite : Barre latérale -->
+        <MudItem xs="12" md="3">
+            <MudStack Spacing="4">
+                
+                <!-- Profil d'allocation -->
+                <MudPaper Elevation="0" Class="pa-4" Style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <div class="d-flex justify-space-between align-center mb-2">
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold" Style="color: #1e293b;">Profil d'allocation enregistré</MudText>
+                        <MudChip T="string" Size="Size.Small" Style="background-color: #f1f5f9; color: #475569; font-size: 10px;">LECTURE SEULE</MudChip>
+                    </div>
+                    <div class="d-flex align-center mb-2">
+                        <MudText Typo="Typo.body2" Class="font-weight-bold" Style="color: #0d9488;">NORMAL</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #64748b;" Class="ml-2">NORMAL - version 1</MudText>
+                    </div>
+                    <MudExpansionPanels Elevation="0" Class="mt-2">
+                        <MudExpansionPanel Text="Voir les règles appliquées" Style="border: none; padding: 0;">
+                            <MudText Typo="Typo.caption" Style="color: #64748b;">Les valeurs sont en lecture seule ici. Les modifications se font dans les règles d'allocation.</MudText>
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" EndIcon="@Icons.Material.Filled.ArrowForward" Style="text-transform: none; padding-left: 0; font-weight: bold;">
+                        Règles & contraintes
+                    </MudButton>
+                </MudPaper>
+
+                <!-- Date de service -->
+                <MudPaper Elevation="0" Class="pa-4" Style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-3" Style="color: #1e293b;">DATE DE SERVICE</MudText>
+                    <MudDatePicker @bind-Date="serviceDate" Variant="Variant.Outlined" Margin="Margin.Dense" Style="width: 100%;" />
+                    <MudText Typo="Typo.caption" Style="color: #64748b;" Class="mt-3">
+                        La date choisie sert uniquement à ce flux de démonstration local. Le même échantillon représentatif fixe est réutilisé pour chaque date.
+                    </MudText>
+                </MudPaper>
+
+                <!-- Note d'information -->
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Style="border-color: #e2e8f0; color: #475569;">
+                    <MudText Typo="Typo.caption">Données de démonstration locales uniquement — aucune donnée opérationnelle.</MudText>
+                </MudAlert>
+
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+
+</MudContainer>
+
+@code {
+    // --- Données pour le fil d'Ariane ---
+    private List<BreadcrumbItem> _breadcrumbs = new List<BreadcrumbItem>
+    {
+        new BreadcrumbItem("Accueil", href: "#"),
+        new BreadcrumbItem("Planification quotidienne", href: null, disabled: true)
+    };
+
+    // --- Données pour les filtres ---
+    private string searchString = "";
+    private DateTime? serviceDate = DateTime.Today;
+    
+    // Variables pour les MudSelect (corrige les erreurs de compilation)
+    private string selectedSession = "Toutes les sessions";
+    private string selectedAffectation = "Tous les trajets";
+    private string selectedLigne = "Tout";
+    private string selectedCentre = "Tout";
+    private string selectedDelegation = "Tout";
+    private string selectedSens = "Tout";
+    private string selectedEtat = "Tout";
+    private string selectedHeure = "Toutes les heures";
+    
+    // --- Gestion de la sélection du tableau ---
+    private HashSet<TrajetModel> selectedItems = new HashSet<TrajetModel>();
+
+    // --- Modèle de données pour le tableau ---
+    public class TrajetModel
+    {
+        public string Ligne { get; set; }
+        public string Etat { get; set; }
+        public string Centre { get; set; }
+        public string CentreNom { get; set; }
+        public string Delegation { get; set; }
+        public string Sens { get; set; }
+        public string HeureDepart { get; set; }
+        public string HeureArrivee { get; set; }
+        public string Periode { get; set; }
+        public int Places { get; set; }
+        public string Statut { get; set; }
+    }
+
+    // --- Données simulées pour le tableau (basées sur vos captures) ---
+    private List<TrajetModel> trajets = new List<TrajetModel>
+    {
+        new TrajetModel { Ligne = "TR-104", Etat = "Actif", Centre = "U001", CentreNom = "CENTRE-1 - TUNIS", Delegation = "TUNIS", Sens = "Aller", HeureDepart = "05:30", HeureArrivee = "06:45", Periode = "Matin", Places = 62, Statut = "V01 - D01" },
+        new TrajetModel { Ligne = "TR-105", Etat = "Actif", Centre = "U014", CentreNom = "CENTRE-2 - ARIANA", Delegation = "ARIANA", Sens = "Aller", HeureDepart = "06:10", HeureArrivee = "07:00", Periode = "Matin", Places = 48, Statut = "V02 - D02" },
+        new TrajetModel { Ligne = "TR-106", Etat = "Actif", Centre = "I002", CentreNom = "CENTRE-3 - SOUSSE", Delegation = "SOUSSE", Sens = "Aller", HeureDepart = "07:15", HeureArrivee = "08:30", Periode = "Matin", Places = 66, Statut = "Non affectés" },
+        new TrajetModel { Ligne = "TR-107", Etat = "Actif", Centre = "U003", CentreNom = "CENTRE-4 - LA MARSA", Delegation = "LA MARSA", Sens = "Retour", HeureDepart = "07:50", HeureArrivee = "08:40", Periode = "Matin", Places = 58, Statut = "Non affectés" },
+        new TrajetModel { Ligne = "TR-108", Etat = "Actif", Centre = "U001", CentreNom = "CENTRE-1 - TUNIS", Delegation = "TUNIS", Sens = "Retour", HeureDepart = "09:00", HeureArrivee = "10:15", Periode = "Matin", Places = 51, Statut = "Non affectés" },
+        new TrajetModel { Ligne = "TR-109", Etat = "Actif", Centre = "U014", CentreNom = "CENTRE-2 - ARIANA", Delegation = "ARIANA", Sens = "Retour", HeureDepart = "10:30", HeureArrivee = "11:20", Periode = "Après-midi", Places = 44, Statut = "Non affectés" },
+        new TrajetModel { Ligne = "TR-110", Etat = "Annulé", Centre = "U012", CentreNom = "CENTRE-1 - TUNIS", Delegation = "TUNIS", Sens = "Aller", HeureDepart = "11:45", HeureArrivee = "12:30", Periode = "Après-midi", Places = 60, Statut = "Annulés" },
+        new TrajetModel { Ligne = "TR-111", Etat = "Actif", Centre = "I018", CentreNom = "CENTRE-3 - SOUSSE", Delegation = "SOUSSE", Sens = "Aller", HeureDepart = "12:00", HeureArrivee = "14:00", Periode = "Après-midi", Places = 100, Statut = "Non affectés" }
+    };
+}}
