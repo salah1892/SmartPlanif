@@ -1,0 +1,55 @@
+---
+config:
+  layout: elk
+---
+flowchart TB
+ subgraph Phase1["Phase 1 : Construction Initialisation"]
+        F2["Tri par Tension Décroissante"]
+        F1["Calcul Tension des Lignes\nDemande / Bus Compatibles"]
+        F3["Tri Voyages par Difficulté"]
+        F4["Filtre Règles Dures + Scoring Souple"]
+        F5["Affectation Gloutonne"]
+  end
+ subgraph Phase2["Phase 2 : ALNS + Recuit Simulé"]
+        H2["Sélection Opérateur Réparation\nChronological, MostConstrained..."]
+        H1["Sélection Opérateur Destruction\nWorstScore, TimeWindow, Resource..."]
+        H3["Évaluation Fonction Objectif f S"]
+        H4{"Critère Recuit Simulé\n Δ &lt; 0 ou exp -Δ/T"}
+        H5["Mise à jour État & Poids Opérateurs"]
+        H6["Conserver État Précédent"]
+        H7@{ label: "Critère d'arrêt atteint ?\\nIter, Temps, Stagnation" }
+  end
+    A@{ label: "Demande d'Allocation<br/>AllocateDayCommand" } --> B{"Vérification Date\nPlanningCalendar"}
+    B -- Date Passée --> C["Erreur : Journée non modifiable"]
+    B -- Date Valide --> D["Chargement Données\nITripRepository & IResourceRepository"]
+    D --> E["Phase 0 : Diagnostic Faisabilité\nFeasibilityAnalyzer"]
+    E --> F["Phase 1 : Construction par Phases\nPhasedConstructionStrategy"]
+    F1 --> F2
+    F2 --> F3
+    F3 --> F4
+    F4 --> F5
+    F --> Phase1
+    Phase1 --> G{"Méthode choisie ?"}
+    G -- Glouton / Phases seules --> I["Phase 3 : Finalisation & Re-calcul Score"]
+    G -- Phases + ALNS --> H["Phase 2 : Métaheuristique ALNS"]
+    H1 --> H2
+    H2 --> H3
+    H3 --> H4
+    H4 -- Accepté --> H5
+    H4 -- Refusé --> H6
+    H5 --> H7
+    H6 --> H7
+    H7 -- Non --> H1
+    H --> Phase2
+    Phase2 --> I
+    I --> J["Contrôle Indépendant\nPlanValidator"]
+    J --> K{"Violations Dures ?"}
+    K -- Oui --> L["Refus Enregistrement & Alerte"]
+    K -- Non --> M{"Sauvegarde Demandée ?"}
+    M -- Simulation --> N["Rapport généré sans écriture"]
+    M -- Oui --> O["Transaction SQL\nUpdate trips *_PR"]
+    O --> P@{ label: "Fin : Rapport d'Allocation complet" }
+
+    H7@{ shape: diamond}
+    A@{ shape: rect}
+    P@{ shape: rect}

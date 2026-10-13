@@ -1,0 +1,42 @@
+---
+config:
+  theme: mc
+  layout: elk
+---
+flowchart TB
+    A(["Début"]) --> B["Choisir la date, la méthode<br>et les modes de planning et sauvegarde"]
+    B --> C{"Journée passée ?"}
+    C -- Oui --> D["Refuser la planification<br>Consultation seule possible"]
+    D --> Z(["Fin"])
+    C -- Non --> E["Charger les voyages, ressources,<br>indisponibilités, règles et affectations voisines"]
+    E --> F{"Mode de planning ?"}
+    F -- Compléter --> G["Conserver les affectations complètes<br>Planifier les voyages restants"]
+    F -- Remplacer --> H["Replanifier la journée<br>sauf les voyages effectués"]
+    G --> I["Bloquer les ressources<br>des voyages verrouillés"]
+    H --> I
+    I --> J["Produire le diagnostic<br>indicatif de faisabilité"]
+    J --> K{"Méthode choisie ?"}
+    K -- Chronologique --> L["Traiter les voyages<br>par heure de départ"]
+    K -- Par phases --> M@{ label: "Traiter d'abord les types de ligne tendus<br>et les voyages les plus contraints" }
+    K -- Par phases + ALNS --> M
+    L --> N["Construire les affectations<br>Bus + deux agents distincts"]
+    M --> N
+    N --> O{"ALNS demandé ?"}
+    O -- Oui --> P@{ label: "Retirer une partie des affectations<br>Réparer et explorer d'autres solutions" }
+    O -- Non --> Q["Tenter de compléter<br>les voyages non affectés"]
+    P --> Q
+    Q --> R["Recalculer les scores<br>et vérifier les règles dures"]
+    R --> S{"Simulation ?"}
+    S -- Oui --> T["Afficher le rapport<br>sans modifier la base"]
+    S -- Non --> U{"Violations ou<br>aucune affectation à enregistrer ?"}
+    U -- Oui --> V["Refuser la sauvegarde<br>Conserver le plan existant"]
+    U -- Non --> W{"Mode journée complète<br>et voyages non affectés ?"}
+    W -- Oui --> V
+    W -- Non --> X["Écrire les ressources prévues<br>dans une transaction"]
+    X --> Y["Afficher le rapport<br>et le résultat de sauvegarde"]
+    V --> Y
+    T --> Z
+    Y --> Z
+
+    M@{ shape: rect}
+    P@{ shape: rect}

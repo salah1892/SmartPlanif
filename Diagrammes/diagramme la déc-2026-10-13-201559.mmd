@@ -1,0 +1,33 @@
+---
+config:
+  theme: mc
+---
+flowchart TD
+    A["Entrées<br/>voyages, ressources, politique"]
+    B["Diagnostic de faisabilité<br/>demande contre ressources"]
+    C["Construction<br/>glouton ou par phases"]
+    D["ALNS + recuit simulé<br/>détruire, réparer, accepter"]
+    E["Complétion<br/>derniers voyages, déterministe"]
+    F["Contrôle indépendant<br/>règles dures rejouées"]
+    G["Enregistrement<br/>journée complète, transaction"]
+
+    A --> B --> C --> D --> E --> F --> G
+
+    subgraph T["Décision pour un voyage (TryAssign)"]
+        direction TB
+        T1["Règles dures<br/>un rejet est définitif"]
+        T2["Score souple<br/>somme poids × valeur"]
+        T3["Meilleur bus + chauffeur + receveur<br/>receveur ≠ chauffeur"]
+        T1 --> T2 --> T3
+    end
+
+    C -.-> T
+    D -.-> T
+    E -.-> T
+
+    classDef neutral fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A
+    classDef build fill:#E1F5EE,stroke:#0F6E56,color:#04342C
+    classDef alns fill:#EEEDFE,stroke:#534AB7,color:#26215C
+    class A,B,F,G neutral
+    class C,E,T1,T2,T3 build
+    class D alns
