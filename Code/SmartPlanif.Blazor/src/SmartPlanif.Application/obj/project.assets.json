@@ -82,11 +82,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
+      "projectUniqueName": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
       "projectName": "SmartPlanif.Application",
-      "projectPath": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
+      "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
       "packagesPath": "C:\\Users\\DELL\\.nuget\\packages\\",
-      "outputPath": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\obj\\",
+      "outputPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -108,8 +108,8 @@
           "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj": {
-              "projectPath": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj"
+            "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj": {
+              "projectPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj"
             }
           }
         }
@@ -124,7 +124,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.400"
+      "SdkAnalysisLevel": "11.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -152,7 +152,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\11.0.100-rc.2.26504.105/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

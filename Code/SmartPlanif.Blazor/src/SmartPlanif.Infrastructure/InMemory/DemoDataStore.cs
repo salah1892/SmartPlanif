@@ -10,7 +10,7 @@ namespace SmartPlanif.Infrastructure.InMemory;
 /// Trois types de ligne (urbain, interurbain entre gouvernorats, banlieue) et trois catégories de bus.
 /// Les lignes interurbaines n'ont que peu de bus confort : la politique de catégorie et l'ordre d'allocation comptent.
 /// </summary>
-public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssignmentRepository, IReferenceDataRepository, IDatabaseDiagnostics
+public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssignmentRepository, IReferenceDataRepository, IDatabaseDiagnostics,IAgentRepository
 {
     private const long Urban = 1, InterCity = 2, Suburban = 3;
     private const long Standard = 1, Comfort = 2, Articulated = 3;
@@ -229,4 +229,33 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     /// <inheritdoc />
     public Task<IReadOnlyList<ReferenceItem>> GetBusCategoriesAsync(CancellationToken ct) =>
         Task.FromResult<IReadOnlyList<ReferenceItem>>(Categories.Select(c => new ReferenceItem(c.Id, c.Label,c.LabelArabic)).ToList());
+    // ---------------------------------------------------------------- agents
+    /// <inheritdoc />
+    public Task<IReadOnlyList<AgentListItem>> GetAgentsAsync(CancellationToken ct)
+    {
+        var pool = BuildPool(DateOnly.FromDateTime(DateTime.Today));
+        IReadOnlyList<AgentListItem> list = pool.Agents.Select(a => new AgentListItem(
+            a.Id, a.Name, null, "(démo)",
+            a.RestDay is { } d ? (d == DayOfWeek.Sunday ? 7 : (int)d) : null,
+            a.CenterId, a.DelegationId, $"Délégation {a.DelegationId}", null)).ToList();
+        return Task.FromResult(list);
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<AgentTripRow>> GetAgentTripsAsync(long agentId, DateOnly date, CancellationToken ct)
+    {
+        AgentPost Post((long Bus, long Driver, long Receiver) x) =>
+            x.Driver == agentId ? AgentPost.Driver : x.Receiver == agentId ? AgentPost.Receiver : AgentPost.None;
+
+        var rows = new List<AgentTripRow>();
+        foreach (var trip in GenerateTrips(date))
+        {
+            var planned = _planned.TryGetValue(trip.Id, out var p) ? Post(p) : AgentPost.None;
+            var real = _realized.TryGetValue(trip.Id, out var r) ? Post(r) : AgentPost.None;
+            if (planned != AgentPost.None || real != AgentPost.None)
+                rows.Add(new AgentTripRow(trip.Id, trip.LineLabel, trip.Departure, trip.Arrival, planned, real));
+        }
+        return Task.FromResult<IReadOnlyList<AgentTripRow>>(rows);
+    }
+    
 }

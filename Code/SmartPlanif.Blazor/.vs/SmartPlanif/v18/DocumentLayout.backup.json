@@ -1,0 +1,142 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.application\\usecases\\allocateday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|solutionrelative:src\\smartplanif.application\\usecases\\allocateday.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.web\\app_data\\allocation-settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|solutionrelative:src\\smartplanif.web\\app_data\\allocation-settings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|solutionrelative:src\\smartplanif.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2CC25681-5303-4A0A-B039-D556B0B96571}|src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.domain\\allocation\\constructionstrategies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2CC25681-5303-4A0A-B039-D556B0B96571}|src\\SmartPlanif.Domain\\SmartPlanif.Domain.csproj|solutionrelative:src\\smartplanif.domain\\allocation\\constructionstrategies.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.web\\components\\pages\\allocation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB306031-9BFB-4436-9DF1-E2C9EB0D6B5E}|src\\SmartPlanif.Web\\SmartPlanif.Web.csproj|solutionrelative:src\\smartplanif.web\\components\\pages\\allocation.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.application\\usecases\\allocationsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|solutionrelative:src\\smartplanif.application\\usecases\\allocationsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|d:\\aaaa_personal\\4quatrieme_annee\\master-si-bizerte\\stage de fin d\u0027\u00E9tudes\\officiel\\smartplanifproject\\code\\smartplanif.blazor\\src\\smartplanif.application\\usecases\\planningcalendar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA9E8870-F0CE-4AC8-B4F6-77951F9E09E7}|src\\SmartPlanif.Application\\SmartPlanif.Application.csproj|solutionrelative:src\\smartplanif.application\\usecases\\planningcalendar.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "allocation-settings.json",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\App_Data\\allocation-settings.json",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Web\\App_Data\\allocation-settings.json",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\App_Data\\allocation-settings.json",
+              "RelativeToolTip": "src\\SmartPlanif.Web\\App_Data\\allocation-settings.json",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAAAIcAAABIAQAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-10-14T11:55:28.487Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConstructionStrategies.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\Allocation\\ConstructionStrategies.cs",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Domain\\Allocation\\ConstructionStrategies.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Domain\\Allocation\\ConstructionStrategies.cs",
+              "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\ConstructionStrategies.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-14T10:44:23.451Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Allocation.razor",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\Components\\Pages\\Allocation.razor",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Web\\Components\\Pages\\Allocation.razor",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\Components\\Pages\\Allocation.razor",
+              "RelativeToolTip": "src\\SmartPlanif.Web\\Components\\Pages\\Allocation.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-10-14T10:38:15.182Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AllocationSettingsService.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\AllocationSettingsService.cs",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Application\\UseCases\\AllocationSettingsService.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\AllocationSettingsService.cs",
+              "RelativeToolTip": "src\\SmartPlanif.Application\\UseCases\\AllocationSettingsService.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-14T10:37:32.616Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AllocateDay.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\AllocateDay.cs",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Application\\UseCases\\AllocateDay.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\AllocateDay.cs",
+              "RelativeToolTip": "src\\SmartPlanif.Application\\UseCases\\AllocateDay.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-14T10:37:30.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlanningCalendar.cs",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\PlanningCalendar.cs",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Application\\UseCases\\PlanningCalendar.cs",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\UseCases\\PlanningCalendar.cs",
+              "RelativeToolTip": "src\\SmartPlanif.Application\\UseCases\\PlanningCalendar.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-14T10:37:24.655Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\SmartPlanif.Web\\appsettings.json",
+              "ToolTip": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d\u0027\u00C9tudes\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Web\\appsettings.json",
+              "RelativeToolTip": "src\\SmartPlanif.Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-10-14T10:11:34.593Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

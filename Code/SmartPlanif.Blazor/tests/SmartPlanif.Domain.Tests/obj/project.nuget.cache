@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "23BoKTQiwtc=",
+  "dgSpecHash": "jl05GDe2xcw=",
   "success": true,
-  "projectFilePath": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\tests\\SmartPlanif.Domain.Tests\\SmartPlanif.Domain.Tests.csproj",
+  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\tests\\SmartPlanif.Domain.Tests\\SmartPlanif.Domain.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.codecoverage\\17.11.1\\microsoft.codecoverage.17.11.1.nupkg.sha512",

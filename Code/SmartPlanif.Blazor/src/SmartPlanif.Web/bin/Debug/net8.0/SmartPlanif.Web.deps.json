@@ -18,7 +18,8 @@
         "runtime": {
           "lib/net7.0/Dapper.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.1.35.13827"
+            "fileVersion": "2.1.35.13827",
+            "localPath": "Dapper.dll"
           }
         }
       },
@@ -26,7 +27,8 @@
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.1024.46610"
+            "fileVersion": "8.0.1024.46610",
+            "localPath": "Microsoft.Extensions.DependencyInjection.Abstractions.dll"
           }
         }
       },
@@ -37,7 +39,8 @@
         "runtime": {
           "lib/net8.0/Microsoft.Extensions.Options.dll": {
             "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.224.6711"
+            "fileVersion": "8.0.224.6711",
+            "localPath": "Microsoft.Extensions.Options.dll"
           }
         }
       },
@@ -45,7 +48,8 @@
         "runtime": {
           "lib/net8.0/MySqlConnector.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.3.7.0"
+            "fileVersion": "2.3.7.0",
+            "localPath": "MySqlConnector.dll"
           }
         }
       },

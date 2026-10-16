@@ -11,7 +11,8 @@ namespace SmartPlanif.Infrastructure;
 public static class InfrastructureServiceRegistration
 {
     /// <summary>Mode démonstration : données générées en mémoire, réglages dans un fichier JSON.</summary>
-    public static IServiceCollection AddInMemoryInfrastructure(this IServiceCollection services, string settingsFilePath)
+    public static IServiceCollection AddInMemoryInfrastructure(this IServiceCollection services,
+        string settingsFilePath)
     {
         services.AddSingleton<DemoDataStore>();
         services.AddSingleton<ITripRepository>(sp => sp.GetRequiredService<DemoDataStore>());
@@ -21,6 +22,7 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<IDatabaseDiagnostics>(sp => sp.GetRequiredService<DemoDataStore>());
         services.AddSingleton<IAllocationSettingsStore>(
             new JsonAllocationSettingsStore(settingsFilePath, DemoDataStore.CreateDemoPolicy));
+        services.AddSingleton<IAgentRepository>(sp => sp.GetRequiredService<DemoDataStore>());
         return services;
     }
 
@@ -40,6 +42,7 @@ public static class InfrastructureServiceRegistration
         services.AddTransient<IReferenceDataRepository, MySqlReferenceDataRepository>();
         services.AddTransient<IDatabaseDiagnostics, MySqlDiagnostics>();
         services.AddSingleton<IAllocationSettingsStore>(new JsonAllocationSettingsStore(settingsFilePath));
+        services.AddTransient<IAgentRepository, MySqlAgentRepository>();
         return services;
     }
 }

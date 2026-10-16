@@ -24,8 +24,8 @@
                     <option value="@method">@MethodLabel(method)</option>
                 }
             </select></label>
-        <label>Utilisateur
-            <input type="text" @bind="_user" disabled="@(_running || IsPast)" /></label>
+        @* <label>Utilisateur
+            <input type="text" @bind="_user" disabled="@(_running || IsPast)" /></label> *@
         <label>Voyages déjà planifiés
             <select @bind="_existingMode" disabled="@(_running || IsPast)">
                 <option value="@ExistingPlanMode.FillMissingOnly">Compléter : garder les plans existants</option>
@@ -234,7 +234,7 @@
 
 @code {
     private DateTime _dateInput;
-    private AllocationMethod _method = AllocationMethod.PhasedConstructionWithAlns;
+    private AllocationMethod _method = AllocationMethod.GreedyChronological;
     private string _user = "planificateur";
     private SaveMode _saveMode = SaveMode.None;
     private ExistingPlanMode _existingMode = ExistingPlanMode.FillMissingOnly;

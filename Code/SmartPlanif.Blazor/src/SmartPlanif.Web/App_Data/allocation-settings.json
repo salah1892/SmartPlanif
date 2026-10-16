@@ -1,0 +1,138 @@
+{
+  "MaxDailyWork": "08:00:00",
+  "MaxAmplitude": "12:00:00",
+  "MinAgentRest": "00:30:00",
+  "MinBusTurnaround": "00:15:00",
+  "MaxTripsPerAgentPerDay": 6,
+  "MaxBusKmPerDay": 500,
+  "RestSaturation": "04:00:00",
+  "Constraints": {
+    "B02": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B03": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B10": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B09": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B05": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B11": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "B06": {
+      "Mode": "Hard",
+      "Weight": 25
+    },
+    "B07": {
+      "Mode": "Soft",
+      "Weight": 40
+    },
+    "B08": {
+      "Mode": "Soft",
+      "Weight": 25
+    },
+    "BP03": {
+      "Mode": "Soft",
+      "Weight": 25
+    },
+    "BP04": {
+      "Mode": "Soft",
+      "Weight": 20
+    },
+    "BP05": {
+      "Mode": "Soft",
+      "Weight": 20
+    },
+    "BP06": {
+      "Mode": "Soft",
+      "Weight": 15
+    },
+    "BP07": {
+      "Mode": "Soft",
+      "Weight": 15
+    },
+    "BP08": {
+      "Mode": "Soft",
+      "Weight": 10
+    },
+    "A05": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A03": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A04": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A07": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A08": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A09": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A10": {
+      "Mode": "Hard",
+      "Weight": 0
+    },
+    "A11": {
+      "Mode": "Soft",
+      "Weight": 40
+    },
+    "A12": {
+      "Mode": "Soft",
+      "Weight": 25
+    },
+    "AP03": {
+      "Mode": "Soft",
+      "Weight": 20
+    },
+    "AP04": {
+      "Mode": "Soft",
+      "Weight": 20
+    },
+    "AP05": {
+      "Mode": "Soft",
+      "Weight": 15
+    },
+    "AP06": {
+      "Mode": "Soft",
+      "Weight": 300
+    }
+  },
+  "CategoryRules": [],
+  "Alns": {
+    "MaxIterations": 3000, //Plafond du nombre de cycles détruire, réparer, accepter.
+    "MaxSeconds": 20, //Plafond de temps, vérifié au début de chaque itération. Le total affiché est un peu plus long, car il inclut le chargement, la construction et le contrôle.
+    "StagnationLimit": 1500, //Arrêt sans amélioration,s'’arrête si le meilleur plan n’a pas progressé pendant 1500 itérations.
+    "DestroyFractionMin": 0.05, //Part détruite min / max (0,05 / 0,15)
+    "DestroyFractionMax": 0.15, //À chaque itération, une fraction tirée au hasard entre ces bornes des voyages affectés est retirée. Avec 327 voyages, cela fait entre 16 et 49 voyages. Une part plus grande explore davantage mais réussit moins souvent. Une part plus petite affine localement.
+    "InitialTemperature": 100, //Un plan pire de Δ points est accepté avec la probabilité exp(−Δ / T). Elle s’exprime dans la même unité que l’objectif.
+    "CoolingRate": 0.998, //T est multipliée par 0,998 à chaque itération.
+    "Seed": 42, //Graine (42):	Même graine, mêmes tirages aléatoires. Le plafond de 20 s peut quand même faire varier le nombre d’itérations d’une machine à l’autre.
+    "InsertionNoise": 0.1, //Bruit d’insertion (0,1):Pendant la réparation, le score d’un candidat reçoit un aléa de ±10 % du score maximal de sa famille de règles. Il s’applique à « plus contraint d’abord » et « ordre aléatoire », pas à la réparation chronologique. Sans bruit, on reconstruirait presque toujours le même plan.
+    "UnassignedPenalty": 100000, //Pénalité par voyage non affecté (100000)	Elle doit rester bien plus grande que le déficit qu’un voyage peut apporter (au plus le score maximal par voyage). Ainsi, perdre un voyage n’est jamais « rentable ».
+    "FairnessWeight": 10,
+    "ReactionFactor": 0.1 //Vitesse d’adaptation (0,1)	nouveau poids = 0,9 × ancien + 0,1 × récompense, avec un plancher de 0,1. Les récompenses sont 33 (nouveau meilleur plan), 9 (meilleur que le courant), 3 (accepté malgré tout) et 0 (refusé). À 0, les poids ne bougent jamais. À 1, ils ne reflètent que la dernière itération.
+  }
+}

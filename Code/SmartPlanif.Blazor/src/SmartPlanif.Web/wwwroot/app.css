@@ -178,3 +178,10 @@ table.grid.past th { background: #e3e6e9; }
     80% { opacity: 1; } /* Reste visible pendant 80% du temps */
     100% { opacity: 0; visibility: hidden; } /* Disparition à la fin */
 }
+
+/* Page Agents */
+table.grid th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+table.grid th.sortable:hover { background: #e1e8f0; }
+table.grid.selectable tbody tr { cursor: pointer; }
+table.grid.selectable tbody tr:hover td { background: #f3f7fb; }
+table.grid.selectable tbody tr.selected td { background: #e3eefa; }

@@ -117,3 +117,25 @@ public interface IDatabaseDiagnostics
     /// <summary>Collecte les constats bruts pour un jour de service.</summary>
     Task<RawDiagnostics> CollectAsync(DateOnly date, CancellationToken ct);
 }
+
+/// <summary>Poste tenu par un agent sur un voyage.</summary>
+public enum AgentPost { None, Driver, Receiver }
+
+/// <summary>Un agent (table dragent) avec sa délégation.</summary>
+public sealed record AgentListItem(
+    long Id, string? NameFr, string? NameAr, string? Qualification,
+    int? RestDay, long? CenterId, long? DelegationId, string? DelegationLabel, long? Pda);
+
+/// <summary>Un voyage d'un agent sur un jour : poste prévu (*_PR) et poste réel (*_RE).</summary>
+public sealed record AgentTripRow(
+    long TripId, string LineLabel, DateTime Departure, DateTime? Arrival, AgentPost Planned, AgentPost Real);
+
+/// <summary>Lecture des agents (lecture seule).</summary>
+public interface IAgentRepository
+{
+    /// <summary>Tous les agents.</summary>
+    Task<IReadOnlyList<AgentListItem>> GetAgentsAsync(CancellationToken ct);
+
+    /// <summary>Voyages d'un agent pour un jour de service (prévus ou réels).</summary>
+    Task<IReadOnlyList<AgentTripRow>> GetAgentTripsAsync(long agentId, DateOnly date, CancellationToken ct);
+}

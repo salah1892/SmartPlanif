@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/g1mOhkW3Vc=",
+  "dgSpecHash": "XfnC4ahrXNk=",
   "success": true,
-  "projectFilePath": "D:\\work\\SmartPlanif.Blazor\\SmartPlanif.Blazor4\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
+  "projectFilePath": "D:\\AAAA_Personal\\4QUATRIEME_ANNEE\\Master-SI-Bizerte\\Stage de Fin d'Études\\officiel\\SmartPlanifProject\\Code\\SmartPlanif.Blazor\\src\\SmartPlanif.Application\\SmartPlanif.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\DELL\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512"
   ],

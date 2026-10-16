@@ -174,5 +174,7 @@ public static class ApplicationServiceRegistration
             .AddTransient<PreviewDayHandler>()
             .AddTransient<AllocationSettingsService>()
             .AddTransient<DatabaseDiagnosticsService>()
-            .AddTransient<SavedPlanService>();
+            .AddTransient<SavedPlanService>()
+            .AddTransient<SavedPlanService>()
+            .AddTransient<AgentQueryService>();
 }
