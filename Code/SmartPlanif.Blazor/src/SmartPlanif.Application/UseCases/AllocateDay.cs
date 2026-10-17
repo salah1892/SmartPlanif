@@ -175,6 +175,8 @@ public static class ApplicationServiceRegistration
             .AddTransient<AllocationSettingsService>()
             .AddTransient<DatabaseDiagnosticsService>()
             .AddTransient<SavedPlanService>()
-            .AddTransient<SavedPlanService>()
-            .AddTransient<AgentQueryService>();
+            .AddTransient<AgentQueryService>()
+            .AddTransient<BusQueryService>()
+            .AddTransient<KpiService>()
+            .AddTransient<LeaveService>();
 }

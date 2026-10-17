@@ -10,7 +10,8 @@ namespace SmartPlanif.Infrastructure.InMemory;
 /// Trois types de ligne (urbain, interurbain entre gouvernorats, banlieue) et trois catégories de bus.
 /// Les lignes interurbaines n'ont que peu de bus confort : la politique de catégorie et l'ordre d'allocation comptent.
 /// </summary>
-public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssignmentRepository, IReferenceDataRepository, IDatabaseDiagnostics,IAgentRepository
+public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssignmentRepository,
+    IReferenceDataRepository, IDatabaseDiagnostics, IAgentRepository, IBusRepository, IKpiRepository, ILeaveRepository
 {
     private const long Urban = 1, InterCity = 2, Suburban = 3;
     private const long Standard = 1, Comfort = 2, Articulated = 3;
@@ -18,27 +19,30 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     /// <summary>Nombre d'agents de la démonstration (tous polyvalents).</summary>
     private const int AgentCount = 28;
 
-    private static readonly (long Id, string Label,string LabelArabic)[] LineTypes =
+    private static readonly (long Id, string Label, string LabelArabic)[] LineTypes =
     {
-        (Urban, "URBAIN","'حضري'"), (InterCity, "INTERURBAIN (entre gouvernorats)","جهوي"), (Suburban, "BANLIEUE","الأحواز"),
+        (Urban, "URBAIN", "'حضري'"), (InterCity, "INTERURBAIN (entre gouvernorats)", "جهوي"),
+        (Suburban, "BANLIEUE", "الأحواز"),
     };
 
-    private static readonly (long Id, string Label,string LabelArabic)[] Categories =
+    private static readonly (long Id, string Label, string LabelArabic)[] Categories =
     {
-        (Standard, "BUS STANDARD","حافلة نقل حضري عادية"), (Comfort, "BUS CONFORT","حافلة نقل بين المدن مكيفة"), (Articulated, "BUS ARTICULÉ","حافلة نقل حضري مزدوجة"),
+        (Standard, "BUS STANDARD", "حافلة نقل حضري عادية"), (Comfort, "BUS CONFORT", "حافلة نقل بين المدن مكيفة"),
+        (Articulated, "BUS ARTICULÉ", "حافلة نقل حضري مزدوجة"),
     };
 
-    private static readonly (long LineId, string Label, long TypeId, int DurationMinutes, double Km, int TripCount, int SpacingMinutes)[] Lines =
-    {
-        (10, "Ligne 10 Centre-Gare", Urban, 75, 22, 5, 170),
-        (11, "Ligne 11 Cité Nord", Urban, 60, 18, 5, 170),
-        (12, "Ligne 12 Hôpital", Urban, 80, 25, 5, 170),
-        (17, "Ligne 17 Université", Urban, 70, 20, 5, 170),
-        (13, "Ligne 13 Kairouan-Tunis", InterCity, 210, 160, 4, 240),
-        (14, "Ligne 14 Kairouan-Sousse", InterCity, 150, 75, 4, 240),
-        (15, "Ligne 15 Banlieue Est", Suburban, 100, 40, 4, 200),
-        (16, "Ligne 16 Banlieue Ouest", Suburban, 110, 45, 4, 200),
-    };
+    private static readonly (long LineId, string Label, long TypeId, int DurationMinutes, double Km, int TripCount, int
+        SpacingMinutes)[] Lines =
+        {
+            (10, "Ligne 10 Centre-Gare", Urban, 75, 22, 5, 170),
+            (11, "Ligne 11 Cité Nord", Urban, 60, 18, 5, 170),
+            (12, "Ligne 12 Hôpital", Urban, 80, 25, 5, 170),
+            (17, "Ligne 17 Université", Urban, 70, 20, 5, 170),
+            (13, "Ligne 13 Kairouan-Tunis", InterCity, 210, 160, 4, 240),
+            (14, "Ligne 14 Kairouan-Sousse", InterCity, 150, 75, 4, 240),
+            (15, "Ligne 15 Banlieue Est", Suburban, 100, 40, 4, 200),
+            (16, "Ligne 16 Banlieue Ouest", Suburban, 110, 45, 4, 200),
+        };
 
     /// <summary>Plan PRÉVU enregistré (équivalent des colonnes BUS_PR, CHAUFF_PR, REC_PR de trips), par identifiant de voyage.</summary>
     private readonly Dictionary<long, (long Bus, long Driver, long Receiver)> _planned = new();
@@ -55,9 +59,17 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     {
         CategoryRules =
         {
-            new LineTypeCategoryRule { LineTypeId = Urban, AllowedCategoryIds = { Standard, Comfort, Articulated }, PreferredCategoryIds = { Standard } },
-            new LineTypeCategoryRule { LineTypeId = InterCity, AllowedCategoryIds = { Comfort }, PreferredCategoryIds = { Comfort } },
-            new LineTypeCategoryRule { LineTypeId = Suburban, AllowedCategoryIds = { Standard, Comfort }, PreferredCategoryIds = { Standard } },
+            new LineTypeCategoryRule
+            {
+                LineTypeId = Urban, AllowedCategoryIds = { Standard, Comfort, Articulated },
+                PreferredCategoryIds = { Standard }
+            },
+            new LineTypeCategoryRule
+                { LineTypeId = InterCity, AllowedCategoryIds = { Comfort }, PreferredCategoryIds = { Comfort } },
+            new LineTypeCategoryRule
+            {
+                LineTypeId = Suburban, AllowedCategoryIds = { Standard, Comfort }, PreferredCategoryIds = { Standard }
+            },
         },
     };
 
@@ -78,6 +90,7 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
                 else if (_planned.TryGetValue(trip.Id, out var plan))
                     result.Add(new AssignedTrip(trip, plan.Bus, plan.Driver, plan.Receiver, IsRealized: false));
             }
+
         return Task.FromResult<IReadOnlyList<AssignedTrip>>(result);
     }
 
@@ -90,12 +103,13 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
         for (var lineIndex = 0; lineIndex < Lines.Length; lineIndex++)
         {
             var line = Lines[lineIndex];
-            var jitter = new Random(date.DayNumber * 31 + (int)line.LineId);   // même date => mêmes voyages
+            var jitter = new Random(date.DayNumber * 31 + (int)line.LineId); // même date => mêmes voyages
             var centerId = line.LineId % 2 == 0 ? 1L : 2L;
 
             for (var k = 0; k < line.TripCount; k++)
             {
-                var departure = midnight.AddMinutes(330 + lineIndex * 13 + k * line.SpacingMinutes + jitter.Next(0, 40));
+                var departure =
+                    midnight.AddMinutes(330 + lineIndex * 13 + k * line.SpacingMinutes + jitter.Next(0, 40));
                 trips.Add(new Trip(
                     Id: date.DayNumber * 1000L + (++sequence),
                     LineId: line.LineId, LineLabel: line.Label, LineTypeId: line.TypeId,
@@ -105,6 +119,7 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
                     ExpectedPassengers: null));
             }
         }
+
         return trips;
     }
 
@@ -149,17 +164,20 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     {
         // Même garde-fou que la base : un voyage effectué n'est jamais modifié ; en cas d'écart, rien n'est écrit.
         if (plan.Assignments.Any(a => _realized.ContainsKey(a.Trip.Id)))
-            return Task.FromResult(new DayPlanSaveResult(false, "Écriture annulée : un voyage déjà effectué ne peut pas être modifié.", 0, 0));
+            return Task.FromResult(new DayPlanSaveResult(false,
+                "Écriture annulée : un voyage déjà effectué ne peut pas être modifié.", 0, 0));
 
         foreach (var a in plan.Assignments) _planned[a.Trip.Id] = (a.Bus.Id, a.Driver.Id, a.Receiver.Id);
 
         var cleared = 0;
         if (plan.ClearUnassigned)
             foreach (var id in plan.UnassignedTripIds)
-                if (!_realized.ContainsKey(id) && _planned.Remove(id)) cleared++;
+                if (!_realized.ContainsKey(id) && _planned.Remove(id))
+                    cleared++;
 
         return Task.FromResult(new DayPlanSaveResult(true,
-            $"Plan enregistré : {plan.Assignments.Count} voyage(s) affecté(s), {cleared} plan(s) précédent(s) vidé(s).", plan.Assignments.Count, cleared));
+            $"Plan enregistré : {plan.Assignments.Count} voyage(s) affecté(s), {cleared} plan(s) précédent(s) vidé(s).",
+            plan.Assignments.Count, cleared));
     }
 
     /// <inheritdoc />
@@ -167,7 +185,8 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     {
         var cleared = 0;
         foreach (var trip in GenerateTrips(date))
-            if (!_realized.ContainsKey(trip.Id) && _planned.Remove(trip.Id)) cleared++;
+            if (!_realized.ContainsKey(trip.Id) && _planned.Remove(trip.Id))
+                cleared++;
         return Task.FromResult(cleared);
     }
 
@@ -188,7 +207,8 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
                 hasPlan ? plan.Bus : null, hasPlan ? buses[plan.Bus].Plate : null,
                 hasPlan ? plan.Driver : null, hasPlan ? agents[plan.Driver].Name : null,
                 hasPlan ? plan.Receiver : null, hasPlan ? agents[plan.Receiver].Name : null,
-                hasReal ? buses[real.Bus].Plate : null, hasReal ? agents[real.Driver].Name : null, hasReal ? agents[real.Receiver].Name : null,
+                hasReal ? buses[real.Bus].Plate : null, hasReal ? agents[real.Driver].Name : null,
+                hasReal ? agents[real.Receiver].Name : null,
                 hasReal);
         }).ToList();
         return Task.FromResult<IReadOnlyList<SavedTripAssignment>>(rows);
@@ -204,8 +224,10 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
 
         RawDiagnostics raw = new(
             DayMapping: $"{date:dd/MM/yyyy} -> jour exact (données de démonstration générées)",
-            TotalTripsInTable: trips.Count, FirstTripDay: date.ToDateTime(TimeOnly.MinValue), LastTripDay: date.ToDateTime(TimeOnly.MinValue),
-            TripsOfDay: trips.Count, TripsOfDayOnActiveLine: trips.Count, TripsOfDayWithoutStopTimes: 0, TripsOfDayWithoutStopTimesAndItinerary: 0,
+            TotalTripsInTable: trips.Count, FirstTripDay: date.ToDateTime(TimeOnly.MinValue),
+            LastTripDay: date.ToDateTime(TimeOnly.MinValue),
+            TripsOfDay: trips.Count, TripsOfDayOnActiveLine: trips.Count, TripsOfDayWithoutStopTimes: 0,
+            TripsOfDayWithoutStopTimesAndItinerary: 0,
             TripsOfDayWithPlannedResources: _planned.Keys.Count(ids.Contains),
             TripsOfDayWithRealResources: _realized.Keys.Count(ids.Contains),
             BusesTotal: pool.Buses.Count, BusesFlaggedActive: pool.Buses.Count(b => b.Active),
@@ -213,10 +235,18 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
             TripStates: new[] { new DiagnosticCount("(démo)", trips.Count) },
             AgentQualifications: new[] { new DiagnosticCount("(démo : tous polyvalents)", pool.Agents.Count) },
             AgentRestDays: Array.Empty<DiagnosticCount>(),
-            BusActivity: new[] { new DiagnosticCount("actif", pool.Buses.Count(b => b.Active)), new DiagnosticCount("inactif", pool.Buses.Count(b => !b.Active)) },
-            BusCategories: pool.Buses.GroupBy(b => b.CategoryId).Select(g => new DiagnosticCount($"Catégorie {g.Key}", g.Count())).ToList(),
-            LineTypesOfDay: trips.GroupBy(t => t.LineTypeId).Select(g => new DiagnosticCount($"Type {g.Key}", g.Count())).ToList(),
-            SampleTrips: trips.Take(3).Select(t => $"ID {t.Id} | départ {t.Departure:yyyy-MM-dd HH:mm} | arrivée {t.Arrival:HH:mm} (données générées)").ToList(),
+            BusActivity: new[]
+            {
+                new DiagnosticCount("actif", pool.Buses.Count(b => b.Active)),
+                new DiagnosticCount("inactif", pool.Buses.Count(b => !b.Active))
+            },
+            BusCategories: pool.Buses.GroupBy(b => b.CategoryId)
+                .Select(g => new DiagnosticCount($"Catégorie {g.Key}", g.Count())).ToList(),
+            LineTypesOfDay: trips.GroupBy(t => t.LineTypeId)
+                .Select(g => new DiagnosticCount($"Type {g.Key}", g.Count())).ToList(),
+            SampleTrips: trips.Take(3).Select(t =>
+                    $"ID {t.Id} | départ {t.Departure:yyyy-MM-dd HH:mm} | arrivée {t.Arrival:HH:mm} (données générées)")
+                .ToList(),
             MissingOptionalTables: Array.Empty<string>());
         return Task.FromResult(raw);
     }
@@ -224,11 +254,14 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     // ---------------------------------------------------------------- référentiels
     /// <inheritdoc />
     public Task<IReadOnlyList<ReferenceItem>> GetLineTypesAsync(CancellationToken ct) =>
-        Task.FromResult<IReadOnlyList<ReferenceItem>>(LineTypes.Select(t => new ReferenceItem(t.Id, t.Label,t.Label)).ToList());
+        Task.FromResult<IReadOnlyList<ReferenceItem>>(LineTypes.Select(t => new ReferenceItem(t.Id, t.Label, t.Label))
+            .ToList());
 
     /// <inheritdoc />
     public Task<IReadOnlyList<ReferenceItem>> GetBusCategoriesAsync(CancellationToken ct) =>
-        Task.FromResult<IReadOnlyList<ReferenceItem>>(Categories.Select(c => new ReferenceItem(c.Id, c.Label,c.LabelArabic)).ToList());
+        Task.FromResult<IReadOnlyList<ReferenceItem>>(Categories
+            .Select(c => new ReferenceItem(c.Id, c.Label, c.LabelArabic)).ToList());
+
     // ---------------------------------------------------------------- agents
     /// <inheritdoc />
     public Task<IReadOnlyList<AgentListItem>> GetAgentsAsync(CancellationToken ct)
@@ -255,7 +288,166 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
             if (planned != AgentPost.None || real != AgentPost.None)
                 rows.Add(new AgentTripRow(trip.Id, trip.LineLabel, trip.Departure, trip.Arrival, planned, real));
         }
+
         return Task.FromResult<IReadOnlyList<AgentTripRow>>(rows);
     }
-    
+
+    // ---------------------------------------------------------------- bus
+    /// <inheritdoc />
+    public Task<IReadOnlyList<BusListItem>> GetBusesAsync(CancellationToken ct)
+    {
+        var pool = BuildPool(DateOnly.FromDateTime(DateTime.Today));
+        var categories = Categories.ToDictionary(c => c.Id);
+        IReadOnlyList<BusListItem> list = pool.Buses.Select(b => new BusListItem(
+            b.Id, b.Plate, b.CategoryId,
+            b.CategoryId is { } c && categories.TryGetValue(c, out var cat) ? cat.Label : null,
+            b.CategoryId is { } c2 && categories.TryGetValue(c2, out var cat2) ? cat2.LabelArabic : null,
+            b.Seats, b.Standing, b.InServiceSince, b.CenterId, b.DelegationId,
+            $"Délégation {b.DelegationId}", b.Active ? 1 : 0)).ToList();
+        return Task.FromResult(list);
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<BusLineUsage>> GetBusLineUsageAsync(DateOnly date, CancellationToken ct)
+    {
+        var usage = new List<BusLineUsage>();
+        foreach (var group in GenerateTrips(date)
+                     .Select(t => (Trip: t, Bus: _realized.TryGetValue(t.Id, out var r) ? r.Bus
+                         : _planned.TryGetValue(t.Id, out var p) ? p.Bus : 0L))
+                     .Where(x => x.Bus > 0)
+                     .GroupBy(x => (x.Bus, x.Trip.LineId, x.Trip.LineLabel)))
+            usage.Add(new BusLineUsage(group.Key.Bus, group.Key.LineId, group.Key.LineLabel, group.Count()));
+        return Task.FromResult<IReadOnlyList<BusLineUsage>>(usage);
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<BusTripRow>> GetBusTripsAsync(long busId, DateOnly date, CancellationToken ct)
+    {
+        var rows = new List<BusTripRow>();
+        foreach (var trip in GenerateTrips(date))
+        {
+            var planned = _planned.TryGetValue(trip.Id, out var p) && p.Bus == busId;
+            var real = _realized.TryGetValue(trip.Id, out var r) && r.Bus == busId;
+            if (planned || real)
+                rows.Add(new BusTripRow(trip.Id, trip.LineLabel, trip.Departure, trip.Arrival, planned, real));
+        }
+
+        return Task.FromResult<IReadOnlyList<BusTripRow>>(rows);
+    }
+
+    // ---------------------------------------------------------------- KPI
+    private static IEnumerable<DateOnly> Days(DateOnly from, DateOnly to)
+    {
+        for (var d = from; d <= to; d = d.AddDays(1)) yield return d;
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<DayCoverage>> GetCoverageAsync(DateOnly from, DateOnly to, CancellationToken ct)
+    {
+        IReadOnlyList<DayCoverage> list = Days(from, to).Select(d =>
+        {
+            var trips = GenerateTrips(d);
+            var planned = trips.Count(t => _planned.ContainsKey(t.Id) || _realized.ContainsKey(t.Id));
+            return new DayCoverage(d, trips.Count, planned, 0, trips.Count(t => _realized.ContainsKey(t.Id)));
+        }).ToList();
+        return Task.FromResult(list);
+    }
+
+    private PlanVsRealStats DemoStats(string label, IEnumerable<Trip> trips)
+    {
+        long total = 0, withPlan = 0, withReal = 0, both = 0, anyChanged = 0, bc = 0, dc = 0, rc = 0;
+        foreach (var t in trips)
+        {
+            total++;
+            var hasPlan = _planned.TryGetValue(t.Id, out var p);
+            var hasReal = _realized.TryGetValue(t.Id, out var r);
+            if (hasPlan) withPlan++;
+            if (hasReal) withReal++;
+            if (!hasPlan || !hasReal) continue;
+            both++;
+            var changed = false;
+            if (p.Bus != r.Bus)
+            {
+                bc++;
+                changed = true;
+            }
+
+            if (p.Driver != r.Driver)
+            {
+                dc++;
+                changed = true;
+            }
+
+            if (p.Receiver != r.Receiver)
+            {
+                rc++;
+                changed = true;
+            }
+
+            if (changed) anyChanged++;
+        }
+
+        RoleChange Role(long changed) => new(withPlan, changed, withPlan - both);
+        return new PlanVsRealStats(label, total, withPlan, withReal, both, Role(bc), Role(dc), Role(rc), anyChanged, 0,
+            0, null, 0);
+    }
+
+    /// <inheritdoc />
+    public Task<PlanVsRealStats>
+        GetPlanVsRealAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct) =>
+        Task.FromResult(DemoStats($"{from:dd/MM/yyyy} → {to:dd/MM/yyyy}", Days(from, to).SelectMany(GenerateTrips)));
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<PlanVsRealStats>> GetPlanVsRealByLineAsync(DateOnly from, DateOnly to, int onTimeSeconds,
+        CancellationToken ct)
+    {
+        IReadOnlyList<PlanVsRealStats> list = Days(from, to).SelectMany(GenerateTrips)
+            .GroupBy(t => t.LineLabel).Select(g => DemoStats(g.Key, g))
+            .OrderByDescending(s => s.AnyChanged).ThenByDescending(s => s.Trips).ToList();
+        return Task.FromResult(list);
+    }
+
+    // ---------------------------------------------------------------- congés (démo : en mémoire)
+    private readonly List<AgentLeave> _leaves = new();
+    private long _leaveSeq;
+
+    /// <inheritdoc />
+    public Task<bool> IsReadyAsync(CancellationToken ct) => Task.FromResult(true);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<AgentLeave>> GetLeavesAsync(long? agentId, DateTime from, DateTime to,
+        CancellationToken ct) =>
+        Task.FromResult<IReadOnlyList<AgentLeave>>(_leaves
+            .Where(l => (agentId is null || l.AgentId == agentId) && l.EndAt > from && l.StartAt < to)
+            .OrderByDescending(l => l.StartAt).ToList());
+
+    /// <inheritdoc />
+    public Task<long> AddAsync(AgentLeave leave, CancellationToken ct)
+    {
+        var id = ++_leaveSeq;
+        _leaves.Add(leave with { Id = id, CreatedAt = DateTime.Now });
+        return Task.FromResult(id);
+    }
+
+    /// <inheritdoc />
+    public Task<bool> DeleteAsync(long id, DateTime notEndedBefore, CancellationToken ct) =>
+        Task.FromResult(_leaves.RemoveAll(l => l.Id == id && l.EndAt > notEndedBefore) > 0);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<LeaveConflict>> GetConflictsAsync(long agentId, DateOnly firstDay, DateOnly lastDay,
+        CancellationToken ct)
+    {
+        var list = new List<LeaveConflict>();
+        for (var day = firstDay; day <= lastDay; day = day.AddDays(1))
+            foreach (var trip in GenerateTrips(day))
+            {
+                if (_realized.ContainsKey(trip.Id) || !_planned.TryGetValue(trip.Id, out var p)) continue;
+                if (p.Driver == agentId)
+                    list.Add(new LeaveConflict(trip.Id, trip.LineLabel, trip.Departure, AgentPost.Driver));
+                else if (p.Receiver == agentId)
+                    list.Add(new LeaveConflict(trip.Id, trip.LineLabel, trip.Departure, AgentPost.Receiver));
+            }
+
+        return Task.FromResult<IReadOnlyList<LeaveConflict>>(list);
+    }
 }

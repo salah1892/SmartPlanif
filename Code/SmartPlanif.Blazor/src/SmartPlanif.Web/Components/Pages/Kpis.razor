@@ -1,0 +1,366 @@
+﻿@page "/kpis"
+@using System.Globalization
+@inject KpiService Kpi
+@inject PlanningCalendar Calendar
+
+<PageTitle>Tableau de bord</PageTitle>
+
+<h1>Tableau de bord : où le plan réussit, où il faut corriger</h1>
+<p class="muted">
+    Les indicateurs sont relus depuis la table <code>trips</code> et jugés indépendamment du moteur. Lecture seule.
+</p>
+
+<div class="toolbar">
+    <button class="btn @(_tab == "plan" ? "primary" : "")" @onclick='() => _tab = "plan"'>Période et jour</button>
+    <button class="btn @(_tab == "real" ? "primary" : "")" @onclick='() => _tab = "real"'>Prévu vs réel</button>
+</div>
+
+@if (_error is not null)
+{
+    <div class="alert error">@_error</div>
+}
+
+@if (_tab == "plan")
+{
+    var cov = _coverage;
+    var totalTrips = cov.Sum(c => c.Trips);
+    var totalComplete = cov.Sum(c => c.Complete);
+    var toFix = cov.Count(c => Calendar.IsEditable(c.Day) && KpiMath.StatusOf(c) is DayStatus.Unplanned or DayStatus.Partial);
+
+    @* <div class="toolbar"> *@
+    @*     <button class="btn" @onclick="() => ChangeMonthAsync(-1)">◀</button> *@
+    @*     <strong>@_month.ToString("MMMM yyyy", CultureInfo.GetCultureInfo("fr-FR"))</strong> *@
+    @*     <button class="btn" @onclick="() => ChangeMonthAsync(1)">▶</button> *@
+    @*     <button class="btn" @onclick="GoToTodayAsync">Aujourd'hui</button> *@
+    @* </div> *@
+    <div class="toolbar">
+        <button class="btn" @onclick="() => ChangeMonthAsync(-1)" title="Mois précédent">◀</button>
+    
+        <select class="month-select" @onchange="OnMonthChanged">
+            @for (int m = 1; m <= 12; m++)
+            {
+                <option value="@m" selected="@(_month.Month == m)">
+                    @CultureInfo.GetCultureInfo("fr-FR").DateTimeFormat.GetMonthName(m)
+                </option>
+            }
+        </select>
+    
+        <select class="year-select" @onchange="OnYearChanged">
+            @for (int y = 2010; y <= 2030; y++)
+            {
+                <option value="@y" selected="@(_month.Year == y)">@y</option>
+            }
+        </select>
+    
+        <button class="btn" @onclick="() => ChangeMonthAsync(1)" title="Mois suivant">▶</button>
+        <button class="btn" @onclick="GoToTodayAsync">Aujourd'hui</button>
+    </div>
+
+    <div class="kpis">
+        <div class="kpi"><span class="value">@totalTrips</span><span>voyages dans le mois</span></div>
+        <div class="kpi @(totalTrips > 0 && totalComplete == totalTrips ? "good" : "")">
+            <span class="value">@Pct(totalTrips > 0 ? totalComplete / (double)totalTrips : null)</span><span>couverture (bus + chauffeur + receveur)</span>
+        </div>
+        <div class="kpi"><span class="value">@cov.Count(c => KpiMath.StatusOf(c) == DayStatus.Complete)</span><span>jours complets</span></div>
+        <div class="kpi @(toFix > 0 ? "bad" : "")"><span class="value">@toFix</span><span>jours à venir à traiter</span></div>
+    </div>
+
+    <div class="cal">
+        @foreach (var h in new[] { "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim" })
+        {
+            <div class="cal-head">@h</div>
+        }
+        @for (var i = 0; i < MonthOffset; i++)
+        {
+            <div class="cal-cell empty"></div>
+        }
+        @for (var n = 1; n <= DateTime.DaysInMonth(_month.Year, _month.Month); n++)
+        {
+            var date = new DateOnly(_month.Year, _month.Month, n);
+            var c = _byDay.GetValueOrDefault(date);
+            var status = c is null ? DayStatus.Empty : KpiMath.StatusOf(c);
+            <button class="cal-cell @StatusCss(status) @(Calendar.IsEditable(date) ? "" : "past") @(_day == date ? "sel" : "")"
+                    @onclick="() => SelectDayAsync(date)">
+                <span class="cal-num">@n</span>
+                @if (c is not null && c.Trips > 0)
+                {
+                    <span class="cal-info">@c.Complete / @c.Trips</span>
+                }
+            </button>
+        }
+    </div>
+    <p class="muted small">
+        <span class="badge soft">vert</span> complet ·
+        <span class="badge" style="background:var(--warn-bg);color:var(--warn)">orange</span> partiel ·
+        <span class="badge hard">rouge</span> non planifié ·
+        gris = journée passée (consultation seulement)
+    </p>
+
+    @if (_day is { } day && _dayKpi is not null)
+    {
+        var k = _dayKpi;
+        <h2>Journée du @day.ToString("dd/MM/yyyy")</h2>
+        @if (!k.IsEditable)
+        {
+            <div class="alert warn">🔒 Journée passée : plan effectif = ressources réelles si le voyage est effectué, sinon ressources prévues.</div>
+        }
+
+        <h3>1. Couverture</h3>
+        <div class="kpis">
+            <div class="kpi @(k.Trips > 0 && k.Planned == k.Trips ? "good" : "bad")">
+                <span class="value">@k.Planned / @k.Trips</span><span>voyages avec plan complet</span>
+            </div>
+            <div class="kpi"><span class="value">@k.Realized</span><span>déjà effectués (ressources réelles)</span></div>
+            <div class="kpi @(k.UnknownResources > 0 ? "bad" : "")">
+                <span class="value">@k.UnknownResources</span><span>affectations vers un bus/agent inexistant</span>
+            </div>
+        </div>
+
+        <h3>2. Conformité (contrôle indépendant)</h3>
+        <div class="kpis">
+            <div class="kpi @(k.Violations.Count == 0 ? "good" : "bad")">
+                <span class="value">@(k.Violations.Count == 0 ? "Valide" : k.Violations.Count + " violation(s)")</span><span>règles dures rejouées sur le plan enregistré</span>
+            </div>
+        </div>
+        @if (k.ViolationsByRule.Count > 0)
+        {
+            <p>
+                @foreach (var r in k.ViolationsByRule)
+                {
+                    <span class="badge hard" title="@ConstraintCatalog.DescribeCode(r.Code)">@r.Code × @r.Count</span>
+                }
+            </p>
+            <table class="grid">
+                <thead><tr><th>Voyage</th><th>Ressource</th><th>Règle</th><th>Détail</th></tr></thead>
+                <tbody>
+                    @foreach (var v in k.Violations.Take(50))
+                    {
+                        <tr class="row-hard">
+                            <td>@v.TripId</td><td>@v.Resource</td><td>@ConstraintCatalog.DescribeCode(v.Code)</td><td>@v.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <h3>3. Qualité</h3>
+        <div class="kpis">
+            <div class="kpi"><span class="value">@k.BusesUsed / @k.ActiveBuses</span><span>bus utilisés</span></div>
+            <div class="kpi"><span class="value">@k.AgentsUsed / @k.PlannableAgents</span><span>agents utilisés</span></div>
+            <div class="kpi"><span class="value">@Num(k.AvgAgentHours) h</span><span>heures moyennes par agent</span></div>
+            <div class="kpi"><span class="value">@Num(k.StdAgentHours) h</span><span>écart-type (équité de charge)</span></div>
+            <div class="kpi"><span class="value">@Num(k.MaxAgentHours) h</span><span>charge maximale d'un agent</span></div>
+            <div class="kpi @(k.AgentsNearLimit > 0 ? "bad" : "")"><span class="value">@k.AgentsNearLimit</span><span>agents à 90 % de la limite d'heures</span></div>
+            <div class="kpi"><span class="value">@Pct(k.BusSameCenterRate)</span><span>bus du même centre que la ligne</span></div>
+            <div class="kpi"><span class="value">@Pct(k.AgentSameCenterRate)</span><span>agents du même centre que la ligne</span></div>
+        </div>
+
+        @if (k.Unplanned.Count > 0)
+        {
+            <h3>À corriger : voyages sans plan complet (@k.Unplanned.Count)</h3>
+            <table class="grid">
+                <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th></tr></thead>
+                <tbody>
+                    @foreach (var t in k.Unplanned)
+                    {
+                        <tr class="row-hard"><td>@t.Departure.ToString("HH:mm")</td><td>@t.Arrival.ToString("HH:mm")</td><td>@t.Line</td></tr>
+                    }
+                </tbody>
+            </table>
+            @if (k.IsEditable)
+            {
+                <p><a href="allocation">→ Ouvrir la page Allocation pour planifier cette journée</a></p>
+            }
+        }
+    }
+}
+else
+{
+    <div class="panel">
+        <div class="form-grid compact">
+            <label>Du <input type="date" @bind="_from" /></label>
+            <label>Au <input type="date" @bind="_to" /></label>
+            <label>« À l'heure » : retard toléré (minutes)
+                <input type="number" min="0" step="1" @bind="_onTimeMinutes" /></label>
+        </div>
+        <div class="toolbar">
+            <button class="btn primary" @onclick="LoadRealAsync" disabled="@_loadingReal">Calculer</button>
+        </div>
+    </div>
+
+    <div class="alert warn">
+        Un « réel absent » (NULL ou 0) n'est pas forcément un changement : il peut signifier une donnée manquante ou un voyage non exécuté.
+        Chaque taux est donc affiché en version <strong>stricte</strong> (prévu et réel renseignés et différents) et en version
+        <strong>littérale</strong> du document de stratégie (réel absent compté comme changement). Seuil « à l'heure » à valider avec la société.
+    </div>
+
+    @if (_stats is not null)
+    {
+        var s = _stats;
+        <div class="kpis">
+            <div class="kpi"><span class="value">@s.Trips</span><span>voyages</span></div>
+            <div class="kpi"><span class="value">@Pct(s.PlannedRate)</span><span>avec un plan prévu (@s.WithPlan)</span></div>
+            <div class="kpi"><span class="value">@s.PlanAndReal</span><span>avec prévu ET réel (comparables)</span></div>
+            <div class="kpi"><span class="value">@Pct(s.GlobalChangeRate)</span><span>changement global (au moins un poste)</span></div>
+        </div>
+        <table class="grid">
+            <thead><tr><th>Poste</th><th>Prévus</th><th>Modifiés</th><th>Réel absent</th><th>Taux strict</th><th>Taux littéral (document)</th></tr></thead>
+            <tbody>
+                <tr><td>Bus</td><td>@s.Bus.Planned</td><td>@s.Bus.Changed</td><td>@s.Bus.NoReal</td><td>@Pct(s.Bus.Strict)</td><td>@Pct(s.Bus.Literal)</td></tr>
+                <tr><td>Chauffeur</td><td>@s.Driver.Planned</td><td>@s.Driver.Changed</td><td>@s.Driver.NoReal</td><td>@Pct(s.Driver.Strict)</td><td>@Pct(s.Driver.Literal)</td></tr>
+                <tr><td>Receveur</td><td>@s.Receiver.Planned</td><td>@s.Receiver.Changed</td><td>@s.Receiver.NoReal</td><td>@Pct(s.Receiver.Strict)</td><td>@Pct(s.Receiver.Literal)</td></tr>
+            </tbody>
+        </table>
+        <div class="kpis">
+            <div class="kpi"><span class="value">@(s.AvgDelaySeconds is { } d ? Num(d / 60) + " min" : "—")</span><span>retard moyen (&gt; 0 = retard)</span></div>
+            <div class="kpi"><span class="value">@Pct(s.OnTimeRate)</span><span>voyages à l'heure (parmi @s.DelayKnown mesurés)</span></div>
+            <div class="kpi"><span class="value">@s.ChangeFlag</span><span>voyages avec CHANGEMENT &gt; 0</span></div>
+        </div>
+    }
+
+    @if (_lines.Count > 0)
+    {
+        <h3>Par ligne (les plus modifiées d'abord)</h3>
+        <table class="grid">
+            <thead><tr><th>Ligne</th><th>Voyages</th><th>Comparables</th><th>Changés</th><th>Global</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th><th>Retard moyen</th><th>À l'heure</th></tr></thead>
+            <tbody>
+                @foreach (var l in _lines)
+                {
+                    <tr>
+                        <td>@l.Label</td><td>@l.Trips</td><td>@l.PlanAndReal</td><td>@l.AnyChanged</td><td>@Pct(l.GlobalChangeRate)</td>
+                        <td>@Pct(l.Bus.Strict)</td><td>@Pct(l.Driver.Strict)</td><td>@Pct(l.Receiver.Strict)</td>
+                        <td>@(l.AvgDelaySeconds is { } d ? Num(d / 60) + " min" : "—")</td><td>@Pct(l.OnTimeRate)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private string _tab = "plan";
+    private string? _error;
+
+    // Période et jour
+    private DateTime _month;
+    private IReadOnlyList<DayCoverage> _coverage = Array.Empty<DayCoverage>();
+    private Dictionary<DateOnly, DayCoverage> _byDay = new();
+    private DateOnly? _day;
+    private DayKpi? _dayKpi;
+
+    // Prévu vs réel
+    private DateTime _from;
+    private DateTime _to;
+    private int _onTimeMinutes = 5;
+    private bool _loadingReal;
+    private PlanVsRealStats? _stats;
+    private IReadOnlyList<PlanVsRealStats> _lines = Array.Empty<PlanVsRealStats>();
+
+    private int MonthOffset => ((int)_month.DayOfWeek + 6) % 7;   // lundi = 0
+
+    protected override async Task OnInitializedAsync()
+    {
+        var today = Calendar.Today;
+        _month = new DateTime(today.Year, today.Month, 1);
+        _to = today.AddDays(-1).ToDateTime(TimeOnly.MinValue);
+        _from = _to.AddDays(-29);
+        await LoadMonthAsync();
+    }
+
+    private async Task LoadMonthAsync()
+    {
+        _error = null;
+        try
+        {
+            var from = DateOnly.FromDateTime(_month);
+            var to = from.AddMonths(1).AddDays(-1);
+            _coverage = await Kpi.GetCoverageAsync(from, to);
+            _byDay = _coverage.ToDictionary(c => c.Day);
+        }
+        catch (Exception ex)
+        {
+            _error = "Lecture de la couverture impossible : " + ex.Message;
+        }
+        _day = null;
+        _dayKpi = null;
+    }
+
+    private async Task ChangeMonthAsync(int delta)
+    {
+        _month = _month.AddMonths(delta);
+        await LoadMonthAsync();
+    }
+
+    private async Task GoToTodayAsync()
+    {
+        var today = Calendar.Today;
+        _month = new DateTime(today.Year, today.Month, 1);
+        await LoadMonthAsync();
+    }
+
+    private async Task SelectDayAsync(DateOnly date)
+    {
+        _day = date;
+        _dayKpi = null;
+        _error = null;
+        try
+        {
+            _dayKpi = await Kpi.GetDayAsync(date);
+        }
+        catch (Exception ex)
+        {
+            _error = "Calcul des KPI du jour impossible : " + ex.Message;
+        }
+    }
+
+    private async Task LoadRealAsync()
+    {
+        _loadingReal = true;
+        _error = null;
+        try
+        {
+            var from = DateOnly.FromDateTime(_from);
+            var to = DateOnly.FromDateTime(_to);
+            var seconds = Math.Max(0, _onTimeMinutes) * 60;
+            _stats = await Kpi.GetPlanVsRealAsync(from, to, seconds);
+            _lines = await Kpi.GetPlanVsRealByLineAsync(from, to, seconds);
+        }
+        catch (Exception ex)
+        {
+            _error = "Calcul prévu vs réel impossible : " + ex.Message;
+        }
+        finally
+        {
+            _loadingReal = false;
+        }
+    }
+
+    private static string StatusCss(DayStatus s) => s switch
+    {
+        DayStatus.Complete => "complete",
+        DayStatus.Partial => "partial",
+        DayStatus.Unplanned => "unplanned",
+        _ => "none",
+    };
+
+    private static string Pct(double? v) => v is { } x ? (x * 100).ToString("0.#", CultureInfo.InvariantCulture) + " %" : "—";
+    private static string Num(double v) => v.ToString("0.#", CultureInfo.InvariantCulture);
+    
+    private async Task OnMonthChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var month) && month >= 1 && month <= 12)
+        {
+            _month = new DateTime(_month.Year, month, 1);
+            await LoadMonthAsync();
+        }
+    }
+
+    private async Task OnYearChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var year) && year >= 2010 && year <= 2030)
+        {
+            _month = new DateTime(year, _month.Month, 1);
+            await LoadMonthAsync();
+        }
+    }
+}

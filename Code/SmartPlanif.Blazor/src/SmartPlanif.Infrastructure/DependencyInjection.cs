@@ -23,6 +23,9 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<IAllocationSettingsStore>(
             new JsonAllocationSettingsStore(settingsFilePath, DemoDataStore.CreateDemoPolicy));
         services.AddSingleton<IAgentRepository>(sp => sp.GetRequiredService<DemoDataStore>());
+        services.AddSingleton<IBusRepository>(sp => sp.GetRequiredService<DemoDataStore>());
+        services.AddSingleton<IKpiRepository>(sp => sp.GetRequiredService<DemoDataStore>());
+        services.AddSingleton<ILeaveRepository>(sp => sp.GetRequiredService<DemoDataStore>());
         return services;
     }
 
@@ -43,6 +46,9 @@ public static class InfrastructureServiceRegistration
         services.AddTransient<IDatabaseDiagnostics, MySqlDiagnostics>();
         services.AddSingleton<IAllocationSettingsStore>(new JsonAllocationSettingsStore(settingsFilePath));
         services.AddTransient<IAgentRepository, MySqlAgentRepository>();
+        services.AddTransient<IBusRepository, MySqlBusRepository>();
+        services.AddTransient<IKpiRepository, MySqlKpiRepository>();
+        services.AddTransient<ILeaveRepository, MySqlLeaveRepository>();
         return services;
     }
 }

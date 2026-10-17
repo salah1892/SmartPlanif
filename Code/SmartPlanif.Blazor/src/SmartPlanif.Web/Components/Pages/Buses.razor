@@ -1,0 +1,458 @@
+﻿@page "/buses"
+@using System.Globalization
+@inject BusQueryService BusService
+@inject PlanningCalendar Calendar
+
+<PageTitle>Bus</PageTitle>
+
+<h1>Parc de bus</h1>
+<p class="muted">
+    Liste des bus de la table <code>drvehic</code> (lecture seule), classés par catégorie, centre (dépôt), délégation, ligne ou âge.
+    Le lien bus ↔ ligne vient des voyages (<code>trips</code>) du <strong>jour choisi</strong> ci-dessous.
+</p>
+
+@if (_loading)
+{
+    <p>Chargement…</p>
+}
+else if (_error is not null)
+{
+    <div class="alert error">@_error</div>
+}
+else
+{
+    var now = DateTime.Today;
+    var filtered = BusQuery.Apply(_all, CurrentFilter(), _sort, _desc, now);
+    var pageCount = BusQuery.PageCount(filtered.Count, PageSize);
+    if (_page > pageCount) _page = pageCount;
+    var rows = BusQuery.Page(filtered, _page, PageSize);
+    var groups = _group == BusGroup.Line ? BusQuery.SummarizeByLine(_all, _usage) : BusQuery.Summarize(_all, _group, now);
+
+    <div class="kpis">
+        <div class="kpi"><span class="value">@_all.Count</span><span>bus au total</span></div>
+        <div class="kpi"><span class="value">@filtered.Count</span><span>correspondent aux filtres</span></div>
+        <div class="kpi"><span class="value">@filtered.Sum(b => b.Capacity)</span><span>places (assises + debout) filtrées</span></div>
+        <div class="kpi"><span class="value">@_all.Count(b => b.ActiveFlag == 1)</span><span>avec DEACTIF = 1</span></div>
+        <div class="kpi"><span class="value">@_usageBusCount</span><span>bus utilisés le @_usageDate.ToString("dd/MM/yyyy")</span></div>
+    </div>
+
+    @if (_all.Count > 0 && _all.All(b => b.ActiveFlag != 1))
+    {
+        <div class="alert warn">
+            <code>DEACTIF</code> ne vaut 1 pour aucun bus : le champ semble non renseigné (le moteur traite alors tous les bus comme actifs, mode <code>Auto</code>).
+        </div>
+    }
+
+    <div class="panel">
+        <div class="form-grid compact">
+            <label>Jour (lignes desservies, voyages)
+                <input type="date" @bind="_usageDate" @bind:after="LoadUsageAsync" /></label>
+            <label>Regrouper par
+                <select @bind="_group">
+                    <option value="@BusGroup.Category">Catégorie (type de bus)</option>
+                    <option value="@BusGroup.Center">Centre (dépôt)</option>
+                    <option value="@BusGroup.Delegation">Délégation</option>
+                    <option value="@BusGroup.Line">Ligne (jour choisi)</option>
+                    <option value="@BusGroup.AgeBand">Âge du bus</option>
+                </select></label>
+        </div>
+        <div class="group-cards">
+            @foreach (var g in groups)
+            {
+                <button class="group-card @(IsGroupActive(g) ? "active" : "")" @onclick="() => ApplyGroup(g)">
+                    <span class="group-label">@g.Label</span>
+                    <span class="group-count">@g.Count bus</span>
+                    <span class="muted small">@g.Capacity places</span>
+                </button>
+            }
+            @if (groups.Count == 0)
+            {
+                <span class="muted">Aucun groupe (aucun voyage affecté à un bus ce jour-là ?).</span>
+            }
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="form-grid compact">
+            <label>Recherche (plaque ou code)
+                <input type="search" placeholder="ex. 4512 TU, 12…" @bind="_text" @bind:event="oninput" @bind:after="ResetPage" /></label>
+            <label>Catégorie
+                <select @bind="_categoryId" @bind:after="ResetPage">
+                    <option value="">Toutes</option>
+                    @foreach (var c in _categories) { <option value="@c.Id">@c.Label</option> }
+                </select></label>
+            <label>Centre (dépôt)
+                <select @bind="_centerId" @bind:after="ResetPage">
+                    <option value="">Tous</option>
+                    @foreach (var c in _centers) { <option value="@c">Centre @c</option> }
+                </select></label>
+            <label>Délégation
+                <select @bind="_delegationId" @bind:after="ResetPage">
+                    <option value="">Toutes</option>
+                    @foreach (var d in _delegations) { <option value="@d.Id">@d.Label</option> }
+                </select></label>
+            <label>Ligne (jour choisi)
+                <select @bind="_lineId" @bind:after="ResetPage">
+                    <option value="">Toutes</option>
+                    @foreach (var l in _lines) { <option value="@l.Id">@l.Label</option> }
+                </select></label>
+            <label>Âge
+                <select @bind="_ageBand" @bind:after="ResetPage">
+                    <option value="">Tous</option>
+                    @foreach (var band in AgeBands) { <option value="@band">@band</option> }
+                </select></label>
+            <label>Actif (DEACTIF)
+                <select @bind="_active" @bind:after="ResetPage">
+                    <option value="">Indifférent</option>
+                    <option value="yes">DEACTIF = 1</option>
+                    <option value="no">DEACTIF ≠ 1</option>
+                </select></label>
+        </div>
+        <div class="toolbar">
+            <button class="btn" @onclick="ResetFilters">Réinitialiser les filtres</button>
+            <label class="inline">Lignes par page
+                <select @bind="PageSize" @bind:after="ResetPage">
+                    <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option>
+                </select></label>
+        </div>
+    </div>
+
+    <table class="grid selectable">
+        <thead>
+            <tr>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Id)">Code @Arrow(BusSort.Id)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Plate)">Matricule @Arrow(BusSort.Plate)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Category)">Catégorie @Arrow(BusSort.Category)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Capacity)">Places (assises / debout) @Arrow(BusSort.Capacity)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Age)">Mise en circulation @Arrow(BusSort.Age)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Center)">Centre @Arrow(BusSort.Center)</th>
+                <th class="sortable" @onclick="() => SortBy(BusSort.Delegation)">Délégation @Arrow(BusSort.Delegation)</th>
+                <th>Lignes (jour)</th>
+                <th>DEACTIF</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in rows)
+            {
+                <tr class="@(_selected?.Id == b.Id ? "selected" : "")" @onclick="() => SelectAsync(b)">
+                    <td><code>@b.Id</code></td>
+                    <td>@(b.Plate ?? "—")</td>
+                    <td>@(b.CategoryLabel ?? "—") <span dir="rtl" class="muted small">@b.CategoryLabelAr</span></td>
+                    <td>@b.Capacity <span class="muted small">(@b.Seats / @b.Standing)</span></td>
+                    <td>@(b.InServiceSince?.ToString("MM/yyyy") ?? "—") <span class="muted small">@BusQuery.AgeBandOf(b.InServiceSince, now)</span></td>
+                    <td>@(b.CenterId?.ToString() ?? "—")</td>
+                    <td>@(b.DelegationLabel ?? b.DelegationId?.ToString() ?? "—")</td>
+                    <td>@LinesOf(b.Id)</td>
+                    <td>@(b.ActiveFlag?.ToString() ?? "—")</td>
+                </tr>
+            }
+            @if (rows.Count == 0)
+            {
+                <tr><td colspan="9" class="muted">Aucun bus ne correspond aux filtres.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="toolbar">
+        <button class="btn" @onclick="() => _page = 1" disabled="@(_page <= 1)">⏮</button>
+        <button class="btn" @onclick="() => _page--" disabled="@(_page <= 1)">◀</button>
+        <span>Page @_page / @pageCount</span>
+        <button class="btn" @onclick="() => _page++" disabled="@(_page >= pageCount)">▶</button>
+        <button class="btn" @onclick="() => _page = pageCount" disabled="@(_page >= pageCount)">⏭</button>
+    </div>
+
+    @*
+    @if (_selected is not null)
+    {
+        <div class="panel">
+            <h2 style="margin-top:0">@(_selected.Plate ?? "Bus") <code>#@_selected.Id</code></h2>
+            <p class="muted">
+                @(_selected.CategoryLabel ?? "Sans catégorie") · @_selected.Capacity places ·
+                Centre @(_selected.CenterId?.ToString() ?? "—") · Délégation @(_selected.DelegationLabel ?? "—") ·
+                Mise en circulation : @(_selected.InServiceSince?.ToString("dd/MM/yyyy") ?? "—")
+            </p>
+
+            @if (_tripsError is not null)
+            {
+                <div class="alert error">@_tripsError</div>
+            }
+            else if (_trips is not null)
+            {
+                var km = _trips.Where(t => t.Arrival is not null).Sum(t => (t.Arrival!.Value - t.Departure).TotalHours);
+                <p>Voyages du <strong>@_usageDate.ToString("dd/MM/yyyy")</strong> : <strong>@_trips.Count</strong> — environ <strong>@km.ToString("0.#", CultureInfo.InvariantCulture) h</strong> de service.</p>
+                @if (_trips.Count > 0)
+                {
+                    <table class="grid">
+                        <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Prévu (BUS_PR)</th><th>Réel (BUS_RE)</th></tr></thead>
+                        <tbody>
+                            @foreach (var t in _trips)
+                            {
+                                <tr>
+                                    <td>@t.Departure.ToString("HH:mm")</td>
+                                    <td>@(t.Arrival?.ToString("HH:mm") ?? "?")</td>
+                                    <td>@t.LineLabel</td>
+                                    <td>@(t.Planned ? "✔" : "—")</td>
+                                    <td>@(t.Real ? "✔" : "—")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
+        </div>
+    }
+    *@
+    <!-- Drawer overlay : fond sombre cliquable pour fermer -->
+@if (_selected is not null)
+{
+    <div class="drawer-overlay" @onclick="CloseDrawer"></div>
+}
+
+<!-- Drawer latéral : panneau de détails du bus -->
+@if (_selected is not null)
+{
+    <aside class="drawer">
+        <div class="drawer-header">
+            <div>
+                <h2 style="margin:0">@(_selected.Plate ?? "Bus") <code>#@_selected.Id</code></h2>
+                <span class="muted small">
+                    @(_selected.CategoryLabel ?? "Sans catégorie") · @_selected.Capacity places
+                </span>
+            </div>
+            <button class="drawer-close" @onclick="CloseDrawer" title="Fermer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="drawer-body">
+            <p class="muted small">
+                Centre @(_selected.CenterId?.ToString() ?? "—") · 
+                Délégation @(_selected.DelegationLabel ?? "—") ·
+                Mise en circulation : @(_selected.InServiceSince?.ToString("MM/yyyy") ?? "—")
+                @if (_selected.InServiceSince is { } s) {
+                    <span class="muted">(@BusQuery.AgeBandOf(s, DateTime.Today))</span>
+                }
+            </p>
+
+            <div class="toolbar">
+                <label class="inline">Voyages du jour
+                    <input type="date" @bind="_usageDate" @bind:after="LoadTripsAsync" />
+                </label>
+            </div>
+
+            @if (_tripsError is not null)
+            {
+                <div class="alert error">@_tripsError</div>
+            }
+            else if (_trips is not null)
+            {
+                var hours = _trips
+                    .Where(t => t.Arrival is not null)
+                    .Sum(t => (t.Arrival!.Value - t.Departure).TotalHours);
+
+                <p class="small">
+                    Voyages du <strong>@_usageDate.ToString("dd/MM/yyyy")</strong> : 
+                    <strong>@_trips.Count</strong> — environ 
+                    <strong>@hours.ToString("0.#", CultureInfo.InvariantCulture) h</strong> de service.
+                </p>
+
+                @if (_trips.Count > 0)
+                {
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th>Départ</th>
+                                <th>Arrivée</th>
+                                <th>Ligne</th>
+                                <th>Prévu</th>
+                                <th>Réel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var t in _trips)
+                            {
+                                <tr>
+                                    <td>@t.Departure.ToString("HH:mm")</td>
+                                    <td>@(t.Arrival?.ToString("HH:mm") ?? "?")</td>
+                                    <td>@t.LineLabel</td>
+                                    <td>@(t.Planned ? "✔" : "—")</td>
+                                    <td>@(t.Real ? "✔" : "—")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="muted small">Aucun voyage affecté à ce bus pour le jour choisi.</p>
+                }
+            }
+        </div>
+    </aside>
+}
+}
+
+@code {
+    private static readonly string[] AgeBands = { "0-5 ans", "5-10 ans", "10-15 ans", "15 ans et +", "Inconnu" };
+
+    private IReadOnlyList<BusListItem> _all = Array.Empty<BusListItem>();
+    private IReadOnlyList<(long Id, string Label)> _categories = Array.Empty<(long, string)>();
+    private IReadOnlyList<long> _centers = Array.Empty<long>();
+    private IReadOnlyList<(long Id, string Label)> _delegations = Array.Empty<(long, string)>();
+    private IReadOnlyList<(long Id, string Label)> _lines = Array.Empty<(long, string)>();
+    private IReadOnlyList<BusLineUsage> _usage = Array.Empty<BusLineUsage>();
+    private ILookup<long, BusLineUsage> _usageByBus = Array.Empty<BusLineUsage>().ToLookup(u => u.BusId);
+    private int _usageBusCount;
+    private bool _loading = true;
+    private string? _error;
+
+    private string _text = "";
+    private long? _categoryId;
+    private long? _centerId;
+    private long? _delegationId;
+    private long? _lineId;
+    private string _ageBand = "";
+    private string _active = "";
+    private BusGroup _group = BusGroup.Category;
+    private BusSort _sort = BusSort.Plate;
+    private bool _desc;
+    private int _page = 1;
+    public int PageSize { get; set; } = 25;
+
+    private DateTime _usageDate;
+    private BusListItem? _selected;
+    private IReadOnlyList<BusTripRow>? _trips;
+    private string? _tripsError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _usageDate = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        try
+        {
+            _all = await BusService.LoadAsync();
+            _categories = _all.Where(b => b.CategoryId is not null)
+                .GroupBy(b => b.CategoryId!.Value)
+                .Select(g => (g.Key, g.First().CategoryLabel ?? $"Catégorie {g.Key}"))
+                .OrderBy(x => x.Item2).ToList();
+            _centers = _all.Where(b => b.CenterId is not null).Select(b => b.CenterId!.Value).Distinct().OrderBy(x => x).ToList();
+            _delegations = _all.Where(b => b.DelegationId is not null)
+                .GroupBy(b => b.DelegationId!.Value)
+                .Select(g => (g.Key, g.First().DelegationLabel ?? $"Délégation {g.Key}"))
+                .OrderBy(x => x.Item2).ToList();
+            await LoadUsageAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = "Chargement des bus impossible : " + ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    /// <summary>Recharge les lignes desservies par bus pour le jour choisi (et le détail du bus sélectionné).</summary>
+    private async Task LoadUsageAsync()
+    {
+        try
+        {
+            _usage = await BusService.GetLineUsageAsync(DateOnly.FromDateTime(_usageDate));
+            _usageByBus = _usage.ToLookup(u => u.BusId);
+            _usageBusCount = _usage.Select(u => u.BusId).Distinct().Count();
+            _lines = _usage.GroupBy(u => u.LineId).Select(g => (g.Key, g.First().LineLabel)).OrderBy(x => x.Item2).ToList();
+            if (_lineId is { } l && _lines.All(x => x.Id != l)) _lineId = null;
+        }
+        catch (Exception ex)
+        {
+            _error = "Lecture des lignes desservies impossible : " + ex.Message;
+        }
+        await LoadTripsAsync();
+    }
+
+    private BusFilter CurrentFilter()
+    {
+        IReadOnlySet<long>? onLine = _lineId is { } l
+            ? _usage.Where(u => u.LineId == l).Select(u => u.BusId).ToHashSet()
+            : null;
+        return new BusFilter(_text, _categoryId, _centerId, _delegationId, string.IsNullOrEmpty(_ageBand) ? null : _ageBand,
+            _active switch { "yes" => true, "no" => false, _ => null }, onLine);
+    }
+
+    private string LinesOf(long busId) =>
+        string.Join(", ", _usageByBus[busId].Select(u => $"{u.LineLabel} ({u.Trips})"));
+
+    private void ResetPage() => _page = 1;
+
+    private void ResetFilters()
+    {
+        _text = ""; _categoryId = null; _centerId = null; _delegationId = null; _lineId = null; _ageBand = ""; _active = "";
+        _page = 1;
+    }
+
+    private void SortBy(BusSort sort)
+    {
+        if (_sort == sort) _desc = !_desc; else { _sort = sort; _desc = false; }
+        _page = 1;
+    }
+
+    private string Arrow(BusSort sort) => _sort != sort ? "" : _desc ? "▼" : "▲";
+
+    /// <summary>Un clic sur une carte de groupe filtre la liste sur ce groupe (re-clic : retire le filtre).</summary>
+    private void ApplyGroup(BusGroupSummary g)
+    {
+        var active = IsGroupActive(g);
+        long? id = long.TryParse(g.Key, out var parsed) ? parsed : null;
+        switch (_group)
+        {
+            case BusGroup.Category: _categoryId = active ? null : id; break;
+            case BusGroup.Center: _centerId = active ? null : id; break;
+            case BusGroup.Delegation: _delegationId = active ? null : id; break;
+            case BusGroup.Line: _lineId = active ? null : id; break;
+            default: _ageBand = active ? "" : g.Key; break;
+        }
+        _page = 1;
+    }
+
+    private bool IsGroupActive(BusGroupSummary g)
+    {
+        long? id = long.TryParse(g.Key, out var parsed) ? parsed : null;
+        return _group switch
+        {
+            BusGroup.Category => _categoryId == id && id is not null,
+            BusGroup.Center => _centerId == id && id is not null,
+            BusGroup.Delegation => _delegationId == id && id is not null,
+            BusGroup.Line => _lineId == id && id is not null,
+            _ => _ageBand == g.Key,
+        };
+    }
+
+    private async Task SelectAsync(BusListItem bus)
+    {
+        _selected = bus;
+        await LoadTripsAsync();
+    }
+
+    private async Task LoadTripsAsync()
+    {
+        if (_selected is null) return;
+        _tripsError = null;
+        try
+        {
+            _trips = await BusService.GetTripsAsync(_selected.Id, DateOnly.FromDateTime(_usageDate));
+        }
+        catch (Exception ex)
+        {
+            _trips = null;
+            _tripsError = "Lecture des voyages impossible : " + ex.Message;
+        }
+    }
+    private void CloseDrawer()
+    {
+        _selected = null;
+        _trips = null;
+        _tripsError = null;
+    }
+}

@@ -139,3 +139,124 @@ public interface IAgentRepository
     /// <summary>Voyages d'un agent pour un jour de service (prévus ou réels).</summary>
     Task<IReadOnlyList<AgentTripRow>> GetAgentTripsAsync(long agentId, DateOnly date, CancellationToken ct);
 }
+
+#region Bus
+
+/// <summary>Un bus (table drvehic) avec sa catégorie (drcatve) et sa délégation (drdeleg).</summary>
+public sealed record BusListItem(
+    long Id, string? Plate, long? CategoryId, string? CategoryLabel, string? CategoryLabelAr,
+    int Seats, int Standing, DateTime? InServiceSince,
+    long? CenterId, long? DelegationId, string? DelegationLabel, long? ActiveFlag)
+{
+    /// <summary>Capacité totale = places assises + debout.</summary>
+    public int Capacity => Seats + Standing;
+}
+
+/// <summary>Lignes desservies par un bus sur un jour (ressources réelles, à défaut prévues).</summary>
+public sealed record BusLineUsage(long BusId, long LineId, string LineLabel, int Trips);
+
+/// <summary>Un voyage d'un bus sur un jour : prévu (BUS_PR) et/ou réel (BUS_RE).</summary>
+public sealed record BusTripRow(long TripId, string LineLabel, DateTime Departure, DateTime? Arrival, bool Planned, bool Real);
+
+/// <summary>Lecture des bus (lecture seule).</summary>
+public interface IBusRepository
+{
+    /// <summary>Tous les bus.</summary>
+    Task<IReadOnlyList<BusListItem>> GetBusesAsync(CancellationToken ct);
+
+    /// <summary>Lignes desservies par chaque bus pour un jour de service.</summary>
+    Task<IReadOnlyList<BusLineUsage>> GetBusLineUsageAsync(DateOnly date, CancellationToken ct);
+
+    /// <summary>Voyages d'un bus pour un jour de service.</summary>
+    Task<IReadOnlyList<BusTripRow>> GetBusTripsAsync(long busId, DateOnly date, CancellationToken ct);
+}
+#endregion
+
+#region KPI's
+/// <summary>Couverture d'un jour de service, calculée en SQL sur trips.</summary>
+/// <param name="Complete">Voyages avec BUS_PR, CHAUFF_PR et REC_PR tous renseignés.</param>
+/// <param name="Partial">Voyages avec au moins une ressource prévue mais pas les trois.</param>
+public sealed record DayCoverage(DateOnly Day, int Trips, int Complete, int Partial, int Realized);
+
+/// <summary>Changements d'un poste entre prévu et réel.</summary>
+/// <param name="Planned">Voyages avec une ressource prévue (*_PR &gt; 0).</param>
+/// <param name="Changed">Prévu ET réel renseignés, mais différents.</param>
+/// <param name="NoReal">Prévu renseigné, réel absent (NULL ou 0) : sémantique à valider avec la société.</param>
+public sealed record RoleChange(long Planned, long Changed, long NoReal)
+{
+    /// <summary>Taux strict : seuls les voyages où le réel est connu comptent.</summary>
+    public double? Strict => Planned - NoReal > 0 ? (double)Changed / (Planned - NoReal) : null;
+
+    /// <summary>Taux « littéral » du document (chapitre 7) : un réel absent compte comme un changement.</summary>
+    public double? Literal => Planned > 0 ? (double)(Changed + NoReal) / Planned : null;
+}
+
+/// <summary>Indicateurs prévu vs réel (chapitre 7 du document de stratégie) pour une période ou une ligne.</summary>
+public sealed record PlanVsRealStats(
+    string Label, long Trips, long WithPlan, long WithReal, long PlanAndReal,
+    RoleChange Bus, RoleChange Driver, RoleChange Receiver,
+    long AnyChanged, long ChangeFlag, long DelayKnown, double? AvgDelaySeconds, long OnTime)
+{
+    /// <summary>Part des voyages planifiés (au moins une ressource prévue).</summary>
+    public double? PlannedRate => Trips > 0 ? (double)WithPlan / Trips : null;
+
+    /// <summary>Taux global de changement : au moins un poste modifié, parmi les voyages ayant prévu et réel.</summary>
+    public double? GlobalChangeRate => PlanAndReal > 0 ? (double)AnyChanged / PlanAndReal : null;
+
+    /// <summary>Part des voyages à l'heure parmi ceux dont le retard est connu.</summary>
+    public double? OnTimeRate => DelayKnown > 0 ? (double)OnTime / DelayKnown : null;
+}
+
+/// <summary>Requêtes d'agrégation pour les KPI (lecture seule).</summary>
+public interface IKpiRepository
+{
+    /// <summary>Couverture jour par jour sur [from, to] (jours sans voyage absents).</summary>
+    Task<IReadOnlyList<DayCoverage>> GetCoverageAsync(DateOnly from, DateOnly to, CancellationToken ct);
+
+    /// <summary>Indicateurs prévu vs réel sur [from, to]. <paramref name="onTimeSeconds"/> : retard toléré pour « à l'heure ».</summary>
+    Task<PlanVsRealStats> GetPlanVsRealAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct);
+
+    /// <summary>Mêmes indicateurs par ligne (les plus modifiées d'abord).</summary>
+    Task<IReadOnlyList<PlanVsRealStats>> GetPlanVsRealByLineAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct);
+}
+
+
+#endregion
+
+#region Congé (Leave)
+/// <summary>Congé / absence d'un agent (ligne KIND='AGENT' de resource_unavailability). EndAt est EXCLU (minuit du lendemain du dernier jour).</summary>
+public sealed record AgentLeave(
+    long Id, long AgentId, DateTime StartAt, DateTime EndAt, string Type, string? Reason, string? CreatedBy, DateTime? CreatedAt)
+{
+    public DateOnly FirstDay => DateOnly.FromDateTime(StartAt);
+    public DateOnly LastDay => DateOnly.FromDateTime(EndAt.AddTicks(-1));
+    public int Days => LastDay.DayNumber - FirstDay.DayNumber + 1;
+}
+
+/// <summary>Saisie d'un congé, en jours entiers (premier et dernier jour inclus).</summary>
+public sealed record AgentLeaveDraft(long AgentId, string Type, DateOnly FirstDay, DateOnly LastDay, string? Comment);
+
+/// <summary>Voyage déjà planifié (prévu) qui tombe pendant un congé.</summary>
+public sealed record LeaveConflict(long TripId, string LineLabel, DateTime Departure, AgentPost Post);
+
+/// <summary>Lecture et écriture des congés des agents.</summary>
+public interface ILeaveRepository
+{
+    /// <summary>Vrai si la table resource_unavailability existe avec la colonne LEAVE_TYPE (script sql/004).</summary>
+    Task<bool> IsReadyAsync(CancellationToken ct);
+
+    /// <summary>Congés qui chevauchent [from, to[ ; pour un agent, ou pour tous si <paramref name="agentId"/> est null.</summary>
+    Task<IReadOnlyList<AgentLeave>> GetLeavesAsync(long? agentId, DateTime from, DateTime to, CancellationToken ct);
+
+    /// <summary>Ajoute un congé et renvoie son identifiant.</summary>
+    Task<long> AddAsync(AgentLeave leave, CancellationToken ct);
+
+    /// <summary>Supprime un congé, seulement s'il n'est pas terminé avant <paramref name="notEndedBefore"/>.</summary>
+    Task<bool> DeleteAsync(long id, DateTime notEndedBefore, CancellationToken ct);
+
+    /// <summary>Voyages prévus (hors effectués) de l'agent entre deux jours inclus.</summary>
+    Task<IReadOnlyList<LeaveConflict>> GetConflictsAsync(long agentId, DateOnly firstDay, DateOnly lastDay, CancellationToken ct);
+}
+
+
+#endregion

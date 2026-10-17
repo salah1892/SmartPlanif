@@ -43,6 +43,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBbGxvY2F0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Pages/Buses.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xCdXNlcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Pages/Constraints.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb25zdHJhaW50cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -53,6 +57,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Pages/Kpis.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xLcGlzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Pages/LineTypes.razor]

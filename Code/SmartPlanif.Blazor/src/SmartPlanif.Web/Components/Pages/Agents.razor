@@ -1,13 +1,14 @@
 ﻿@page "/agents"
 @using System.Globalization
 @inject AgentQueryService AgentService
+@inject LeaveService Leaves
 @inject PlanningCalendar Calendar
 
 <PageTitle>Agents</PageTitle>
 
 <h1>Agents (chauffeurs et receveurs)</h1>
 <p class="muted">
-    Liste des agents de la table <code>dragent</code> (lecture seule). Cliquez sur un agent pour voir ses voyages d'un jour donné.
+    Liste des agents de la table <code>dragent</code>. Cliquez sur un agent pour voir ses voyages d'un jour donné et gérer ses congés.
 </p>
 
 @if (_loading)
@@ -20,7 +21,14 @@ else if (_error is not null)
 }
 else
 {
-    var filtered = AgentQuery.Apply(_all, CurrentFilter(), _sort, _desc);
+    @* CONGÉ : pré-filtre « en congé aujourd'hui » avant les filtres habituels *@
+    var source = _leaveFilter switch
+    {
+        "yes" => _all.Where(a => _onLeaveToday.Contains(a.Id)),
+        "no" => _all.Where(a => !_onLeaveToday.Contains(a.Id)),
+        _ => _all.AsEnumerable(),
+    };
+    var filtered = AgentQuery.Apply(source, CurrentFilter(), _sort, _desc);
     var pageCount = AgentQuery.PageCount(filtered.Count, PageSize);
     if (_page > pageCount) _page = pageCount;
     var rows = AgentQuery.Page(filtered, _page, PageSize);
@@ -30,31 +38,55 @@ else
         <div class="kpi"><span class="value">@filtered.Count</span><span>correspondent aux filtres</span></div>
         <div class="kpi"><span class="value">@_all.Count(a => a.Pda is > 0)</span><span>avec un PDA</span></div>
         <div class="kpi"><span class="value">@_all.Count(a => a.RestDay is null)</span><span>sans jour de repos valide</span></div>
+        @if (_leaveReady)
+        {
+            <div class="kpi @(_onLeaveToday.Count > 0 ? "bad" : "")"><span class="value">@_onLeaveToday.Count</span><span>en congé aujourd'hui</span></div>
+        }
     </div>
+
+    @if (!_leaveReady)
+    {
+        <div class="alert warn">
+            La gestion des congés n'est pas active : la table <code>resource_unavailability</code> (avec la colonne <code>LEAVE_TYPE</code>) est absente.
+            Exécutez <code>sql/004_leave_management.sql</code>.
+        </div>
+    }
 
     <div class="panel">
         <div class="form-grid compact">
             <label>Recherche (code, nom FR / AR)
-                <input type="search" placeholder="ex. 1042, Ben Ali, …" @bind="_text" @bind:event="oninput" @bind:after="ResetPage" /></label>
+                <input type="search" placeholder="ex. 1042, Ben Ali, …" @bind="_text" @bind:event="oninput" @bind:after="ResetPage"/></label>
             <label>Centre
                 <select @bind="_centerId" @bind:after="ResetPage">
                     <option value="">Tous</option>
-                    @foreach (var c in _centers) { <option value="@c">Centre @c</option> }
+                    @foreach (var c in _centers)
+                    {
+                        <option value="@c">Centre @c</option>
+                    }
                 </select></label>
             <label>Délégation
                 <select @bind="_delegationId" @bind:after="ResetPage">
                     <option value="">Toutes</option>
-                    @foreach (var d in _delegations) { <option value="@d.Id">@d.Label</option> }
+                    @foreach (var d in _delegations)
+                    {
+                        <option value="@d.Id">@d.Label</option>
+                    }
                 </select></label>
             <label>Jour de repos
                 <select @bind="_restDay" @bind:after="ResetPage">
                     <option value="">Tous</option>
-                    @for (var i = 1; i <= 7; i++) { <option value="@i">@DayName(i)</option> }
+                    @for (var i = 1; i <= 7; i++)
+                    {
+                        <option value="@i">@DayName(i)</option>
+                    }
                 </select></label>
             <label>Qualification (DECQUAL)
                 <select @bind="_qual" @bind:after="ResetPage">
                     <option value="">Toutes</option>
-                    @foreach (var q in _quals) { <option value="@q">@q</option> }
+                    @foreach (var q in _quals)
+                    {
+                        <option value="@q">@q</option>
+                    }
                 </select></label>
             <label>PDA
                 <select @bind="_pda" @bind:after="ResetPage">
@@ -62,6 +94,15 @@ else
                     <option value="yes">Avec PDA</option>
                     <option value="no">Sans PDA</option>
                 </select></label>
+            @if (_leaveReady)
+            {
+                <label>Congé aujourd'hui
+                    <select @bind="_leaveFilter" @bind:after="ResetPage">
+                        <option value="">Indifférent</option>
+                        <option value="yes">En congé</option>
+                        <option value="no">Disponible</option>
+                    </select></label>
+            }
         </div>
         <div class="toolbar">
             <button class="btn" @onclick="ResetFilters">Réinitialiser les filtres</button>
@@ -74,35 +115,41 @@ else
 
     <table class="grid selectable">
         <thead>
-            <tr>
-                <th class="sortable" @onclick="() => SortBy(AgentSort.Id)">Code @Arrow(AgentSort.Id)</th>
-                <th class="sortable" @onclick="() => SortBy(AgentSort.Name)">Nom @Arrow(AgentSort.Name)</th>
-                <th>الاسم</th>
-                <th>Qualif.</th>
-                <th class="sortable" @onclick="() => SortBy(AgentSort.Center)">Centre @Arrow(AgentSort.Center)</th>
-                <th class="sortable" @onclick="() => SortBy(AgentSort.Delegation)">Délégation @Arrow(AgentSort.Delegation)</th>
-                <th class="sortable" @onclick="() => SortBy(AgentSort.RestDay)">Repos @Arrow(AgentSort.RestDay)</th>
-                <th>PDA</th>
-            </tr>
+        <tr>
+            <th class="sortable" @onclick="() => SortBy(AgentSort.Id)">Code @Arrow(AgentSort.Id)</th>
+            <th class="sortable" @onclick="() => SortBy(AgentSort.Name)">Nom @Arrow(AgentSort.Name)</th>
+            <th>الاسم</th>
+            <th>Qualif.</th>
+            <th class="sortable" @onclick="() => SortBy(AgentSort.Center)">Centre @Arrow(AgentSort.Center)</th>
+            <th class="sortable" @onclick="() => SortBy(AgentSort.Delegation)">Délégation @Arrow(AgentSort.Delegation)</th>
+            <th class="sortable" @onclick="() => SortBy(AgentSort.RestDay)">Repos @Arrow(AgentSort.RestDay)</th>
+            <th>PDA</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var a in rows)
-            {
-                <tr class="@(_selected?.Id == a.Id ? "selected" : "")" @onclick="() => SelectAsync(a)">
-                    <td><code>@a.Id</code></td>
-                    <td>@(a.NameFr ?? "—")</td>
-                    <td dir="rtl">@(a.NameAr ?? "")</td>
-                    <td>@(a.Qualification ?? "—")</td>
-                    <td>@(a.CenterId?.ToString() ?? "—")</td>
-                    <td>@(a.DelegationLabel ?? a.DelegationId?.ToString() ?? "—")</td>
-                    <td>@(a.RestDay is { } r ? DayName(r) : "—")</td>
-                    <td>@(a.Pda is > 0 ? a.Pda.ToString() : "—")</td>
-                </tr>
-            }
-            @if (rows.Count == 0)
-            {
-                <tr><td colspan="8" class="muted">Aucun agent ne correspond aux filtres.</td></tr>
-            }
+        @foreach (var a in rows)
+        {
+            <tr class="@(_selected?.Id == a.Id ? "selected" : "")" @onclick="() => SelectAsync(a)">
+                <td><code>@a.Id</code></td>
+                <td>
+                    @(a.NameFr ?? "—")
+                    @if (_onLeaveToday.Contains(a.Id))
+                    {
+                        <span class="badge leave">En congé</span>
+                    }
+                </td>
+                <td dir="rtl">@(a.NameAr ?? "")</td>
+                <td>@(a.Qualification ?? "—")</td>
+                <td>@(a.CenterId?.ToString() ?? "—")</td>
+                <td>@(a.DelegationLabel ?? a.DelegationId?.ToString() ?? "—")</td>
+                <td>@(a.RestDay is { } r ? DayName(r) : "—")</td>
+                <td>@(a.Pda is > 0 ? a.Pda.ToString() : "—")</td>
+            </tr>
+        }
+        @if (rows.Count == 0)
+        {
+            <tr><td colspan="8" class="muted">Aucun agent ne correspond aux filtres.</td></tr>
+        }
         </tbody>
     </table>
 
@@ -114,33 +161,180 @@ else
         <button class="btn" @onclick="() => _page = pageCount" disabled="@(_page >= pageCount)">⏭</button>
     </div>
 
+    <!-- Drawer overlay : fond sombre cliquable pour fermer -->
     @if (_selected is not null)
     {
-        <div class="panel">
-            <h2 style="margin-top:0">@(_selected.NameFr ?? "Agent") <code>#@_selected.Id</code> <span dir="rtl" class="muted">@_selected.NameAr</span></h2>
-            <p class="muted">
-                Centre @(_selected.CenterId?.ToString() ?? "—") · Délégation @(_selected.DelegationLabel ?? "—") ·
-                Repos : @(_selected.RestDay is { } rd ? DayName(rd) : "—")
-            </p>
-            <div class="toolbar">
-                <label class="inline">Voyages du jour
-                    <input type="date" @bind="_tripDate" @bind:after="LoadTripsAsync" /></label>
+        <div class="drawer-overlay" @onclick="CloseDrawer"></div>
+    }
+
+    <!-- Drawer latéral : panneau de détails -->
+    @if (_selected is not null)
+    {
+        var todayStart = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        <aside class="drawer">
+            <div class="drawer-header">
+                <div>
+                    <h2 style="margin:0">@(_selected.NameFr ?? "Agent") <code>#@_selected.Id</code></h2>
+                    <span dir="rtl" class="muted small">@_selected.NameAr</span>
+                </div>
+                <button class="drawer-close" @onclick="CloseDrawer" title="Fermer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
 
-            @if (_tripsError is not null)
-            {
-                <div class="alert error">@_tripsError</div>
-            }
-            else if (_trips is not null)
-            {
-                var hours = _trips.Where(t => t.Arrival is not null && (t.Planned != AgentPost.None || t.Real != AgentPost.None))
-                                  .Sum(t => (t.Arrival!.Value - t.Departure).TotalHours);
-                <p><strong>@_trips.Count</strong> voyage(s) — environ <strong>@hours.ToString("0.#", CultureInfo.InvariantCulture) h</strong> de conduite/contrôle.</p>
-                @if (_trips.Count > 0)
+            <div class="drawer-body">
+                <p class="muted small">
+                    Centre @(_selected.CenterId?.ToString() ?? "—") ·
+                    Délégation @(_selected.DelegationLabel ?? "—") ·
+                    Repos : @(_selected.RestDay is { } rd ? DayName(rd) : "—")
+                </p>
+
+                @* ===================== CONGÉ : consultation et affectation ===================== *@
+                <h3>Congés et absences</h3>
+                @if (!_leaveReady)
                 {
-                    <table class="grid">
-                        <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Poste prévu</th><th>Poste réel</th></tr></thead>
-                        <tbody>
+                    <div class="alert warn small">Table des congés absente : exécutez <code>sql/004_leave_management.sql</code>.</div>
+                }
+                else
+                {
+                    @if (_onLeaveToday.Contains(_selected.Id))
+                    {
+                        <div class="alert warn small">En congé aujourd'hui : l'agent est exclu de l'allocation (règle A04).</div>
+                    }
+
+                    @if (_leavesError is not null)
+                    {
+                        <div class="alert error small">@_leavesError</div>
+                    }
+                    else if (_leaves.Count == 0)
+                    {
+                        <p class="muted small">Aucun congé enregistré pour cet agent.</p>
+                    }
+                    else
+                    {
+                        <table class="grid">
+                            <thead><tr><th>Type</th><th>Du</th><th>Au</th><th>Jours</th><th>Motif</th><th></th></tr></thead>
+                            <tbody>
+                            @foreach (var l in _leaves)
+                            {
+                                var past = l.EndAt <= todayStart;
+                                <tr class="@(past ? "muted" : "")">
+                                    <td>@LeaveTypes.Label(l.Type)</td>
+                                    <td>@l.FirstDay.ToString("dd/MM/yyyy")</td>
+                                    <td>@l.LastDay.ToString("dd/MM/yyyy")</td>
+                                    <td>@l.Days</td>
+                                    <td class="small">@l.Reason</td>
+                                    <td>
+                                        @if (!past)
+                                        {
+                                            <button class="btn danger small" @onclick="() => DeleteLeaveAsync(l.Id)" title="Supprimer ce congé">✕</button>
+                                        }
+                                        else
+                                        {
+                                            <span title="Journée passée : non modifiable">🔒</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    }
+
+                    <h4 style="margin-bottom:.3rem">Affecter un congé</h4>
+                    <div class="leave-form">
+                        <label>Type
+                            <select @bind="_leaveType" @bind:after="ClearCheck">
+                                @foreach (var t in LeaveTypes.All)
+                                {
+                                    <option value="@t.Code">@t.Label</option>
+                                }
+                            </select></label>
+                        <label>Premier jour
+                            <input type="date" @bind="_leaveFrom" @bind:after="ClearCheck"/></label>
+                        <label>Dernier jour (inclus)
+                            <input type="date" @bind="_leaveTo" @bind:after="ClearCheck"/></label>
+                        <label>Commentaire (facultatif)
+                            <input type="text" maxlength="100" @bind="_leaveComment" @bind:event="oninput"/></label>
+                        <div class="toolbar">
+                            <button class="btn primary" @onclick="CheckAndSaveAsync" disabled="@_leaveBusy">Enregistrer le congé</button>
+                        </div>
+                    </div>
+
+                    @if (_check is { Ok: false })
+                    {
+                        <div class="alert error small">
+                            <ul>
+                                @foreach (var e in _check.Errors)
+                                {
+                                    <li>@e</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    @if (_check is { Ok: true } && _check.Conflicts.Count > 0)
+                    {
+                        <div class="alert warn small">
+                            <strong>@_check.Conflicts.Count voyage(s) déjà planifié(s)</strong> pour cet agent pendant ce congé.
+                            Ils resteront affectés tant que vous ne replanifiez pas la journée (mode « Remplacer ») ; le tableau de bord les signalera comme violation A04.
+                            <ul>
+                                @foreach (var c in _check.Conflicts.Take(10))
+                                {
+                                    <li>@c.Departure.ToString("dd/MM HH:mm") — @c.LineLabel — @PostLabel(c.Post)</li>
+                                }
+                                @if (_check.Conflicts.Count > 10)
+                                {
+                                    <li>… et @(_check.Conflicts.Count - 10) autre(s)</li>
+                                }
+                            </ul>
+                            <div class="toolbar">
+                                <button class="btn primary" @onclick="SaveLeaveAsync" disabled="@_leaveBusy">Enregistrer quand même</button>
+                                <button class="btn" @onclick="ClearCheck">Annuler</button>
+                            </div>
+                        </div>
+                    }
+                    @if (_leaveMessage is not null)
+                    {
+                        <div class="alert @(_leaveOk ? "ok" : "error") small">@_leaveMessage</div>
+                    }
+                }
+
+                <h3>Voyages</h3>
+                <div class="toolbar">
+                    <label class="inline">Voyages du jour
+                        <input type="date" @bind="_tripDate" @bind:after="LoadTripsAsync"/>
+                    </label>
+                </div>
+
+                @if (_tripsError is not null)
+                {
+                    <div class="alert error">@_tripsError</div>
+                }
+                else if (_trips is not null)
+                {
+                    var hours = _trips
+                        .Where(t => t.Arrival is not null && (t.Planned != AgentPost.None || t.Real != AgentPost.None))
+                        .Sum(t => (t.Arrival!.Value - t.Departure).TotalHours);
+
+                    <p class="small">
+                        <strong>@_trips.Count</strong> voyage(s) — environ <strong>@hours.ToString("0.#", CultureInfo.InvariantCulture) h</strong> de conduite/contrôle.
+                    </p>
+
+                    @if (_trips.Count > 0)
+                    {
+                        <table class="grid">
+                            <thead>
+                            <tr>
+                                <th>Départ</th>
+                                <th>Arrivée</th>
+                                <th>Ligne</th>
+                                <th>Poste prévu</th>
+                                <th>Poste réel</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             @foreach (var t in _trips)
                             {
                                 <tr>
@@ -151,16 +345,18 @@ else
                                     <td>@PostLabel(t.Real)</td>
                                 </tr>
                             }
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    }
                 }
-            }
-        </div>
+            </div>
+        </aside>
     }
 }
 
 @code {
     private const int DefaultPageSize = 25;
+    private const string CurrentUser = "planificateur";   // CONGÉ : même valeur par défaut que la page Allocation
 
     private IReadOnlyList<AgentListItem> _all = Array.Empty<AgentListItem>();
     private IReadOnlyList<long> _centers = Array.Empty<long>();
@@ -185,9 +381,25 @@ else
     private IReadOnlyList<AgentTripRow>? _trips;
     private string? _tripsError;
 
+    // CONGÉ
+    private bool _leaveReady;
+    private string _leaveFilter = "";
+    private HashSet<long> _onLeaveToday = new();
+    private IReadOnlyList<AgentLeave> _leaves = Array.Empty<AgentLeave>();
+    private string? _leavesError;
+    private string _leaveType = "CONGE";
+    private DateTime _leaveFrom;
+    private DateTime _leaveTo;
+    private string _leaveComment = "";
+    private LeaveCheck? _check;
+    private string? _leaveMessage;
+    private bool _leaveOk;
+    private bool _leaveBusy;
+
     protected override async Task OnInitializedAsync()
     {
         _tripDate = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        ResetLeaveForm();
         try
         {
             _all = await AgentService.LoadAsync();
@@ -206,6 +418,8 @@ else
         {
             _loading = false;
         }
+
+        await LoadLeaveStateAsync();   // CONGÉ : une panne ici ne doit jamais empêcher d'afficher la liste des agents
     }
 
     private AgentFilter CurrentFilter() => new(
@@ -216,7 +430,7 @@ else
 
     private void ResetFilters()
     {
-        _text = ""; _centerId = null; _delegationId = null; _restDay = null; _qual = ""; _pda = "";
+        _text = ""; _centerId = null; _delegationId = null; _restDay = null; _qual = ""; _pda = ""; _leaveFilter = "";
         _page = 1;
     }
 
@@ -231,7 +445,9 @@ else
     private async Task SelectAsync(AgentListItem agent)
     {
         _selected = agent;
+        ResetLeaveForm();
         await LoadTripsAsync();
+        await LoadLeavesAsync();
     }
 
     private async Task LoadTripsAsync()
@@ -249,6 +465,126 @@ else
         }
     }
 
+    // ------------------------------------------------------------------ CONGÉ
+
+    /// <summary>Table présente ? Quels agents sont en congé aujourd'hui ?</summary>
+    private async Task LoadLeaveStateAsync()
+    {
+        try
+        {
+            _leaveReady = await Leaves.IsReadyAsync();
+            if (_leaveReady)
+                _onLeaveToday = (await Leaves.GetOnDayAsync(Calendar.Today)).Select(l => l.AgentId).ToHashSet();
+        }
+        catch
+        {
+            _leaveReady = false;   // base injoignable ou table illisible : la page agents reste utilisable
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadLeavesAsync()
+    {
+        if (_selected is null || !_leaveReady) return;
+        _leavesError = null;
+        try
+        {
+            _leaves = await Leaves.GetForAgentAsync(_selected.Id);
+        }
+        catch (Exception ex)
+        {
+            _leaves = Array.Empty<AgentLeave>();
+            _leavesError = "Lecture des congés impossible : " + ex.Message;
+        }
+    }
+
+    private void ResetLeaveForm()
+    {
+        _leaveType = "CONGE";
+        _leaveFrom = _leaveTo = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        _leaveComment = "";
+        _check = null;
+        _leaveMessage = null;
+    }
+
+    private void ClearCheck()
+    {
+        _check = null;
+        _leaveMessage = null;
+    }
+
+    private AgentLeaveDraft Draft() =>
+        new(_selected!.Id, _leaveType, DateOnly.FromDateTime(_leaveFrom), DateOnly.FromDateTime(_leaveTo), _leaveComment);
+
+    /// <summary>Étape 1 : valider et chercher les voyages en conflit. Sans conflit, enregistre directement.</summary>
+    private async Task CheckAndSaveAsync()
+    {
+        if (_selected is null) return;
+        _leaveBusy = true;
+        _leaveMessage = null;
+        try
+        {
+            _check = await Leaves.CheckAsync(Draft());
+            if (_check.Ok && _check.Conflicts.Count == 0) await SaveLeaveAsync();
+        }
+        catch (Exception ex)
+        {
+            _leaveOk = false;
+            _leaveMessage = "Vérification impossible : " + ex.Message;
+        }
+        finally
+        {
+            _leaveBusy = false;
+        }
+    }
+
+    /// <summary>Étape 2 : écriture (la validation est rejouée côté serveur).</summary>
+    private async Task SaveLeaveAsync()
+    {
+        if (_selected is null) return;
+        _leaveBusy = true;
+        try
+        {
+            var result = await Leaves.AddAsync(Draft(), CurrentUser);
+            _leaveOk = result.Success;
+            _leaveMessage = result.Message;
+            if (result.Success)
+            {
+                _check = null;
+                await LoadLeavesAsync();
+                await LoadLeaveStateAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _leaveOk = false;
+            _leaveMessage = "Enregistrement impossible : " + ex.Message;
+        }
+        finally
+        {
+            _leaveBusy = false;
+        }
+    }
+
+    private async Task DeleteLeaveAsync(long leaveId)
+    {
+        try
+        {
+            var result = await Leaves.DeleteAsync(leaveId);
+            _leaveOk = result.Success;
+            _leaveMessage = result.Message;
+            await LoadLeavesAsync();
+            await LoadLeaveStateAsync();
+        }
+        catch (Exception ex)
+        {
+            _leaveOk = false;
+            _leaveMessage = "Suppression impossible : " + ex.Message;
+        }
+    }
+
+    // ------------------------------------------------------------------
+
     private static string DayName(int day) => day switch
     {
         1 => "Lundi", 2 => "Mardi", 3 => "Mercredi", 4 => "Jeudi", 5 => "Vendredi", 6 => "Samedi", 7 => "Dimanche", _ => "—",
@@ -260,4 +596,336 @@ else
         AgentPost.Receiver => "Receveur",
         _ => "—",
     };
+
+    private void CloseDrawer()
+    {
+        _selected = null;
+        _trips = null;
+        _tripsError = null;
+        _leaves = Array.Empty<AgentLeave>();
+        _check = null;
+        _leaveMessage = null;
+    }
 }
+
+
+
+@*==============*@
+@* @page "/agents" *@
+@* @using System.Globalization *@
+@* @inject AgentQueryService AgentService *@
+@* @inject PlanningCalendar Calendar *@
+@* *@
+@* <PageTitle>Agents</PageTitle> *@
+@* *@
+@* <h1>Agents (chauffeurs et receveurs)</h1> *@
+@* <p class="muted"> *@
+@*     Liste des agents de la table <code>dragent</code> (lecture seule). Cliquez sur un agent pour voir ses voyages d'un jour donné. *@
+@* </p> *@
+@* *@
+@* @if (_loading) *@
+@* { *@
+@*     <p>Chargement…</p> *@
+@* } *@
+@* else if (_error is not null) *@
+@* { *@
+@*     <div class="alert error">@_error</div> *@
+@* } *@
+@* else *@
+@* { *@
+@*     var filtered = AgentQuery.Apply(_all, CurrentFilter(), _sort, _desc); *@
+@*     var pageCount = AgentQuery.PageCount(filtered.Count, PageSize); *@
+@*     if (_page > pageCount) _page = pageCount; *@
+@*     var rows = AgentQuery.Page(filtered, _page, PageSize); *@
+@* *@
+@*     <div class="kpis"> *@
+@*         <div class="kpi"><span class="value">@_all.Count</span><span>agents au total</span></div> *@
+@*         <div class="kpi"><span class="value">@filtered.Count</span><span>correspondent aux filtres</span></div> *@
+@*         <div class="kpi"><span class="value">@_all.Count(a => a.Pda is > 0)</span><span>avec un PDA</span></div> *@
+@*         <div class="kpi"><span class="value">@_all.Count(a => a.RestDay is null)</span><span>sans jour de repos valide</span></div> *@
+@*     </div> *@
+@* *@
+@*     <div class="panel"> *@
+@*         <div class="form-grid compact"> *@
+@*             <label>Recherche (code, nom FR / AR) *@
+@*                 <input type="search" placeholder="ex. 1042, Ben Ali, …" @bind="_text" @bind:event="oninput" @bind:after="ResetPage"/></label> *@
+@*             <label>Centre *@
+@*                 <select @bind="_centerId" @bind:after="ResetPage"> *@
+@*                     <option value="">Tous</option> *@
+@*                     @foreach (var c in _centers) *@
+@*                     { *@
+@*                         <option value="@c">Centre @c</option> *@
+@*                     } *@
+@*                 </select></label> *@
+@*             <label>Délégation *@
+@*                 <select @bind="_delegationId" @bind:after="ResetPage"> *@
+@*                     <option value="">Toutes</option> *@
+@*                     @foreach (var d in _delegations) *@
+@*                     { *@
+@*                         <option value="@d.Id">@d.Label</option> *@
+@*                     } *@
+@*                 </select></label> *@
+@*             <label>Jour de repos *@
+@*                 <select @bind="_restDay" @bind:after="ResetPage"> *@
+@*                     <option value="">Tous</option> *@
+@*                     @for (var i = 1; i <= 7; i++) *@
+@*                     { *@
+@*                         <option value="@i">@DayName(i)</option> *@
+@*                     } *@
+@*                 </select></label> *@
+@*             <label>Qualification (DECQUAL) *@
+@*                 <select @bind="_qual" @bind:after="ResetPage"> *@
+@*                     <option value="">Toutes</option> *@
+@*                     @foreach (var q in _quals) *@
+@*                     { *@
+@*                         <option value="@q">@q</option> *@
+@*                     } *@
+@*                 </select></label> *@
+@*             <label>PDA *@
+@*                 <select @bind="_pda" @bind:after="ResetPage"> *@
+@*                     <option value="">Indifférent</option> *@
+@*                     <option value="yes">Avec PDA</option> *@
+@*                     <option value="no">Sans PDA</option> *@
+@*                 </select></label> *@
+@*         </div> *@
+@*         <div class="toolbar"> *@
+@*             <button class="btn" @onclick="ResetFilters">Réinitialiser les filtres</button> *@
+@*             <label class="inline">Lignes par page *@
+@*                 <select @bind="PageSize" @bind:after="ResetPage"> *@
+@*                     <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option> *@
+@*                 </select></label> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <table class="grid selectable"> *@
+@*         <thead> *@
+@*         <tr> *@
+@*             <th class="sortable" @onclick="() => SortBy(AgentSort.Id)">Code @Arrow(AgentSort.Id)</th> *@
+@*             <th class="sortable" @onclick="() => SortBy(AgentSort.Name)">Nom @Arrow(AgentSort.Name)</th> *@
+@*             <th>الاسم</th> *@
+@*             <th>Qualif.</th> *@
+@*             <th class="sortable" @onclick="() => SortBy(AgentSort.Center)">Centre @Arrow(AgentSort.Center)</th> *@
+@*             <th class="sortable" @onclick="() => SortBy(AgentSort.Delegation)">Délégation @Arrow(AgentSort.Delegation)</th> *@
+@*             <th class="sortable" @onclick="() => SortBy(AgentSort.RestDay)">Repos @Arrow(AgentSort.RestDay)</th> *@
+@*             <th>PDA</th> *@
+@*         </tr> *@
+@*         </thead> *@
+@*         <tbody> *@
+@*         @foreach (var a in rows) *@
+@*         { *@
+@*             <tr class="@(_selected?.Id == a.Id ? "selected" : "")" @onclick="() => SelectAsync(a)"> *@
+@*                 <td><code>@a.Id</code></td> *@
+@*                 <td>@(a.NameFr ?? "—")</td> *@
+@*                 <td dir="rtl">@(a.NameAr ?? "")</td> *@
+@*                 <td>@(a.Qualification ?? "—")</td> *@
+@*                 <td>@(a.CenterId?.ToString() ?? "—")</td> *@
+@*                 <td>@(a.DelegationLabel ?? a.DelegationId?.ToString() ?? "—")</td> *@
+@*                 <td>@(a.RestDay is { } r ? DayName(r) : "—")</td> *@
+@*                 <td>@(a.Pda is > 0 ? a.Pda.ToString() : "—")</td> *@
+@*             </tr> *@
+@*         } *@
+@*         @if (rows.Count == 0) *@
+@*         { *@
+@*             <tr><td colspan="8" class="muted">Aucun agent ne correspond aux filtres.</td></tr> *@
+@*         } *@
+@*         </tbody> *@
+@*     </table> *@
+@* *@
+@*     <div class="toolbar"> *@
+@*         <button class="btn" @onclick="() => _page = 1" disabled="@(_page <= 1)">⏮</button> *@
+@*         <button class="btn" @onclick="() => _page--" disabled="@(_page <= 1)">◀</button> *@
+@*         <span>Page @_page / @pageCount</span> *@
+@*         <button class="btn" @onclick="() => _page++" disabled="@(_page >= pageCount)">▶</button> *@
+@*         <button class="btn" @onclick="() => _page = pageCount" disabled="@(_page >= pageCount)">⏭</button> *@
+@*     </div> *@
+@*      *@
+@*     <!-- Drawer overlay : fond sombre cliquable pour fermer --> *@
+@*     @if (_selected is not null) *@
+@*     { *@
+@*         <div class="drawer-overlay" @onclick="CloseDrawer"></div> *@
+@*     } *@
+@* *@
+@*     <!-- Drawer latéral : panneau de détails --> *@
+@*     @if (_selected is not null) *@
+@*     { *@
+@*         <aside class="drawer"> *@
+@*             <div class="drawer-header"> *@
+@*                 <div> *@
+@*                     <h2 style="margin:0">@(_selected.NameFr ?? "Agent") <code>#@_selected.Id</code></h2> *@
+@*                     <span dir="rtl" class="muted small">@_selected.NameAr</span> *@
+@*                 </div> *@
+@*                 <button class="drawer-close" @onclick="CloseDrawer" title="Fermer"> *@
+@*                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> *@
+@*                         <line x1="18" y1="6" x2="6" y2="18"></line> *@
+@*                         <line x1="6" y1="6" x2="18" y2="18"></line> *@
+@*                     </svg> *@
+@*                 </button> *@
+@*             </div> *@
+@* *@
+@*             <div class="drawer-body"> *@
+@*                 <p class="muted small"> *@
+@*                     Centre @(_selected.CenterId?.ToString() ?? "—") · *@
+@*                     Délégation @(_selected.DelegationLabel ?? "—") · *@
+@*                     Repos : @(_selected.RestDay is { } rd ? DayName(rd) : "—") *@
+@*                 </p> *@
+@* *@
+@*                 <div class="toolbar"> *@
+@*                     <label class="inline">Voyages du jour *@
+@*                         <input type="date" @bind="_tripDate" @bind:after="LoadTripsAsync"/> *@
+@*                     </label> *@
+@*                 </div> *@
+@* *@
+@*                 @if (_tripsError is not null) *@
+@*                 { *@
+@*                     <div class="alert error">@_tripsError</div> *@
+@*                 } *@
+@*                 else if (_trips is not null) *@
+@*                 { *@
+@*                     var hours = _trips *@
+@*                         .Where(t => t.Arrival is not null && (t.Planned != AgentPost.None || t.Real != AgentPost.None)) *@
+@*                         .Sum(t => (t.Arrival!.Value - t.Departure).TotalHours); *@
+@* *@
+@*                     <p class="small"> *@
+@*                         <strong>@_trips.Count</strong> voyage(s) — environ <strong>@hours.ToString("0.#", CultureInfo.InvariantCulture) h</strong> de conduite/contrôle. *@
+@*                     </p> *@
+@* *@
+@*                     @if (_trips.Count > 0) *@
+@*                     { *@
+@*                         <table class="grid"> *@
+@*                             <thead> *@
+@*                             <tr> *@
+@*                                 <th>Départ</th> *@
+@*                                 <th>Arrivée</th> *@
+@*                                 <th>Ligne</th> *@
+@*                                 <th>Poste prévu</th> *@
+@*                                 <th>Poste réel</th> *@
+@*                             </tr> *@
+@*                             </thead> *@
+@*                             <tbody> *@
+@*                             @foreach (var t in _trips) *@
+@*                             { *@
+@*                                 <tr> *@
+@*                                     <td>@t.Departure.ToString("HH:mm")</td> *@
+@*                                     <td>@(t.Arrival?.ToString("HH:mm") ?? "?")</td> *@
+@*                                     <td>@t.LineLabel</td> *@
+@*                                     <td>@PostLabel(t.Planned)</td> *@
+@*                                     <td>@PostLabel(t.Real)</td> *@
+@*                                 </tr> *@
+@*                             } *@
+@*                             </tbody> *@
+@*                         </table> *@
+@*                     } *@
+@*                 } *@
+@*             </div> *@
+@*         </aside> *@
+@*     } *@
+@* } *@
+@* *@
+@* @code { *@
+@*     private const int DefaultPageSize = 25; *@
+@* *@
+@*     private IReadOnlyList<AgentListItem> _all = Array.Empty<AgentListItem>(); *@
+@*     private IReadOnlyList<long> _centers = Array.Empty<long>(); *@
+@*     private IReadOnlyList<(long Id, string Label)> _delegations = Array.Empty<(long, string)>(); *@
+@*     private IReadOnlyList<string> _quals = Array.Empty<string>(); *@
+@*     private bool _loading = true; *@
+@*     private string? _error; *@
+@* *@
+@*     private string _text = ""; *@
+@*     private long? _centerId; *@
+@*     private long? _delegationId; *@
+@*     private int? _restDay; *@
+@*     private string _qual = ""; *@
+@*     private string _pda = ""; *@
+@*     private AgentSort _sort = AgentSort.Name; *@
+@*     private bool _desc; *@
+@*     private int _page = 1; *@
+@*     public int PageSize { get; set; } = DefaultPageSize; *@
+@* *@
+@*     private AgentListItem? _selected; *@
+@*     private DateTime _tripDate; *@
+@*     private IReadOnlyList<AgentTripRow>? _trips; *@
+@*     private string? _tripsError; *@
+@* *@
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         _tripDate = Calendar.Today.ToDateTime(TimeOnly.MinValue); *@
+@*         try *@
+@*         { *@
+@*             _all = await AgentService.LoadAsync(); *@
+@*             _centers = _all.Where(a => a.CenterId is not null).Select(a => a.CenterId!.Value).Distinct().OrderBy(x => x).ToList(); *@
+@*             _delegations = _all.Where(a => a.DelegationId is not null) *@
+@*                 .GroupBy(a => a.DelegationId!.Value) *@
+@*                 .Select(g => (g.Key, g.First().DelegationLabel ?? $"Délégation {g.Key}")) *@
+@*                 .OrderBy(x => x.Item2).ToList(); *@
+@*             _quals = _all.Select(a => a.Qualification).Where(q => !string.IsNullOrEmpty(q)).Select(q => q!).Distinct().OrderBy(q => q).ToList(); *@
+@*         } *@
+@*         catch (Exception ex) *@
+@*         { *@
+@*             _error = "Chargement des agents impossible : " + ex.Message; *@
+@*         } *@
+@*         finally *@
+@*         { *@
+@*             _loading = false; *@
+@*         } *@
+@*     } *@
+@* *@
+@*     private AgentFilter CurrentFilter() => new( *@
+@*         _text, _centerId, _delegationId, _restDay, _qual, *@
+@*         _pda switch { "yes" => true, "no" => false, _ => null }); *@
+@* *@
+@*     private void ResetPage() => _page = 1; *@
+@* *@
+@*     private void ResetFilters() *@
+@*     { *@
+@*         _text = ""; _centerId = null; _delegationId = null; _restDay = null; _qual = ""; _pda = ""; *@
+@*         _page = 1; *@
+@*     } *@
+@* *@
+@*     private void SortBy(AgentSort sort) *@
+@*     { *@
+@*         if (_sort == sort) _desc = !_desc; else { _sort = sort; _desc = false; } *@
+@*         _page = 1; *@
+@*     } *@
+@* *@
+@*     private string Arrow(AgentSort sort) => _sort != sort ? "" : _desc ? "▼" : "▲"; *@
+@* *@
+@*     private async Task SelectAsync(AgentListItem agent) *@
+@*     { *@
+@*         _selected = agent; *@
+@*         await LoadTripsAsync(); *@
+@*     } *@
+@* *@
+@*     private async Task LoadTripsAsync() *@
+@*     { *@
+@*         if (_selected is null) return; *@
+@*         _tripsError = null; *@
+@*         try *@
+@*         { *@
+@*             _trips = await AgentService.GetTripsAsync(_selected.Id, DateOnly.FromDateTime(_tripDate)); *@
+@*         } *@
+@*         catch (Exception ex) *@
+@*         { *@
+@*             _trips = null; *@
+@*             _tripsError = "Lecture des voyages impossible : " + ex.Message; *@
+@*         } *@
+@*     } *@
+@* *@
+@*     private static string DayName(int day) => day switch *@
+@*     { *@
+@*         1 => "Lundi", 2 => "Mardi", 3 => "Mercredi", 4 => "Jeudi", 5 => "Vendredi", 6 => "Samedi", 7 => "Dimanche", _ => "—", *@
+@*     }; *@
+@* *@
+@*     private static string PostLabel(AgentPost post) => post switch *@
+@*     { *@
+@*         AgentPost.Driver => "Chauffeur", *@
+@*         AgentPost.Receiver => "Receveur", *@
+@*         _ => "—", *@
+@*     }; *@
+@*     private void CloseDrawer() *@
+@*     { *@
+@*         _selected = null; *@
+@*         _trips = null; *@
+@*         _tripsError = null; *@
+@*     } *@
+@* } *@

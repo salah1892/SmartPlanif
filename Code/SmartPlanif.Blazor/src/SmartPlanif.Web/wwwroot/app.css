@@ -1,98 +1,670 @@
 /* SmartPlanif : feuille de style unique, sans dépendance externe. */
 :root {
-    --bg: #f5f7fa; --panel: #ffffff; --ink: #1d2733; --muted: #6b7785; --line: #dde3ea;
-    --hard: #b03a2e; --hard-bg: #fbeceb; --soft: #1f6f8b; --soft-bg: #e8f3f7; --off: #8a949f; --ok: #2e7d4f; --ok-bg: #e7f4ec;
-    --warn: #8a6d1d; --warn-bg: #fdf5dc; --accent: #1f4e79;
+    --bg: #f5f7fa;
+    --panel: #ffffff;
+    --ink: #1d2733;
+    --muted: #6b7785;
+    --line: #dde3ea;
+    --hard: #b03a2e;
+    --hard-bg: #fbeceb;
+    --soft: #1f6f8b;
+    --soft-bg: #e8f3f7;
+    --off: #8a949f;
+    --ok: #2e7d4f;
+    --ok-bg: #e7f4ec;
+    --warn: #8a6d1d;
+    --warn-bg: #fdf5dc;
+    --accent: #1f4e79;
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; color: var(--ink); background: var(--bg); }
-h1 { font-size: 1.6rem; margin: 0 0 .5rem; }
-h2 { font-size: 1.2rem; margin: 1.6rem 0 .6rem; }
-h3 { font-size: 1.05rem; margin: 1.3rem 0 .5rem; }
-a { color: var(--accent); }
-code { background: #eef1f5; padding: 1px 5px; border-radius: 4px; }
 
-.app-shell { display: flex; min-height: 100vh; }
-.sidebar { width: 210px; background: #14283d; color: #fff; padding: 1rem .8rem; flex-shrink: 0; }
-.sidebar .brand { font-weight: 700; font-size: 1.2rem; margin-bottom: 1.2rem; letter-spacing: .5px; }
-.sidebar nav a { display: block; color: #cfd9e4; text-decoration: none; padding: .55rem .7rem; border-radius: 6px; margin-bottom: 2px; }
-.sidebar nav a:hover { background: #1f3a57; }
-.sidebar nav a.active { background: #2b5b8a; color: #fff; }
-.content { flex: 1; padding: 1.4rem 2rem 3rem; max-width: 1250px; }
+* {
+    box-sizing: border-box;
+}
 
-.lead { font-size: 1.05rem; }
-.muted { color: var(--muted); }
-.small { font-size: .85rem; }
-.hard-text { color: var(--hard); font-weight: 600; }
-.soft-text { color: var(--soft); font-weight: 600; }
+html, body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+}
 
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; margin: .8rem 0; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .8rem 1rem; }
-.card h3 { margin-top: 0; }
-.steps li { margin-bottom: .4rem; }
+h1 {
+    font-size: 1.6rem;
+    margin: 0 0 .5rem;
+}
 
-.toolbar { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: .8rem 0; }
-.toolbar .spacer { flex: 1; }
-.btn { border: 1px solid var(--line); background: #fff; padding: .5rem 1rem; border-radius: 6px; cursor: pointer; font-size: .95rem; }
-.btn:hover:not(:disabled) { background: #eef2f7; }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn.primary:hover:not(:disabled) { background: #173d5f; }
-.btn.danger { background: var(--hard); color: #fff; border-color: var(--hard); }
+h2 {
+    font-size: 1.2rem;
+    margin: 1.6rem 0 .6rem;
+}
 
-.badge { display: inline-block; padding: 2px 9px; border-radius: 12px; font-size: .8rem; font-weight: 600; margin: 0 3px 3px 0; }
-.badge.hard { background: var(--hard-bg); color: var(--hard); }
-.badge.soft { background: var(--soft-bg); color: var(--soft); }
-.badge.off { background: #eceff2; color: var(--off); }
+h3 {
+    font-size: 1.05rem;
+    margin: 1.3rem 0 .5rem;
+}
 
-.alert { padding: .7rem 1rem; border-radius: 6px; margin: .8rem 0; border: 1px solid transparent; }
-.alert.ok { background: var(--ok-bg); border-color: #b9dec6; color: var(--ok); }
-.alert.warn { background: var(--warn-bg); border-color: #ecd98c; color: var(--warn); }
-.alert.error { background: var(--hard-bg); border-color: #efb9b3; color: var(--hard); }
-.alert ul { margin: .3rem 0 0 1.2rem; padding: 0; }
+a {
+    color: var(--accent);
+}
 
-table.grid { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin: .5rem 0 1rem; }
-table.grid th { text-align: left; background: #edf1f6; font-size: .85rem; padding: .55rem .7rem; border-bottom: 1px solid var(--line); }
-table.grid td { padding: .5rem .7rem; border-bottom: 1px solid #eef1f4; vertical-align: top; font-size: .92rem; }
-table.grid tr:last-child td { border-bottom: none; }
-table.grid tr.row-hard td:first-child { box-shadow: inset 3px 0 0 var(--hard); }
-table.grid tr.row-soft td:first-child { box-shadow: inset 3px 0 0 var(--soft); }
-table.grid tr.row-off { opacity: .6; }
+code {
+    background: #eef1f5;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
 
-.modes { white-space: nowrap; }
-.mode { display: inline-block; margin-right: .8rem; cursor: pointer; }
-.mode.hard { color: var(--hard); }
-.mode.soft { color: var(--soft); }
-.mode.off { color: var(--off); }
-input.weight { width: 80px; padding: .3rem; }
-.chk { display: block; margin-bottom: 3px; }
+/*Sidebar */
+/*.app-shell { display: flex; min-height: 100vh; }*/
+/*.sidebar { width: 210px; background: #14283d; color: #fff; padding: 1rem .8rem; flex-shrink: 0; }*/
+/*.sidebar .brand { font-weight: 700; font-size: 1.2rem; margin-bottom: 1.2rem; letter-spacing: .5px; }*/
+/*.sidebar nav a { display: block; color: #cfd9e4; text-decoration: none; padding: .55rem .7rem; border-radius: 6px; margin-bottom: 2px; }*/
+/*.sidebar nav a:hover { background: #1f3a57; }*/
+/*.sidebar nav a.active { background: #2b5b8a; color: #fff; }*/
+/*.content { flex: 1; padding: 1.4rem 2rem 3rem; max-width: 1250px; }*/
+/* Le conteneur principal prend toute la hauteur de l'écran et ne défile pas */
+.app-shell {
+    display: flex;
+    height: 100vh; /* Hauteur fixe = hauteur de la fenêtre */
+    overflow: hidden; /* Empêche le défilement global */
+}
 
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: .8rem 1.5rem; }
-.form-grid.compact { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-.form-grid label { display: flex; flex-direction: column; font-size: .88rem; gap: 3px; }
-.form-grid label.inline { flex-direction: row; align-items: center; gap: .5rem; }
-.form-grid small { color: var(--muted); }
-input[type=number], input[type=text], input[type=date], input[type=search], select { padding: .4rem .5rem; border: 1px solid #c5ced8; border-radius: 5px; font-size: .95rem; background: #fff; }
+/*=========================SideBar====================================*/
+/* La sidebar reste fixe, prend toute la hauteur, et peut défiler si le menu est trop long */
+.sidebar {
+    /*width: 210px;*/
+    /*background: #14283d;*/
+    /*color: #fff;*/
+    /*padding: 1rem .8rem;*/
+    /*flex-shrink: 0;*/
+    /*height: 100vh;*/
+    /*overflow-y: auto; !* Défilement interne si nécessaire *!*/
+    /*position: sticky;*/
+    /*top: 0;*/
+    width: 210px;
+    background: #14283d;
+    color: #fff;
+    padding: 1rem .8rem;
+    flex-shrink: 0;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: sticky;
+    top: 0;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
 
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .8rem; margin: .8rem 0; }
-.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: .7rem 1rem; display: flex; flex-direction: column; }
-.kpi .value { font-size: 1.35rem; font-weight: 700; }
-.kpi.good { border-color: #b9dec6; background: var(--ok-bg); }
-.kpi.bad { border-color: #efb9b3; background: var(--hard-bg); }
+/* État réduit */
+.sidebar.collapsed {
+    width: 60px;
+    padding: 1rem .4rem;
+}
 
-.scorebar { position: relative; background: #e8edf2; border-radius: 4px; height: 20px; min-width: 120px; }
-.scorebar .fill { background: #8fc1d6; height: 100%; border-radius: 4px; }
-.scorebar span { position: absolute; left: 6px; top: 1px; font-size: .78rem; }
+/* Brand (titre + bouton toggle) */
+.sidebar .brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+    min-height: 32px;
+    gap: .5rem;
+}
 
-svg.chart { width: 100%; max-width: 640px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
-svg.chart .axis { font-size: 10px; fill: var(--muted); }
+.sidebar .brand-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: .5px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar.collapsed .brand-text {
+    opacity: 0;
+    width: 0;
+}
+
+/* Bouton toggle (hamburger) */
+.sidebar .toggle-btn {
+    background: transparent;
+    border: none;
+    color: #cfd9e4;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .toggle-btn:hover {
+    background: #1f3a57;
+    color: #fff;
+}
+
+.sidebar .toggle-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Navigation */
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    color: #cfd9e4;
+    text-decoration: none;
+    padding: .6rem .7rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar nav a:hover {
+    background: #1f3a57;
+    color: #fff;
+}
+
+.sidebar nav a.active {
+    background: #2b5b8a;
+    color: #fff;
+}
+
+/* Icônes dans le menu */
+.sidebar .nav-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    stroke: currentColor;
+}
+
+/* Ajustement du tooltip en mode réduit */
+.sidebar.collapsed nav a {
+    justify-content: center;
+    padding: .7rem;
+}
+
+.sidebar.collapsed nav a .nav-tooltip[data-tooltip]:hover::after {
+    left: calc(100% + 10px);
+}
+
+/* Scrollbar fine pour la sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.brand-logo {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: block;
+    transition: all 0.3s ease;
+    /* Filtre qui blanchit les couleurs sombres du SVG */
+    filter: brightness(0) invert(1);
+}
+
+.brand-logo rect[fill]:not([fill="none"]),
+.brand-logo path[fill]:not([fill="none"]) {
+    fill: currentColor;
+}
+
+/* Cas particulier : si le SVG a un fond blanc/clair qui cache le texte sombre */
+.brand-logo rect[fill="#ffffff"],
+.brand-logo rect[fill="white"],
+.brand-logo rect[fill="#fff"] {
+    fill: transparent;
+}
+
+/* Logo en mode réduit - plus compact et centré */
+.sidebar.collapsed .brand-logo {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+}
+
+/* Effet au survol */
+.brand-logo:hover {
+    filter: brightness(0) invert(1) brightness(1.2);
+    transform: scale(1.08);
+}
+
+/* En mode réduit : logo centré et légèrement plus grand */
+.sidebar.collapsed .brand-logo {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+}
+
+/* Si le SVG contient un élément <text> pour "SORETRAK", on le cache en mode réduit */
+.sidebar.collapsed .brand-logo text,
+.sidebar.collapsed .brand-logo tspan {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Ajustement du bloc brand en mode réduit */
+.sidebar.collapsed .brand {
+    justify-content: center;
+    padding: 0.5rem 0;
+    margin-bottom: 0.8rem;
+    min-height: auto;
+}
+
+/* Le bouton toggle reste visible en mode réduit */
+.sidebar.collapsed .toggle-btn {
+    position: absolute;
+    right: -12px;
+    top: 8px;
+    background: #14283d;
+    border: 1px solid #1f3a57;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    z-index: 10;
+}
+
+.sidebar.collapsed .toggle-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Effet au survol du logo */
+.brand-logo:hover {
+    filter: brightness(0) invert(1) brightness(1.2);
+    transform: scale(1.05);
+}
+
+.sidebar.collapsed .brand-logo:hover {
+    transform: scale(1.1);
+}
+
+/* Le contenu principal prend tout l'espace restant et défile indépendamment */
+.content {
+    flex: 1;
+    padding: 1.4rem 2rem 3rem;
+    max-width: 100%; /* Pleine largeur comme vu précédemment */
+    overflow-y: auto; /* C'est ICI que le défilement se fait */
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+/*=============================================================*/
+.content {
+    flex: 1;
+    padding: 1.4rem 2rem 3rem;
+    max-width: 100%;
+}
+
+.lead {
+    font-size: 1.05rem;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.small {
+    font-size: .85rem;
+}
+
+.hard-text {
+    color: var(--hard);
+    font-weight: 600;
+}
+
+.soft-text {
+    color: var(--soft);
+    font-weight: 600;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: .8rem 0;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.steps li {
+    margin-bottom: .4rem;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    align-items: center;
+    margin: .8rem 0;
+}
+
+.toolbar .spacer {
+    flex: 1;
+}
+
+.btn {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: .5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: .95rem;
+}
+
+.btn:hover:not(:disabled) {
+    background: #eef2f7;
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.btn.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.btn.primary:hover:not(:disabled) {
+    background: #173d5f;
+}
+
+.btn.danger {
+    background: var(--hard);
+    color: #fff;
+    border-color: var(--hard);
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: .8rem;
+    font-weight: 600;
+    margin: 0 3px 3px 0;
+}
+
+.badge.hard {
+    background: var(--hard-bg);
+    color: var(--hard);
+}
+
+.badge.soft {
+    background: var(--soft-bg);
+    color: var(--soft);
+}
+
+.badge.off {
+    background: #eceff2;
+    color: var(--off);
+}
+
+.alert {
+    padding: .7rem 1rem;
+    border-radius: 6px;
+    margin: .8rem 0;
+    border: 1px solid transparent;
+}
+
+.alert.ok {
+    background: var(--ok-bg);
+    border-color: #b9dec6;
+    color: var(--ok);
+}
+
+.alert.warn {
+    background: var(--warn-bg);
+    border-color: #ecd98c;
+    color: var(--warn);
+}
+
+.alert.error {
+    background: var(--hard-bg);
+    border-color: #efb9b3;
+    color: var(--hard);
+}
+
+.alert ul {
+    margin: .3rem 0 0 1.2rem;
+    padding: 0;
+}
+
+table.grid {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: .5rem 0 1rem;
+}
+
+table.grid th {
+    text-align: left;
+    background: #edf1f6;
+    font-size: .85rem;
+    padding: .55rem .7rem;
+    border-bottom: 1px solid var(--line);
+}
+
+table.grid td {
+    padding: .5rem .7rem;
+    border-bottom: 1px solid #eef1f4;
+    vertical-align: top;
+    font-size: .92rem;
+}
+
+table.grid tr:last-child td {
+    border-bottom: none;
+}
+
+table.grid tr.row-hard td:first-child {
+    box-shadow: inset 3px 0 0 var(--hard);
+}
+
+table.grid tr.row-soft td:first-child {
+    box-shadow: inset 3px 0 0 var(--soft);
+}
+
+table.grid tr.row-off {
+    opacity: .6;
+}
+
+.modes {
+    white-space: nowrap;
+}
+
+.mode {
+    display: inline-block;
+    margin-right: .8rem;
+    cursor: pointer;
+}
+
+.mode.hard {
+    color: var(--hard);
+}
+
+.mode.soft {
+    color: var(--soft);
+}
+
+.mode.off {
+    color: var(--off);
+}
+
+input.weight {
+    width: 80px;
+    padding: .3rem;
+}
+
+.chk {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: .8rem 1.5rem;
+}
+
+.form-grid.compact {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.form-grid label {
+    display: flex;
+    flex-direction: column;
+    font-size: .88rem;
+    gap: 3px;
+}
+
+.form-grid label.inline {
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+}
+
+.form-grid small {
+    color: var(--muted);
+}
+
+input[type=number], input[type=text], input[type=date], input[type=search], select {
+    padding: .4rem .5rem;
+    border: 1px solid #c5ced8;
+    border-radius: 5px;
+    font-size: .95rem;
+    background: #fff;
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: .8rem;
+    margin: .8rem 0;
+}
+
+.kpi {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .7rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi .value {
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.kpi.good {
+    border-color: #b9dec6;
+    background: var(--ok-bg);
+}
+
+.kpi.bad {
+    border-color: #efb9b3;
+    background: var(--hard-bg);
+}
+
+.scorebar {
+    position: relative;
+    background: #e8edf2;
+    border-radius: 4px;
+    height: 20px;
+    min-width: 120px;
+}
+
+.scorebar .fill {
+    background: #8fc1d6;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.scorebar span {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    font-size: .78rem;
+}
+
+svg.chart {
+    width: 100%;
+    max-width: 640px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+svg.chart .axis {
+    font-size: 10px;
+    fill: var(--muted);
+}
 
 /* Journées passées : grisées, non modifiables */
-.panel.past { background: #eef0f2; }
-.panel.past select, .panel.past input[type=text] { background: #e3e6e9; color: #8a949f; }
-table.grid.past { opacity: .6; }
-table.grid.past th { background: #e3e6e9; }
+.panel.past {
+    background: #eef0f2;
+}
+
+.panel.past select, .panel.past input[type=text] {
+    background: #e3e6e9;
+    color: #8a949f;
+}
+
+table.grid.past {
+    opacity: .6;
+}
+
+table.grid.past th {
+    background: #e3e6e9;
+}
 
 /*===================================================================*/
 
@@ -119,7 +691,7 @@ table.grid.past th { background: #e3e6e9; }
     font-size: 0.85rem;
     font-weight: normal;
     z-index: 1050;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     /* Animation d'apparition */
     opacity: 0;
@@ -155,6 +727,7 @@ table.grid.past th { background: #e3e6e9; }
     opacity: 1;
     visibility: visible;
 }
+
 /* On remplace la transition classique par une animation */
 .nav-tooltip[data-tooltip]:hover::after {
     /* On garde les styles de base (fond, texte, position...) */
@@ -173,15 +746,460 @@ table.grid.past th { background: #e3e6e9; }
 
 /* Définition de l'animation de 3 secondes */
 @keyframes tooltipTimer {
-    0% { opacity: 0; visibility: visible; }
-    10% { opacity: 1; } /* Apparition rapide au début */
-    80% { opacity: 1; } /* Reste visible pendant 80% du temps */
-    100% { opacity: 0; visibility: hidden; } /* Disparition à la fin */
+    0% {
+        opacity: 0;
+        visibility: visible;
+    }
+    10% {
+        opacity: 1;
+    }
+    /* Apparition rapide au début */
+    80% {
+        opacity: 1;
+    }
+    /* Reste visible pendant 80% du temps */
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+    /* Disparition à la fin */
 }
 
 /* Page Agents */
-table.grid th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
-table.grid th.sortable:hover { background: #e1e8f0; }
-table.grid.selectable tbody tr { cursor: pointer; }
-table.grid.selectable tbody tr:hover td { background: #f3f7fb; }
-table.grid.selectable tbody tr.selected td { background: #e3eefa; }
+table.grid th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+table.grid th.sortable:hover {
+    background: #e1e8f0;
+}
+
+table.grid.selectable tbody tr {
+    cursor: pointer;
+}
+
+table.grid.selectable tbody tr:hover td {
+    background: #f3f7fb;
+}
+
+table.grid.selectable tbody tr.selected td {
+    background: #e3eefa;
+}
+
+/*Pour les bus*/
+table.grid th.sortable {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+table.grid th.sortable:hover {
+    background: #e1e8f0;
+}
+
+table.grid.selectable tbody tr {
+    cursor: pointer;
+}
+
+table.grid.selectable tbody tr:hover td {
+    background: #f3f7fb;
+}
+
+table.grid.selectable tbody tr.selected td {
+    background: #e3eefa;
+}
+
+/* ============================================================
+   Page Bus : cartes de regroupement — version GRID (pleine largeur)
+   ============================================================ */
+.group-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem 0;}
+
+.group-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 0.8rem 1rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    transition: all 0.2s ease;
+    min-height: 70px; /* Hauteur minimale uniforme */
+}
+
+.group-card:hover {
+    background: #eef2f7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.group-card.active {
+    border-color: var(--accent);
+    background: #e3eefa;
+    box-shadow: inset 3px 0 0 var(--accent), 0 2px 4px rgba(31, 78, 121, 0.15);
+}
+
+.group-card .group-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    width: 100%; /* Prend toute la largeur pour le retour à la ligne */
+    word-break: break-word; /* Cas des labels très longs */
+}
+
+.group-card .group-count {
+    color: var(--soft);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+.group-card .muted.small {
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+/* ============================================================
+   Scrollbar stylisée — moderne, fine et discrète
+   ============================================================ */
+
+/* --- Chrome, Edge, Safari (WebKit) --- */
+
+/* La piste (fond de la scrollbar) */
+.content::-webkit-scrollbar {
+    width: 10px; /* largeur de la barre verticale */
+    height: 10px; /* hauteur de la barre horizontale (si utilisée) */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.content::-webkit-scrollbar-thumb:active {
+    background: #173d5f; /* encore plus foncé quand on clique */
+}
+
+/* Les coins (intersection vertical/horizontal) */
+.content::-webkit-scrollbar-corner {
+    background: var(--bg);
+}
+
+/* --- Firefox --- */
+.content {
+    scrollbar-width: thin;
+    scrollbar-color: #c5cdd6 var(--bg);
+}
+
+/* ============================================================
+   (Optionnel) Scrollbar fine aussi pour la sidebar si le menu
+   est long — même style pour cohérence visuelle
+   ============================================================ */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+/* Scrollbar qui apparaît uniquement au survol du contenu */
+.content::-webkit-scrollbar {
+    width: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.content:hover::-webkit-scrollbar {
+    opacity: 1;
+}
+
+.content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #c5cdd6;
+    border-radius: 10px;
+    border: 2px solid var(--bg);
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/*==========================KPI Style===================================*/
+/* Tableau de bord : calendrier mensuel */
+.cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin: .8rem 0;
+    max-width: 760px;
+}
+
+.cal-head {
+    text-align: center;
+    font-size: .8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.cal-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 64px;
+    padding: .35rem .5rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+}
+
+.cal-cell.empty {
+    border: none;
+    background: transparent;
+    cursor: default;
+}
+
+.cal-cell .cal-num {
+    font-weight: 700;
+}
+
+.cal-cell .cal-info {
+    font-size: .75rem;
+    color: var(--muted);
+}
+
+.cal-cell.complete {
+    background: var(--ok-bg);
+    border-color: #b9dec6;
+}
+
+.cal-cell.partial {
+    background: var(--warn-bg);
+    border-color: #ecd98c;
+}
+
+.cal-cell.unplanned {
+    background: var(--hard-bg);
+    border-color: #efb9b3;
+}
+
+.cal-cell.none {
+    background: #fff;
+    color: var(--off);
+}
+
+.cal-cell.past {
+    filter: grayscale(.8);
+    opacity: .7;
+}
+
+.cal-cell.sel {
+    outline: 2px solid var(--accent);
+}
+
+
+/* ============================================================
+   Selects de navigation mois/année dans la toolbar KPIs
+   ============================================================ */
+
+.month-select, .year-select {
+    padding: .5rem .8rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.month-select {
+    min-width: 140px; /* Assez large pour "septembre" */
+}
+
+.year-select {
+    min-width: 90px;
+}
+
+.month-select:hover, .year-select:hover {
+    border-color: var(--accent);
+    background: #eef2f7;
+}
+
+.month-select:focus, .year-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(31, 78, 121, 0.15);
+}
+
+/* ============================================================
+   Drawer latéral (panneau de détails Agent/Bus)
+   ============================================================ */
+
+/* Overlay sombre en arrière-plan */
+.drawer-overlay {
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0; */
+    background: rgba(29, 39, 51, 0.4);
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Le panneau glissant */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 520px;
+    max-width: 90vw; /* Ne dépasse pas 90% de l'écran sur mobile */
+    background: var(--panel);
+    border-left: 1px solid var(--line);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* En-tête du drawer (titre + bouton fermer) */
+.drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    background: #f8fafc;
+    gap: 1rem;
+}
+
+.drawer-header h2 {
+    margin: 0 0 .2rem;
+    font-size: 1.15rem;
+}
+
+.drawer-header h2 code {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Bouton de fermeture (croix) */
+.drawer-close {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.drawer-close:hover {
+    background: var(--hard-bg);
+    border-color: var(--hard);
+    color: var(--hard);
+}
+
+.drawer-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Corps du drawer (contenu défilant) */
+.drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.2rem 1.5rem 2rem;
+}
+
+.drawer-body h3 {
+    margin-top: 1.2rem;
+    font-size: 1rem;
+}
+
+.drawer-body p {
+    margin: .5rem 0;
+}
+
+/* Scrollbar fine dans le drawer */
+.drawer-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.drawer-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.drawer-body::-webkit-scrollbar-thumb {
+    background: #c5cdd6;
+    border-radius: 10px;
+}
+
+.drawer-body::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* Ajustement : quand le drawer est ouvert, on peut masquer le scroll de la page 
+   pour éviter le double scroll (optionnel) */
+body.drawer-open {
+    overflow: hidden;
+}
+/* ============================================================
+   Congés des agents 
+=============================================================== */
+
+.badge.leave { background: var(--warn-bg); color: var(--warn); margin-left: 6px; }
+.leave-form { display: grid; gap: .6rem; margin-top: .4rem; }
+.leave-form label { display: flex; flex-direction: column; font-size: .88rem; gap: 3px; }
+.btn.small { padding: .2rem .55rem; font-size: .8rem; }
+.alert.small { font-size: .85rem; padding: .5rem .8rem; }
