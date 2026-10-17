@@ -1087,7 +1087,7 @@ table.grid.selectable tbody tr.selected td {
     top: 0;
     right: 0;
     bottom: 0;
-    width: 520px;
+    width: 620px;
     max-width: 90vw; /* Ne dépasse pas 90% de l'écran sur mobile */
     background: var(--panel);
     border-left: 1px solid var(--line);
