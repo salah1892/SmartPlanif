@@ -94,7 +94,7 @@ public sealed class MySqlBusRepository(IDbConnectionFactory db, IOptions<TripSou
             SELECT t.ID AS TripId, COALESCE(l.DENOMLI, CONCAT('Ligne ', t.DENUMLI)) AS LineLabel,
                    t.TIME_DEPART AS Departure, {TripSql.ArrivalSubquery} AS Arrival,
                    CASE WHEN t.BUS_PR = @BusId THEN 1 ELSE 0 END AS Planned,
-                   CASE WHEN t.BUS_RE = @BusId THEN 1 ELSE 0 END AS Real
+                   CASE WHEN t.BUS_RE = @BusId THEN 1 ELSE 0 END AS IsReal
             FROM trips t
             LEFT JOIN drligne l ON l.DENUMLI = t.DENUMLI
             WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL

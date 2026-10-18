@@ -47,7 +47,8 @@ public sealed record AllocationReport(
     IReadOnlyList<string> HardConstraintCodes, IReadOnlyList<string> SoftConstraintCodes,
     IReadOnlyList<TripAssignment> Assignments, IReadOnlyList<UnassignedTrip> Failures,
     IReadOnlyList<ConstructionPhase> Phases, IReadOnlyList<FeasibilityLine> Feasibility,
-    IReadOnlyList<PlanViolation> Violations, AlnsSummary? Alns, int LockedTrips, DayPlanSaveResult? Save);
+    IReadOnlyList<PlanViolation> Violations, AlnsSummary? Alns, int LockedTrips, DayPlanSaveResult? Save,
+    FairnessReport? Fairness = null, PlanExplainer? Explainer = null);
 
 /// <summary>
 /// Cas d'usage principal : allouer bus, chauffeurs et receveurs aux voyages d'une journée.
@@ -157,10 +158,13 @@ public sealed class AllocateDayHandler(
         var softCodes = allocator.BusRules.Soft.Select(r => r.Code)
             .Concat(allocator.AgentRules.Soft.Select(r => r.Code)).Distinct().OrderBy(c => c).ToList();
 
+        var fairness = FairnessReport.Measure(state, pool, command.Date, policy);
+        var explainer = new PlanExplainer(state, pool, allocator);
         return new AllocationReport(
             command.Date, command.Method, toAllocate.Count, finalAssignments.Count, failures.Count, stopwatch.Elapsed,
             constructionObjective, finalObjective, hardCodes, softCodes,
-            finalAssignments, failures, construction.Phases, feasibility, violations, alnsSummary, locked.Count, null);
+            finalAssignments, failures, construction.Phases, feasibility, violations, alnsSummary, locked.Count, null,
+            fairness, explainer);
     }
 }
 

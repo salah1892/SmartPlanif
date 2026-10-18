@@ -212,7 +212,7 @@
         <input type="search" placeholder="Filtrer (ligne, bus, agent)…" @bind="_filter" @bind:event="oninput" />
     </div>
     <table class="grid">
-        <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th><th>Score</th></tr></thead>
+        <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th><th>Score</th><th></th></tr></thead>
         <tbody>
             @foreach (var a in FilteredAssignments())
             {
@@ -225,14 +225,152 @@
                             <span>@a.Score.ToString("0.#", CultureInfo.InvariantCulture) / @a.MaxScore.ToString("0.#", CultureInfo.InvariantCulture)</span>
                         </div>
                     </td>
+                    <td><button class="btn small" @onclick="() => Explain(a.Trip.Id)">Pourquoi ?</button></td>
                 </tr>
             }
         </tbody>
     </table>
     <p class="muted small">Survolez une ligne pour voir la justification du score critère par critère.</p>
-}
 
+
+@if (_report.Fairness is { } fairness)
+{
+    <h3>Équité du partage des ressources</h3>
+    <p class="muted small">
+        Indice de Jain : 1 = parfaitement égal. Coefficient de variation (CV) : plus il est bas, plus c'est équitable.
+        « Non utilisées » compte les ressources disponibles qui n'ont reçu aucun voyage.
+    </p>
+    <table class="grid">
+        <thead>
+            <tr>
+                <th>Indicateur</th>
+                <th>Ressources</th>
+                <th>Non utilisées</th>
+                <th>Moyenne</th>
+                <th>Min</th>
+                <th>Max</th>
+                <th>Écart-type</th>
+                <th>CV</th>
+                <th>Jain</th>
+                <th>Verdict</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var s in fairness.Indicators)
+            {
+                <tr>
+                    <td>@s.Name</td>
+                    <td>@s.Count</td>
+                    <td>@s.Unused</td>
+                    <td>@Number(s.Mean) @s.Unit</td>
+                    <td>@Number(s.Min)</td>
+                    <td>@Number(s.Max)</td>
+                    <td>@Number(s.StdDev)</td>
+                    <td>@s.Cv.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                    <td>@s.Jain.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                    <td><span class="badge @(s.Css == "ok" ? "soft" : s.Css == "warn" ? "off" : "hard")">@s.Verdict</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+}
+@if (_explanation is not null && _explained is not null)
+{
+    <div class="drawer-overlay" @onclick="CloseWhy"></div>
+    <aside class="drawer wide">
+        <div class="drawer-header">
+            <div>
+                <h2>Pourquoi ces ressources ?</h2>
+                <span class="muted small">@_explained.Trip.LineLabel · @_explained.Trip.Departure.ToString("HH:mm") → @_explained.Trip.Arrival.ToString("HH:mm")</span>
+            </div>
+            <button class="drawer-close" @onclick="CloseWhy" title="Fermer">✕</button>
+        </div>
+        <div class="drawer-body">
+            @RenderDecision(_explanation.Bus)
+            @RenderDecision(_explanation.Driver)
+            @RenderDecision(_explanation.Receiver)
+        </div>
+    </aside>
+}
 @code {
+    //============================================================//
+    private TripExplanation? _explanation;
+    private TripAssignment? _explained;
+
+    private void Explain(long tripId)
+    {
+        _explained = _report!.Assignments.First(a => a.Trip.Id == tripId);
+        _explanation = _report.Explainer?.Explain(tripId);
+    }
+    private void CloseWhy() { _explanation = null; _explained = null; }
+
+    private static string CritCss(double v) => v >= 0.75 ? "good" : v >= 0.4 ? "mid" : "low";
+
+    private RenderFragment RenderDecision(ResourceDecision d) => __builder =>
+    {
+        <section class="why-card">
+            <h3>
+                @d.Role : <span class="why-chosen">@d.ChosenLabel</span>
+                <span class="badge soft">@Number(d.Score) / @Number(d.MaxScore) pts</span>
+                <span class="badge @(d.Rank == 1 ? "soft" : "off")">rang @d.Rank / @d.EligibleCount</span>
+            </h3>
+            <p class="why-summary">@d.Summary</p>
+
+            @foreach (var c in d.Criteria)
+            {
+                <div class="crit-row">
+                    <span class="crit-name" title="@c.Code">@c.Name</span>
+                    <div class="crit-bar"><div class="crit-fill @CritCss(c.Value)" style="width:@Percent(c.Value, 1)%"></div></div>
+                    <span class="crit-pts">@Number(c.Points) / @Number(c.Weight)</span>
+                    @if (c.Note is not null)
+                    {
+                        <div class="crit-note muted small">@c.Note</div>
+                    }
+                </div>
+            }
+
+            <p class="muted small">
+                Charge ce jour-là (hors ce voyage) : <strong>@Number(d.ChosenHours) h</strong>
+                — moyenne des candidats : <strong>@Number(d.AverageHours) h</strong>
+            </p>
+
+            @if (d.Alternatives.Count > 0)
+            {
+                <table class="grid">
+                    <thead><tr><th>Alternative</th><th>Score</th><th>Écart</th><th>Ce qui la désavantage</th></tr></thead>
+                    <tbody>
+                        @foreach (var alt in d.Alternatives)
+                        {
+                            <tr>
+                                <td>@alt.Label</td>
+                                <td>@Number(alt.Score)</td>
+                                <td>@(alt.Gap >= 0 ? "−" : "+")@Number(Math.Abs(alt.Gap))</td>
+                                <td class="small">
+                                    @string.Join(" ; ", alt.Deltas.Select(x =>
+                                    $"{x.Name} ({(x.Delta >= 0 ? "+" : "")}{Number(x.Delta)}{(x.OtherNote is null ? "" : " : " + x.OtherNote)})"))
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            @if (d.Rejections.Count > 0)
+            {
+                <details>
+                    <summary>@d.RejectedCount éliminé(s) par une règle dure</summary>
+                    <ul class="small">
+                        @foreach (var r in d.Rejections)
+                        {
+                            <li><strong>@r.Name</strong> × @r.Count — @string.Join(", ", r.Examples)@(r.Count > r.Examples.Count ? "…" : "")</li>
+                        }
+                    </ul>
+                </details>
+            }
+        </section>
+    };
+    //============================================================//
     private DateTime _dateInput;
     private AllocationMethod _method = AllocationMethod.GreedyChronological;
     private string _user = "planificateur";

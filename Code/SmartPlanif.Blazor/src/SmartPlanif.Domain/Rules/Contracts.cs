@@ -7,7 +7,7 @@ namespace SmartPlanif.Domain.Rules;
 public sealed record RuleViolation(string Code, string Message);
 
 /// <summary>Contribution d'un critère souple : Points = Weight x Value, Value dans [0,1].</summary>
-public sealed record ScoreDetail(string Code, double Weight, double Value)
+public sealed record ScoreDetail(string Code, double Weight, double Value, string? Note = null)
 {
     public double Points => Weight * Value;
 }
@@ -29,6 +29,8 @@ public interface ISoftRule<T>
     string Code { get; }
     double Weight { get; }
     double Evaluate(RuleContext<T> context);
+    /// <summary>Phrase courte expliquant la valeur obtenue (facultatif : null = texte générique).</summary>
+    string? Explain(RuleContext<T> context, double value) => null;
 }
 
 public sealed class RuleSet<T>(IReadOnlyList<IHardRule<T>> hard, IReadOnlyList<ISoftRule<T>> soft)

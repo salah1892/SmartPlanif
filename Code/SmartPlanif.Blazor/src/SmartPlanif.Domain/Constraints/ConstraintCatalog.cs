@@ -195,4 +195,15 @@ public static class ConstraintCatalog
         SoftToggle<Agent>("AP06", "Continuité de ligne", "Favorise l'agent qui vient de travailler sur la même ligne.",
             ConstraintTarget.Agent, 10, w => new SameLineContinuityRule(w)),
     };
+
+    public static void ApplyFairProfile(AllocationPolicy p)
+    {
+        void Soft(string code, double w) => p.Constraints[code] = new ConstraintSetting(ConstraintMode.Soft, w);
+        Soft("BP06", 35); Soft("BP07", 35);          // bus : km et voyages
+        Soft("AP04", 40); Soft("AP05", 35);          // agents : heures et postes
+        Soft("AP06", 5);                             // continuité de ligne : secondaire
+        Soft("B07", 25); Soft("A11", 25);            // le centre reste une préférence, plus un absolu
+        p.Alns.FairnessWeight = 30; p.Alns.BusFairnessWeight = 30;
+        p.RotateTies = true;
+    }
 }

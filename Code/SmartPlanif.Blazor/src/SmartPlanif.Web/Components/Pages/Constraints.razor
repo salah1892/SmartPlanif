@@ -25,6 +25,7 @@ else
         <span class="spacer"></span>
         <button class="btn primary" @onclick="SaveAsync">Enregistrer</button>
         <button class="btn" @onclick="ResetAsync">Valeurs par défaut</button>
+        <button class="btn" @onclick="ApplyFair">Profil équitable</button>
     </div>
 
     @if (_message is not null)
@@ -157,4 +158,11 @@ else
     };
 
     private static string RowClass(ConstraintMode mode) => "row-" + ModeCss(mode);
+
+    private void ApplyFair()
+    {
+        ConstraintCatalog.ApplyFairProfile(_policy!);
+        _success = true;
+        _message = "Profil équitable appliqué (pensez à enregistrer).";
+    }
 }

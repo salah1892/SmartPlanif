@@ -48,6 +48,9 @@ public sealed class AllocationPolicy
     /// <summary>Règle de compatibilité d'un type de ligne, ou null s'il n'y a aucune restriction définie.</summary>
     public LineTypeCategoryRule? FindCategoryRule(long? lineTypeId) =>
         lineTypeId is null ? null : CategoryRules.FirstOrDefault(r => r.LineTypeId == lineTypeId);
+
+    /// <summary>Départage les égalités de score par rotation déterministe (au lieu de l'identifiant le plus petit).</summary>
+    public bool RotateTies { get; set; } = true;
 }
 
 /// <summary>Catégories de bus autorisées et préférées pour un type de ligne.</summary>
@@ -101,4 +104,7 @@ public sealed class AlnsSettings
 
     /// <summary>Vitesse d'adaptation des poids des opérateurs (0 à 1).</summary>
     public double ReactionFactor { get; set; } = 0.10;
+
+    /// <summary>Poids de l'équité de charge entre bus (écart-type des heures de service).</summary>
+    public double BusFairnessWeight { get; set; } = 10;
 }

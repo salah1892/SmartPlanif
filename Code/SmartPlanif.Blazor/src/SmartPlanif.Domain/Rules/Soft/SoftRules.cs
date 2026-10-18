@@ -2,9 +2,15 @@ using SmartPlanif.Domain.Entities;
 
 namespace SmartPlanif.Domain.Rules.Soft;
 
+
+
+
 // Convention commune : 1 = idéal, 0 = pire cas, 0,5 = donnée inconnue (neutre : ni bonus ni pénalité).
 
-/// <summary>Même centre / même délégation que la ligne (bus et agents).</summary>
+/// <summary>
+/// Même centre / même délégation que la ligne (bus et agents).
+///  
+/// </summary>
 public sealed class MatchRule<T>(string code, double weight, Func<T, long?> resourceKey, Func<Trip, long?> tripKey) : ISoftRule<T>
 {
     /// <inheritdoc />
@@ -19,6 +25,13 @@ public sealed class MatchRule<T>(string code, double weight, Func<T, long?> reso
         var tripValue = tripKey(c.Trip);
         return resourceValue is null || tripValue is null ? 0.5 : resourceValue == tripValue ? 1 : 0;
     }
+
+    public string? Explain(RuleContext<T> c, double v) => v switch
+    {
+        1 => "même valeur que la ligne",
+        0 => "valeur différente de celle de la ligne",
+        _ => "information absente (neutre)",
+    };
 }
 
 /// <summary>Peu de voyages déjà effectués dans la journée (équilibrage naturel de la charge).</summary>
@@ -30,6 +43,8 @@ public sealed class FewTripsRule<T>(string code, double weight) : ISoftRule<T>
     public double Weight => weight;
     /// <inheritdoc />
     public double Evaluate(RuleContext<T> c) => 1.0 / (1 + c.Schedule.TripCountOn(c.Trip.WorkDate));
+    public string? Explain(RuleContext<T> c, double v) =>
+    $"{c.Schedule.TripCountOn(c.Trip.WorkDate)} voyage(s) déjà affecté(s) ce jour";
 }
 
 /// <summary>B06 en mode souple : 1 si la catégorie est autorisée pour le type de ligne, sinon 0.</summary>
@@ -111,6 +126,9 @@ public sealed class LowKmRule(double weight) : ISoftRule<Bus>
     /// <inheritdoc />
     public double Evaluate(RuleContext<Bus> c) =>
         1 - Math.Clamp(c.Schedule.KmOn(c.Trip.WorkDate) / c.Policy.MaxBusKmPerDay, 0, 1);
+
+    public string? Explain(RuleContext<Bus> c, double v) =>
+    $"{c.Schedule.KmOn(c.Trip.WorkDate):0} km déjà parcourus ce jour";
 }
 
 /// <summary>BP08 : bus récent (score décroissant avec l'âge, nul à 20 ans).</summary>
@@ -145,6 +163,11 @@ public sealed class RestTimeRule(double weight) : ISoftRule<Agent>
         if (previous is null) return 1;
         return Math.Clamp((c.Trip.Departure - previous.Arrival) / c.Policy.RestSaturation, 0, 1);
     }
+
+    public string? Explain(RuleContext<Agent> c, double v) =>
+    c.Schedule.Previous(c.Trip.Departure) is { } p
+        ? $"{(c.Trip.Departure - p.Arrival).TotalMinutes:0} min de repos depuis le dernier voyage"
+        : "premier voyage de la journée";
 }
 
 /// <summary>AP04 : peu d'heures déjà travaillées aujourd'hui.</summary>
@@ -158,6 +181,9 @@ public sealed class LowWorkedHoursRule(double weight) : ISoftRule<Agent>
     /// <inheritdoc />
     public double Evaluate(RuleContext<Agent> c) =>
         1 - Math.Clamp(c.Schedule.WorkedOn(c.Trip.WorkDate) / c.Policy.MaxDailyWork, 0, 1);
+    public string? Explain(RuleContext<Agent> c, double v) =>
+    $"{c.Schedule.WorkedOn(c.Trip.WorkDate).TotalHours:0.#} h déjà travaillées ce jour";
+
 }
 
 /// <summary>AP06 : continuité sur la même ligne que le voyage précédent.</summary>
@@ -174,4 +200,7 @@ public sealed class SameLineContinuityRule(double weight) : ISoftRule<Agent>
         var previous = c.Schedule.Previous(c.Trip.Departure);
         return previous is null ? 0.5 : previous.LineId == c.Trip.LineId ? 1 : 0;
     }
+
+    public string? Explain(RuleContext<Agent> c, double v) =>
+    v == 1 ? "vient de travailler sur la même ligne" : v == 0 ? "vient d'une autre ligne" : "premier voyage";
 }

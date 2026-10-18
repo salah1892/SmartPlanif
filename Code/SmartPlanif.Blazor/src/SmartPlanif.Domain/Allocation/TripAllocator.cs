@@ -134,10 +134,10 @@ public sealed class TripAllocator
         return new AllocationResult(assignments, failures);
     }
 
-    private static IEnumerable<Candidate<Bus>> BuildBusCandidates(ResourcePool pool, ScheduleBook book) =>
+    public static IEnumerable<Candidate<Bus>> BuildBusCandidates(ResourcePool pool, ScheduleBook book) =>
         pool.Buses.Select(b => new Candidate<Bus>(b.Id, b, book.Bus(b.Id), pool.UnavailabilityFor(ResourceKind.Bus, b.Id)));
 
-    private static IEnumerable<Candidate<Agent>> BuildAgentCandidates(ResourcePool pool, ScheduleBook book, bool forDriver) =>
+    public static IEnumerable<Candidate<Agent>> BuildAgentCandidates(ResourcePool pool, ScheduleBook book, bool forDriver) =>
         pool.Agents.Where(a => forDriver ? a.Role.CanDrive() : a.Role.CanReceive())    // qualification (A01/A02) : aptitude au poste
             .Select(a => new Candidate<Agent>(a.Id, a, book.Agent(a.Id), pool.UnavailabilityFor(ResourceKind.Agent, a.Id)));
 }

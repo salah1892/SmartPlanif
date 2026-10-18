@@ -79,7 +79,19 @@ public static class CandidateSelector
             accepted.Add(new ScoredCandidate<T>(candidate.Id, candidate.Resource, score, details, score + noise));
         }
 
-        var sorted = accepted.OrderByDescending(x => x.RankingKey).ThenBy(x => x.Id).ToList();
+        var sorted = accepted.OrderByDescending(x => x.RankingKey).ThenBy(x => TieKey(policy, trip.Id, x.Id)).ToList();
         return new SelectionResult<T>(sorted, rejections);
+    }
+
+    /// <summary>Clé de départage : rotation pseudo-aléatoire mais reproductible (dépend du voyage), ou identifiant si désactivée.</summary>
+    public static ulong TieKey(AllocationPolicy policy, long tripId, long resourceId)
+    {
+        if (!policy.RotateTies) return (ulong)resourceId;
+        unchecked
+        {
+            var h = (ulong)tripId * 0x9E3779B97F4A7C15UL + (ulong)resourceId * 0xC2B2AE3D27D4EB4FUL;
+            h ^= h >> 31; h *= 0x94D049BB133111EBUL; h ^= h >> 29;
+            return h;
+        }
     }
 }

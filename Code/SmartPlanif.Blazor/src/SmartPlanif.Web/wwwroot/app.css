@@ -1203,3 +1203,78 @@ body.drawer-open {
 .leave-form label { display: flex; flex-direction: column; font-size: .88rem; gap: 3px; }
 .btn.small { padding: .2rem .55rem; font-size: .8rem; }
 .alert.small { font-size: .85rem; padding: .5rem .8rem; }
+
+/* ============================================================
+   Pour Allocation.razor : style du tableau de répartition des agents sur les bus
+=============================================================== */
+.drawer.wide {
+    width: 760px;
+}
+
+.why-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    margin-bottom: 1rem;
+    background: #fff;
+}
+
+    .why-card h3 {
+        margin: 0 0 .4rem;
+    }
+
+.why-chosen {
+    color: var(--accent);
+}
+
+.why-summary {
+    background: var(--soft-bg);
+    border-left: 3px solid var(--soft);
+    padding: .5rem .8rem;
+    border-radius: 4px;
+}
+
+.crit-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 70px;
+    gap: .5rem;
+    align-items: center;
+    margin: 3px 0;
+}
+
+.crit-name {
+    font-size: .88rem;
+}
+
+.crit-bar {
+    background: #e8edf2;
+    border-radius: 4px;
+    height: 12px;
+}
+
+.crit-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+    .crit-fill.good {
+        background: #5cb585;
+    }
+
+    .crit-fill.mid {
+        background: #e0b84a;
+    }
+
+    .crit-fill.low {
+        background: #d9776b;
+    }
+
+.crit-pts {
+    font-size: .8rem;
+    text-align: right;
+}
+
+.crit-note {
+    grid-column: 1 / -1;
+    margin: -2px 0 4px 2px;
+}
