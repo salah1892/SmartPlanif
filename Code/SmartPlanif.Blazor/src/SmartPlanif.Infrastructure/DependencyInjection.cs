@@ -26,6 +26,7 @@ public static class InfrastructureServiceRegistration
         services.AddSingleton<IBusRepository>(sp => sp.GetRequiredService<DemoDataStore>());
         services.AddSingleton<IKpiRepository>(sp => sp.GetRequiredService<DemoDataStore>());
         services.AddSingleton<ILeaveRepository>(sp => sp.GetRequiredService<DemoDataStore>());
+        services.AddSingleton<ILineRepository>(sp => sp.GetRequiredService<DemoDataStore>());
         return services;
     }
 
@@ -49,6 +50,7 @@ public static class InfrastructureServiceRegistration
         services.AddTransient<IBusRepository, MySqlBusRepository>();
         services.AddTransient<IKpiRepository, MySqlKpiRepository>();
         services.AddTransient<ILeaveRepository, MySqlLeaveRepository>();
+        services.AddTransient<ILineRepository, MySqlLineRepository>();
         return services;
     }
 }

@@ -11,7 +11,7 @@ namespace SmartPlanif.Infrastructure.InMemory;
 /// Les lignes interurbaines n'ont que peu de bus confort : la politique de catégorie et l'ordre d'allocation comptent.
 /// </summary>
 public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssignmentRepository,
-    IReferenceDataRepository, IDatabaseDiagnostics, IAgentRepository, IBusRepository, IKpiRepository, ILeaveRepository
+    IReferenceDataRepository, IDatabaseDiagnostics, IAgentRepository, IBusRepository, IKpiRepository, ILeaveRepository, ILineRepository
 {
     private const long Urban = 1, InterCity = 2, Suburban = 3;
     private const long Standard = 1, Comfort = 2, Articulated = 3;
@@ -449,5 +449,64 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
             }
 
         return Task.FromResult<IReadOnlyList<LeaveConflict>>(list);
+    }
+    // ---------------------------------------------------------------- lignes
+    /// <inheritdoc />
+    public Task<IReadOnlyList<LineListItem>> GetLinesAsync(CancellationToken ct)
+    {
+        var types = LineTypes.ToDictionary(t => t.Id);
+        IReadOnlyList<LineListItem> list = Lines.Select(l =>
+        {
+            var center = l.LineId % 2 == 0 ? 1L : 2L;
+            return new LineListItem(l.LineId, l.Label, null, l.TypeId, types[l.TypeId].Label, types[l.TypeId].LabelArabic,
+                l.Km, center, center, $"Délégation {center}", null, null, true, true, 2);
+        }).ToList();
+        return Task.FromResult(list);
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<LineDayStats>> GetDayStatsAsync(DateOnly date, CancellationToken ct)
+    {
+        IReadOnlyList<LineDayStats> list = GenerateTrips(date).GroupBy(t => t.LineId)
+            .Select(g => new LineDayStats(g.Key, g.Count(),
+                g.Count(t => _planned.ContainsKey(t.Id) || _realized.ContainsKey(t.Id)),
+                g.Count(t => _realized.ContainsKey(t.Id)))).ToList();
+        return Task.FromResult(list);
+    }
+
+    /// <inheritdoc />
+    public Task<LineItinerary> GetItineraryAsync(long lineId, CancellationToken ct)
+    {
+        var line = Lines.FirstOrDefault(l => l.LineId == lineId);
+        if (line.Label is null)
+            return Task.FromResult(new LineItinerary(Array.Empty<LineStopRow>(), null, "ligne inconnue", null));
+
+        var stops = new[]
+        {
+        new LineStopRow(1, line.LineId * 10, "Terminus A (démo)", null, 0, 0, null, null, null),
+        new LineStopRow(2, line.LineId * 10 + 1, "Terminus B (démo)", null, (long)line.Km, line.DurationMinutes, null, null, null),
+    };
+        return Task.FromResult(new LineItinerary(stops, line.DurationMinutes, "démonstration",
+            line.Km / (line.DurationMinutes / 60.0)));
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<LineTripRow>> GetLineTripsAsync(long lineId, DateOnly date, CancellationToken ct)
+    {
+        var pool = BuildPool(date.AddDays(-1));
+        var buses = pool.Buses.ToDictionary(b => b.Id);
+        var agents = pool.Agents.ToDictionary(a => a.Id);
+
+        IReadOnlyList<LineTripRow> rows = GenerateTrips(date).Where(t => t.LineId == lineId).Select(t =>
+        {
+            var hasPlan = _planned.TryGetValue(t.Id, out var plan);
+            var hasReal = _realized.TryGetValue(t.Id, out var real);
+            return new LineTripRow(
+                t.Id, t.Departure, t.Arrival, (int)((t.OriginStationId ?? 0) % 2),
+                hasPlan ? buses[plan.Bus].Plate : null, hasPlan ? agents[plan.Driver].Name : null, hasPlan ? agents[plan.Receiver].Name : null,
+                hasReal ? buses[real.Bus].Plate : null, hasReal ? agents[real.Driver].Name : null, hasReal ? agents[real.Receiver].Name : null,
+                hasReal);
+        }).ToList();
+        return Task.FromResult(rows);
     }
 }

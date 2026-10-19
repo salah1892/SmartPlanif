@@ -260,3 +260,47 @@ public interface ILeaveRepository
 
 
 #endregion
+
+#region Lignes
+
+/// <summary>Une ligne (table drligne) avec son type (drtyli) et sa délégation (drdeleg).</summary>
+public sealed record LineListItem(
+    long Id, string? NameFr, string? NameAr,
+    long? TypeId, string? TypeLabel, string? TypeLabelAr,
+    double? Km, long? CenterId, long? DelegationId, string? DelegationLabel,
+    long? Nature, string? TariffType, bool Active, bool Sae, int Stops);
+
+/// <summary>Couverture d'une ligne sur un jour : voyages, voyages avec plan prévu complet, voyages effectués.</summary>
+public sealed record LineDayStats(long LineId, int Trips, int Planned, int Realized);
+
+/// <summary>Un arrêt de l'itinéraire (dritin + drstati).</summary>
+public sealed record LineStopRow(
+    long Sequence, long? StationId, string? NameFr, string? NameAr,
+    long? Km, long? Minutes, double? Lat, double? Lon, long? Section);
+
+/// <summary>Itinéraire d'une ligne, avec la durée retenue par le moteur et la vitesse moyenne implicite.</summary>
+public sealed record LineItinerary(IReadOnlyList<LineStopRow> Stops, double? DurationMinutes, string Method, double? SpeedKmh);
+
+/// <summary>Un voyage d'une ligne sur un jour, avec le plan prévu et les ressources réelles.</summary>
+public sealed record LineTripRow(
+    long TripId, DateTime Departure, DateTime? Arrival, int Direction,
+    string? BusPlate, string? DriverName, string? ReceiverName,
+    string? RealBusPlate, string? RealDriverName, string? RealReceiverName, bool HasRealResources);
+
+/// <summary>Lecture des lignes (lecture seule).</summary>
+public interface ILineRepository
+{
+    /// <summary>Toutes les lignes.</summary>
+    Task<IReadOnlyList<LineListItem>> GetLinesAsync(CancellationToken ct);
+
+    /// <summary>Voyages, plans complets et voyages effectués par ligne pour un jour de service.</summary>
+    Task<IReadOnlyList<LineDayStats>> GetDayStatsAsync(DateOnly date, CancellationToken ct);
+
+    /// <summary>Itinéraire d'une ligne (arrêts, km, minutes, GPS) et durée retenue.</summary>
+    Task<LineItinerary> GetItineraryAsync(long lineId, CancellationToken ct);
+
+    /// <summary>Voyages d'une ligne pour un jour de service.</summary>
+    Task<IReadOnlyList<LineTripRow>> GetLineTripsAsync(long lineId, DateOnly date, CancellationToken ct);
+}
+
+#endregion

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPlanif.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4898cef64d880cecec712391c5e6809dc89599f8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9098d7b8822f5af40302203a2ff5d1da970a3d7")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPlanif.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPlanif.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

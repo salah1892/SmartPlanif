@@ -1,0 +1,484 @@
+﻿@page "/lines"
+@using System.Globalization
+@inject LineQueryService LineService
+@inject PlanningCalendar Calendar
+
+<PageTitle>Lignes</PageTitle>
+
+<h1>Lignes</h1>
+<p class="muted">
+    Liste des lignes de la table <code>drligne</code> (lecture seule), avec leur type, leur centre, leur délégation et leur itinéraire (<code>dritin</code>).
+    Les voyages et la couverture du plan viennent de la table <code>trips</code> pour le <strong>jour choisi</strong> ci-dessous.
+    Les catégories de bus autorisées par type de ligne se règlent dans <a href="line-types">Types de ligne</a>.
+</p>
+
+@if (_loading)
+{
+    <p>Chargement…</p>
+}
+else if (_error is not null)
+{
+    <div class="alert error">@_error</div>
+}
+else
+{
+    var filtered = LineQuery.Apply(_all, CurrentFilter(), _sort, _desc);
+    var pageCount = LineQuery.PageCount(filtered.Count, PageSize);
+    if (_page > pageCount) _page = pageCount;
+    var rows = LineQuery.Page(filtered, _page, PageSize);
+    var groups = LineQuery.Summarize(_all, _group);
+    var toPlan = _stats.Values.Count(s => s.Planned < s.Trips);
+
+    <div class="kpis">
+        <div class="kpi"><span class="value">@_all.Count</span><span>lignes au total</span></div>
+        <div class="kpi"><span class="value">@filtered.Count</span><span>correspondent aux filtres</span></div>
+        <div class="kpi"><span class="value">@Num(filtered.Sum(l => l.Km ?? 0)) km</span><span>cumulés (lignes filtrées)</span></div>
+        <div class="kpi"><span class="value">@_all.Count(l => l.Active)</span><span>lignes actives (DEACTIF = 1)</span></div>
+        <div class="kpi"><span class="value">@_stats.Count</span><span>lignes avec voyages le @_dayDate.ToString("dd/MM/yyyy")</span></div>
+        <div class="kpi @(toPlan > 0 ? "bad" : "")"><span class="value">@toPlan</span><span>lignes avec voyages sans plan complet</span></div>
+    </div>
+
+    @if (_all.Any(l => !l.Active))
+    {
+        <div class="alert warn">
+            @_all.Count(l => !l.Active) ligne(s) inactive(s) (<code>DEACTIF ≠ 1</code>) : leurs voyages sont ignorés par le moteur
+            (<code>TripSource:RequireActiveLine</code>).
+        </div>
+    }
+
+    <div class="panel">
+        <div class="form-grid compact">
+            <label>
+                Jour (voyages et couverture)
+                <input type="date" @bind="_dayDate" @bind:after="LoadDayAsync" />
+            </label>
+            <label>
+                Regrouper par
+                <select @bind="_group">
+                    <option value="@LineGroup.Type">Type de ligne</option>
+                    <option value="@LineGroup.Center">Centre (dépôt)</option>
+                    <option value="@LineGroup.Delegation">Délégation</option>
+                </select>
+            </label>
+        </div>
+        <div class="group-cards">
+            @foreach (var g in groups)
+            {
+                <button class="group-card @(IsGroupActive(g) ? "active" : "")" @onclick="() => ApplyGroup(g)">
+                    <span class="group-label">@g.Label</span>
+                    <span class="group-count">@g.Count ligne(s)</span>
+                    <span class="muted small">@Num(g.Km) km</span>
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="form-grid compact">
+            <label>
+                Recherche (code, nom FR / AR)
+                <input type="search" placeholder="ex. 13, Kairouan…" @bind="_text" @bind:event="oninput" @bind:after="ResetPage" />
+            </label>
+            <label>
+                Type de ligne
+                <select @bind="_typeId" @bind:after="ResetPage">
+                    <option value="">Tous</option>
+                    @foreach (var t in _types)
+                    {
+                        <option value="@t.Id">@t.Label</option>
+                    }
+                </select>
+            </label>
+            <label>
+                Centre
+                <select @bind="_centerId" @bind:after="ResetPage">
+                    <option value="">Tous</option>
+                    @foreach (var c in _centers)
+                    {
+                        <option value="@c">Centre @c</option>
+                    }
+                </select>
+            </label>
+            <label>
+                Délégation
+                <select @bind="_delegationId" @bind:after="ResetPage">
+                    <option value="">Toutes</option>
+                    @foreach (var d in _delegations)
+                    {
+                        <option value="@d.Id">@d.Label</option>
+                    }
+                </select>
+            </label>
+            <label>
+                Active (DEACTIF)
+                <select @bind="_active" @bind:after="ResetPage">
+                    <option value="">Indifférent</option>
+                    <option value="yes">Active</option>
+                    <option value="no">Inactive</option>
+                </select>
+            </label>
+            <label>
+                Voyages le jour choisi
+                <select @bind="_hasTrips" @bind:after="ResetPage">
+                    <option value="">Indifférent</option>
+                    <option value="yes">Avec voyages</option>
+                    <option value="no">Sans voyage</option>
+                </select>
+            </label>
+        </div>
+        <div class="toolbar">
+            <button class="btn" @onclick="ResetFilters">Réinitialiser les filtres</button>
+            <label class="inline">
+                Lignes par page
+                <select @bind="PageSize" @bind:after="ResetPage">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <table class="grid selectable">
+        <thead>
+            <tr>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Id)">Code @Arrow(LineSort.Id)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Name)">Ligne @Arrow(LineSort.Name)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Type)">Type @Arrow(LineSort.Type)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Km)">Km @Arrow(LineSort.Km)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Stops)">Arrêts @Arrow(LineSort.Stops)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Center)">Centre @Arrow(LineSort.Center)</th>
+                <th class="sortable" @onclick="() => SortBy(LineSort.Delegation)">Délégation @Arrow(LineSort.Delegation)</th>
+                <th>Voyages planifiés (jour)</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var l in rows)
+            {
+                var st = _stats.GetValueOrDefault(l.Id);
+                <tr class="@(_selected?.Id == l.Id ? "selected" : "") @(l.Active ? "" : "muted")" @onclick="() => SelectAsync(l)">
+                    <td><code>@l.Id</code></td>
+                    <td>@(l.NameFr ?? "—") <span dir="rtl" class="muted small">@l.NameAr</span></td>
+                    <td>@(l.TypeLabel ?? "—")</td>
+                    <td>@(l.Km is { } km ? Num(km) : "—")</td>
+                    <td>@l.Stops</td>
+                    <td>@(l.CenterId?.ToString() ?? "—")</td>
+                    <td>@(l.DelegationLabel ?? l.DelegationId?.ToString() ?? "—")</td>
+                    <td>
+                        @if (st is null)
+                        {
+                            <span class="muted">—</span>
+                        }
+                        else
+                        {
+                            <span class="badge @(st.Planned == st.Trips ? "soft" : "hard")">@st.Planned / @st.Trips</span>
+                        }
+                    </td>
+                    <td>@(l.Active ? "✔" : "—")</td>
+                </tr>
+            }
+            @if (rows.Count == 0)
+            {
+                <tr><td colspan="9" class="muted">Aucune ligne ne correspond aux filtres.</td></tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="toolbar">
+        <button class="btn" @onclick="() => _page = 1" disabled="@(_page <= 1)">⏮</button>
+        <button class="btn" @onclick="() => _page--" disabled="@(_page <= 1)">◀</button>
+        <span>Page @_page / @pageCount</span>
+        <button class="btn" @onclick="() => _page++" disabled="@(_page >= pageCount)">▶</button>
+        <button class="btn" @onclick="() => _page = pageCount" disabled="@(_page >= pageCount)">⏭</button>
+    </div>
+
+    @if (_selected is not null)
+    {
+        <div class="drawer-overlay" @onclick="CloseDrawer"></div>
+        <aside class="drawer wide">
+            <div class="drawer-header">
+                <div>
+                    <h2 style="margin:0">@(_selected.NameFr ?? "Ligne") <code>#@_selected.Id</code></h2>
+                    <span dir="rtl" class="muted small">@_selected.NameAr</span>
+                </div>
+                <button class="drawer-close" @onclick="CloseDrawer" title="Fermer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="drawer-body">
+                <p class="muted small">
+                    @(_selected.TypeLabel ?? "Sans type") ·
+                    @(_selected.Km is { } k ? Num(k) + " km" : "km inconnus") ·
+                    Centre @(_selected.CenterId?.ToString() ?? "—") ·
+                    Délégation @(_selected.DelegationLabel ?? "—") ·
+                    Nature @(_selected.Nature?.ToString() ?? "—") ·
+                    Tarif @(_selected.TariffType ?? "—") ·
+                    SAE @(_selected.Sae ? "oui" : "non")
+                    <span class="badge @(_selected.Active ? "soft" : "hard")">@(_selected.Active ? "Active" : "Inactive")</span>
+                </p>
+
+                <h3>Itinéraire (@(_itinerary?.Stops.Count ?? 0) arrêts)</h3>
+                @if (_itineraryError is not null)
+                {
+                    <div class="alert error small">@_itineraryError</div>
+                }
+                else if (_itinerary is not null)
+                {
+                    if (_itinerary.Stops.Count == 0)
+                    {
+                        <div class="alert warn small">
+                            Aucun itinéraire dans <code>dritin</code> pour cette ligne : sans <code>stop_times</code>, ses voyages n'ont pas d'heure d'arrivée
+                            et sont écartés par le moteur.
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="small">
+                            Durée retenue : <strong>@(_itinerary.DurationMinutes is { } m ? $"{m:0} min" : "—")</strong>
+                            — vitesse moyenne : <strong>@(_itinerary.SpeedKmh is { } v ? $"{v:0} km/h" : "—")</strong>
+                            — <span class="muted">@_itinerary.Method</span>
+                        </p>
+                        <table class="grid">
+                            <thead><tr><th>#</th><th>Station</th><th>Km</th><th>Min</th><th>Section</th><th>GPS</th></tr></thead>
+                            <tbody>
+                                @foreach (var s in _itinerary.Stops)
+                                {
+                                    <tr>
+                                        <td>@s.Sequence</td>
+                                        <td>@(s.NameFr ?? (s.StationId is { } sid ? $"Station {sid}" : "—")) <span dir="rtl" class="muted small">@s.NameAr</span></td>
+                                        <td>@(s.Km?.ToString() ?? "—")</td>
+                                        <td>@(s.Minutes?.ToString() ?? "—")</td>
+                                        <td>@(s.Section?.ToString() ?? "—")</td>
+                                        <td class="small">@Gps(s)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+
+                <h3>Voyages du jour</h3>
+                <div class="toolbar">
+                    <label class="inline">
+                        Jour
+                        <input type="date" @bind="_dayDate" @bind:after="LoadDayAsync" />
+                    </label>
+                </div>
+
+                @if (_tripsError is not null)
+                {
+                    <div class="alert error small">@_tripsError</div>
+                }
+                else if (_trips is not null)
+                {
+                    <p class="small">
+                        <strong>@_trips.Count</strong> voyage(s) le @_dayDate.ToString("dd/MM/yyyy") :
+                        @_trips.Count(t => t.BusPlate is not null && t.DriverName is not null && t.ReceiverName is not null) avec plan complet,
+                        @_trips.Count(t => t.HasRealResources) avec ressources réelles.
+                    </p>
+                    @if (_trips.Count > 0)
+                    {
+                        <table class="grid">
+                            <thead>
+                                <tr><th>Départ</th><th>Arrivée</th><th>Sens</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th><th>Réel (bus / chauffeur / receveur)</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var t in _trips)
+                                {
+                                    <tr class="@(t.BusPlate is null || t.DriverName is null || t.ReceiverName is null ? "row-hard" : "")">
+                                        <td>@t.Departure.ToString("HH:mm")</td>
+                                        <td>@(t.Arrival?.ToString("HH:mm") ?? "?")</td>
+                                        <td>@(t.Direction == 1 ? "Retour" : "Aller")</td>
+                                        <td>@(t.BusPlate ?? "—")</td>
+                                        <td>@(t.DriverName ?? "—")</td>
+                                        <td>@(t.ReceiverName ?? "—")</td>
+                                        <td class="small">@RealText(t)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="muted small">Aucun voyage de cette ligne le jour choisi.</p>
+                    }
+                }
+            </div>
+        </aside>
+    }
+}
+
+@code {
+    private IReadOnlyList<LineListItem> _all = Array.Empty<LineListItem>();
+    private IReadOnlyList<(long Id, string Label)> _types = Array.Empty<(long, string)>();
+    private IReadOnlyList<long> _centers = Array.Empty<long>();
+    private IReadOnlyList<(long Id, string Label)> _delegations = Array.Empty<(long, string)>();
+    private Dictionary<long, LineDayStats> _stats = new();
+    private bool _loading = true;
+    private string? _error;
+
+    private string _text = "";
+    private long? _typeId;
+    private long? _centerId;
+    private long? _delegationId;
+    private string _active = "";
+    private string _hasTrips = "";
+    private LineGroup _group = LineGroup.Type;
+    private LineSort _sort = LineSort.Id;
+    private bool _desc;
+    private int _page = 1;
+    public int PageSize { get; set; } = 25;
+
+    private DateTime _dayDate;
+    private LineListItem? _selected;
+    private LineItinerary? _itinerary;
+    private string? _itineraryError;
+    private IReadOnlyList<LineTripRow>? _trips;
+    private string? _tripsError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _dayDate = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        try
+        {
+            _all = await LineService.LoadAsync();
+            _types = _all.Where(l => l.TypeId is not null).GroupBy(l => l.TypeId!.Value)
+                .Select(g => (g.Key, g.First().TypeLabel ?? $"Type {g.Key}")).OrderBy(x => x.Item2).ToList();
+            _centers = _all.Where(l => l.CenterId is not null).Select(l => l.CenterId!.Value).Distinct().OrderBy(x => x).ToList();
+            _delegations = _all.Where(l => l.DelegationId is not null).GroupBy(l => l.DelegationId!.Value)
+                .Select(g => (g.Key, g.First().DelegationLabel ?? $"Délégation {g.Key}")).OrderBy(x => x.Item2).ToList();
+            await LoadStatsAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = "Chargement des lignes impossible : " + ex.Message;
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task LoadStatsAsync()
+    {
+        try
+        {
+            _stats = (await LineService.GetDayStatsAsync(DateOnly.FromDateTime(_dayDate))).ToDictionary(s => s.LineId);
+        }
+        catch (Exception ex)
+        {
+            _stats = new();
+            _error = "Lecture des voyages du jour impossible : " + ex.Message;
+        }
+    }
+
+    /// <summary>Changement de jour : recharge la couverture de toutes les lignes et les voyages de la ligne ouverte.</summary>
+    private async Task LoadDayAsync()
+    {
+        await LoadStatsAsync();
+        await LoadTripsAsync();
+    }
+
+    private LineFilter CurrentFilter() => new(
+        _text, _typeId, _centerId, _delegationId,
+        _active switch { "yes" => true, "no" => false, _ => null },
+        _hasTrips switch { "yes" => true, "no" => false, _ => null },
+        _stats.Keys.ToHashSet());
+
+    private void ResetPage() => _page = 1;
+
+    private void ResetFilters()
+    {
+        _text = ""; _typeId = null; _centerId = null; _delegationId = null; _active = ""; _hasTrips = "";
+        _page = 1;
+    }
+
+    private void SortBy(LineSort sort)
+    {
+        if (_sort == sort) _desc = !_desc; else { _sort = sort; _desc = false; }
+        _page = 1;
+    }
+
+    private string Arrow(LineSort sort) => _sort != sort ? "" : _desc ? "▼" : "▲";
+
+    /// <summary>Un clic sur une carte de groupe filtre la liste sur ce groupe (re-clic : retire le filtre).</summary>
+    private void ApplyGroup(LineGroupSummary g)
+    {
+        var active = IsGroupActive(g);
+        long? id = long.TryParse(g.Key, out var parsed) ? parsed : null;
+        switch (_group)
+        {
+            case LineGroup.Type: _typeId = active ? null : id; break;
+            case LineGroup.Center: _centerId = active ? null : id; break;
+            default: _delegationId = active ? null : id; break;
+        }
+        _page = 1;
+    }
+
+    private bool IsGroupActive(LineGroupSummary g)
+    {
+        long? id = long.TryParse(g.Key, out var parsed) ? parsed : null;
+        return id is not null && _group switch
+        {
+            LineGroup.Type => _typeId == id,
+            LineGroup.Center => _centerId == id,
+            _ => _delegationId == id,
+        };
+    }
+
+    private async Task SelectAsync(LineListItem line)
+    {
+        _selected = line;
+        _itinerary = null;
+        _itineraryError = null;
+        try
+        {
+            _itinerary = await LineService.GetItineraryAsync(line.Id);
+        }
+        catch (Exception ex)
+        {
+            _itineraryError = "Lecture de l'itinéraire impossible : " + ex.Message;
+        }
+        await LoadTripsAsync();
+    }
+
+    private async Task LoadTripsAsync()
+    {
+        if (_selected is null) return;
+        _tripsError = null;
+        try
+        {
+            _trips = await LineService.GetTripsAsync(_selected.Id, DateOnly.FromDateTime(_dayDate));
+        }
+        catch (Exception ex)
+        {
+            _trips = null;
+            _tripsError = "Lecture des voyages impossible : " + ex.Message;
+        }
+    }
+
+    private void CloseDrawer()
+    {
+        _selected = null;
+        _itinerary = null;
+        _itineraryError = null;
+        _trips = null;
+        _tripsError = null;
+    }
+
+    private static string Num(double value) => value.ToString("0.#", CultureInfo.InvariantCulture);
+
+    private static string Gps(LineStopRow s) =>
+        s.Lat is { } lat && s.Lon is { } lon
+            ? lat.ToString("0.0000", CultureInfo.InvariantCulture) + ", " + lon.ToString("0.0000", CultureInfo.InvariantCulture)
+            : "—";
+
+    private static string RealText(LineTripRow t) =>
+        t.HasRealResources ? $"{t.RealBusPlate ?? "—"} / {t.RealDriverName ?? "—"} / {t.RealReceiverName ?? "—"}" : "";
+}
