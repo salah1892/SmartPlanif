@@ -1,0 +1,35 @@
+@using System.Globalization
+
+@* Classement horizontal des ressources (bus ou agents) par nombre de voyages ; clic = sélection. *@
+<div class="usage-bars">
+    @if (Items.Count == 0)
+    {
+        <p class="muted small">Aucune ressource.</p>
+    }
+    else
+    {
+        var shown = Items.Take(Top).ToList();
+        var max = Math.Max(1, shown.Max(u => u.Trips));
+        foreach (var u in shown)
+        {
+            var pct = u.Trips * 100.0 / max;
+            <button type="button" class="usage-row @(Selected == u.Id ? "sel" : "") @(u.Trips == 0 ? "zero" : "")"
+                    @onclick="() => OnSelect.InvokeAsync(u.Id)" title="@u.Label : @u.Trips voyage(s) sur @u.DaysUsed jour(s)">
+                <span class="usage-label">@u.Label</span>
+                <span class="usage-track"><span class="usage-fill" style="width:@(pct.ToString("0.#", CultureInfo.InvariantCulture))%"></span></span>
+                <span class="usage-val">@u.Trips <small>(@u.DaysUsed j)</small></span>
+            </button>
+        }
+        @if (Items.Count > shown.Count)
+        {
+            <p class="muted small">… et @(Items.Count - shown.Count) autre(s) (augmentez « Afficher » ou filtrez).</p>
+        }
+    }
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<ResourceUsage> Items { get; set; } = Array.Empty<ResourceUsage>();
+    [Parameter] public int Top { get; set; } = 15;
+    [Parameter] public long? Selected { get; set; }
+    [Parameter] public EventCallback<long> OnSelect { get; set; }
+}

@@ -1278,3 +1278,480 @@ body.drawer-open {
     grid-column: 1 / -1;
     margin: -2px 0 4px 2px;
 }
+
+/*!* ============================================================*/
+/*   Onglet « Historique & qualité » : graphiques dynamiques*/
+/*=============================================================== *!*/
+/*.chart-grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));*/
+/*    gap: 1rem;*/
+/*}*/
+
+/*.trend {*/
+/*    background: var(--panel);*/
+/*    border: 1px solid var(--line);*/
+/*    border-radius: 8px;*/
+/*    padding: .6rem .8rem;*/
+/*}*/
+
+/*.trend-title {*/
+/*    margin: 0 0 .3rem;*/
+/*    font-size: 1rem;*/
+/*}*/
+
+/*.legend {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    gap: .4rem;*/
+/*    margin-bottom: .3rem;*/
+/*}*/
+
+/*.legend-item {*/
+/*    display: inline-flex;*/
+/*    align-items: center;*/
+/*    gap: 6px;*/
+/*    border: 1px solid var(--line);*/
+/*    background: #fff;*/
+/*    border-radius: 14px;*/
+/*    padding: 2px 10px;*/
+/*    font-size: .8rem;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*    .legend-item.off {*/
+/*        opacity: .45;*/
+/*        text-decoration: line-through;*/
+/*    }*/
+
+/*    .legend-item .dot {*/
+/*        width: 10px;*/
+/*        height: 10px;*/
+/*        border-radius: 50%;*/
+/*        display: inline-block;*/
+/*    }*/
+
+/*.trend-svg {*/
+/*    width: 100%;*/
+/*    height: auto;*/
+/*    display: block;*/
+/*}*/
+
+/*    .trend-svg .grid-line {*/
+/*        stroke: #e6ebf0;*/
+/*        stroke-width: 1;*/
+/*    }*/
+
+/*    .trend-svg .axis-text {*/
+/*        font-size: 11px;*/
+/*        fill: var(--muted);*/
+/*    }*/
+
+/*    .trend-svg .hover-col {*/
+/*        fill: transparent;*/
+/*    }*/
+
+/*        .trend-svg .hover-col.on {*/
+/*            fill: rgba(31, 78, 121, .07);*/
+/*        }*/
+
+/*    .trend-svg .hover-line {*/
+/*        stroke: #9aa7b4;*/
+/*        stroke-dasharray: 3 3;*/
+/*    }*/
+
+/*    .trend-svg .tip {*/
+/*        fill: #14283d;*/
+/*        opacity: .96;*/
+/*    }*/
+
+/*    .trend-svg .tip-title {*/
+/*        fill: #fff;*/
+/*        font-weight: 700;*/
+/*        font-size: 12px;*/
+/*    }*/
+
+/*    .trend-svg .tip-text {*/
+/*        fill: #dfe8f1;*/
+/*        font-size: 11.5px;*/
+/*    }*/
+
+/*.trend-svg {*/
+/*    pointer-events: all;*/
+/*}*/
+
+/*    .trend-svg .tip, .trend-svg .tip-title, .trend-svg .tip-text {*/
+/*        pointer-events: none;*/
+/*    }*/
+
+/*.hist-grid {*/
+/*    display: grid;*/
+/*    grid-template-columns: minmax(320px, 1fr) 2fr;*/
+/*    gap: 1.2rem;*/
+/*    align-items: start;*/
+/*}*/
+
+/*@media (max-width: 1000px) {*/
+/*    .hist-grid {*/
+/*        grid-template-columns: 1fr;*/
+/*    }*/
+/*}*/
+
+/*.usage-bars {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    gap: 4px;*/
+/*}*/
+
+/*.usage-row {*/
+/*    display: grid;*/
+/*    grid-template-columns: 130px 1fr 80px;*/
+/*    gap: .5rem;*/
+/*    align-items: center;*/
+/*    padding: 4px 8px;*/
+/*    border: 1px solid var(--line);*/
+/*    border-radius: 6px;*/
+/*    background: #fff;*/
+/*    cursor: pointer;*/
+/*    font: inherit;*/
+/*    text-align: left;*/
+/*}*/
+
+/*    .usage-row:hover {*/
+/*        background: #eef2f7;*/
+/*    }*/
+
+/*    .usage-row.sel {*/
+/*        border-color: var(--accent);*/
+/*        background: #e3eefa;*/
+/*    }*/
+
+/*    .usage-row.zero .usage-label {*/
+/*        color: var(--hard);*/
+/*    }*/
+
+/*.usage-label {*/
+/*    font-size: .85rem;*/
+/*    overflow: hidden;*/
+/*    text-overflow: ellipsis;*/
+/*    white-space: nowrap;*/
+/*}*/
+
+/*.usage-track {*/
+/*    background: #e8edf2;*/
+/*    border-radius: 4px;*/
+/*    height: 12px;*/
+/*    display: block;*/
+/*}*/
+
+/*.usage-fill {*/
+/*    background: #5b9bb5;*/
+/*    height: 100%;*/
+/*    border-radius: 4px;*/
+/*    display: block;*/
+/*}*/
+
+/*.usage-val {*/
+/*    font-size: .8rem;*/
+/*    text-align: right;*/
+/*}*/
+
+/* ============================================================
+   Onglet « Historique & qualité » : graphiques dynamiques
+   Fond blanc garanti, aires sous courbes, tooltip sombre élégant
+=============================================================== */
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Conteneur de graphique : fond blanc FORCÉ (indépendant de --panel) */
+.trend {
+    background: #ffffff;
+    border: 1px solid var(--line, #e2e8f0);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s ease;
+}
+
+.trend:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.trend-title {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.trend-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(180deg, #3b82f6, #6366f1);
+    border-radius: 2px;
+}
+
+/* Légende : pastilles colorées, style "chip" */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: #475569;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.legend-item:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.legend-item.off {
+    opacity: 0.45;
+    text-decoration: line-through;
+    background: #f8fafc;
+}
+
+.legend-item .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* SVG : fond blanc garanti, pointer-events corrects */
+.trend-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fafbfc;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+    pointer-events: all;
+}
+
+.trend-plot-bg {
+    fill: #ffffff;
+}
+
+.trend-svg .grid-line {
+    stroke: #e2e8f0;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+}
+
+.trend-svg .axis-text {
+    font-size: 11px;
+    fill: #64748b;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Aires sous les courbes */
+.trend-area {
+    opacity: 0.08;
+    transition: opacity 0.2s ease;
+}
+
+.trend:hover .trend-area {
+    opacity: 0.12;
+}
+
+/* Lignes de courbe */
+.trend-line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    transition: stroke-width 0.2s ease;
+}
+
+.trend:hover .trend-line {
+    stroke-width: 3;
+}
+
+/* Points sur les courbes */
+.trend-dot {
+    stroke: #ffffff;
+    stroke-width: 2;
+    transition: r 0.15s ease;
+}
+
+/* Barres */
+.trend-bar {
+    transition: opacity 0.15s ease;
+}
+
+/* État vide */
+.trend-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.trend-empty svg {
+    margin-bottom: 0.75rem;
+    opacity: 0.5;
+}
+
+.trend-empty p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Colonnes de survol */
+.trend-svg .hover-col {
+    fill: transparent;
+    cursor: crosshair;
+    transition: fill 0.15s ease;
+}
+
+.trend-svg .hover-col.on {
+    fill: rgba(59, 130, 246, 0.05);
+}
+
+/* Ligne verticale de survol */
+.trend-svg .hover-line {
+    stroke: #3b82f6;
+    stroke-width: 1.5;
+    stroke-dasharray: 4 4;
+    opacity: 0.5;
+}
+
+/* Infobulle sombre élégante */
+.trend-svg .tip {
+    fill: #1e293b;
+    opacity: 0.96;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+}
+
+.trend-svg .tip-title {
+    fill: #f8fafc;
+    font-weight: 600;
+    font-size: 12px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.trend-svg .tip-text {
+    fill: #cbd5e1;
+    font-size: 11.5px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.trend-svg .tip,
+.trend-svg .tip-title,
+.trend-svg .tip-text {
+    pointer-events: none;
+}
+
+/* ============================================================
+   Historique d'utilisation des ressources
+=============================================================== */
+.hist-grid {
+    display: grid;
+    grid-template-columns: minmax(340px, 1fr) 2fr;
+    gap: 1.2rem;
+    align-items: start;
+}
+
+@media (max-width: 1000px) {
+    .hist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.usage-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.usage-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 90px;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 5px 9px;
+    border: 1px solid var(--line, #e2e8f0);
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    width: 100%;
+    transition: background 0.15s ease;
+}
+
+.usage-row:hover {
+    background: #eef2f7;
+}
+
+.usage-row.sel {
+    border-color: #1f4e79;
+    background: #e3eefa;
+}
+
+.usage-row.zero .usage-label {
+    color: #b03a2e;
+}
+
+.usage-label {
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.usage-track {
+    background: #e8edf2;
+    border-radius: 4px;
+    height: 12px;
+    display: block;
+}
+
+.usage-fill {
+    background: #5b9bb5;
+    height: 100%;
+    border-radius: 4px;
+    display: block;
+    transition: width 0.3s ease;
+}
+
+.usage-val {
+    font-size: 0.8rem;
+    text-align: right;
+    color: #475569;
+}

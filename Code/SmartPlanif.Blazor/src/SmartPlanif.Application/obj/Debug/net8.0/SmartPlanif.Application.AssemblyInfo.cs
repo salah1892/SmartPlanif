@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPlanif.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9098d7b8822f5af40302203a2ff5d1da970a3d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5af7cd21058c8df89f1343216065bdd7ea4fd4e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPlanif.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPlanif.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

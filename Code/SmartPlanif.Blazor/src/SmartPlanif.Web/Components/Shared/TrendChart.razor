@@ -1,0 +1,295 @@
+@using System.Globalization
+@using System.Text
+
+@* Graphique SVG dynamique : courbes avec aires, barres, légende cliquable, tooltip élégant *@
+<div class="trend">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <h4 class="trend-title">@Title</h4>
+    }
+
+    @if (Series.Count > 0)
+    {
+        <div class="legend">
+            @foreach (var item in Series)
+            {
+                var isOff = _hidden.Contains(item.Name);
+                <button type="button" class="legend-item @(isOff ? "off" : "")"
+                        @onclick="() => Toggle(item.Name)"
+                        title="Cliquer pour afficher / masquer">
+                    <span class="dot" style="background:@item.Color"></span>
+                    <span>@item.Name</span>
+                </button>
+            }
+        </div>
+    }
+
+    @if (Labels.Count == 0)
+    {
+        <div class="trend-empty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v18h18"/>
+                <path d="M7 16l4-8 4 4 4-6"/>
+            </svg>
+            <p>Aucune donnée sur la période.</p>
+        </div>
+    }
+    else
+    {
+        var (min, max) = Range();
+        var n = Labels.Count;
+        var visible = Visible.ToList();
+        var labelStep = Math.Max(1, (int)Math.Ceiling(n / 8.0));
+
+        <svg viewBox="@($"0 0 {N(W)} {N(H)}")" class="trend-svg"
+             @onmouseleave="() => _hover = null"
+             preserveAspectRatio="xMidYMid meet">
+
+            <!-- Fond blanc garanti du graphique (indépendant de --panel) -->
+            <rect x="@N(L)" y="@N(T)" width="@N(PlotW)" height="@N(PlotH)"
+                  fill="#ffffff" rx="6" class="trend-plot-bg" />
+
+            <!-- Grille horizontale + étiquettes Y -->
+            @for (var g = 0; g <= 4; g++)
+            {
+                var gv = min + (max - min) * g / 4;
+                var gy = Y(gv, min, max);
+                <line x1="@N(L)" y1="@N(gy)" x2="@N(W - R)" y2="@N(gy)"
+                      class="grid-line" />
+                @Txt(L - 8, gy + 4, Fmt(gv), "#64748b", 11, "end")
+            }
+
+            <!-- Étiquettes X -->
+            @for (var xl = 0; xl < n; xl += labelStep)
+            {
+                @Txt(X(xl, n), H - 10, Labels[xl], "#64748b", 10, "middle")
+            }
+
+            @if (Bars)
+            {
+                var barGroupW = PlotW / n * 0.85;
+                var barW = barGroupW / Math.Max(1, visible.Count);
+                var baseline = Y(Math.Max(min, 0), min, max);
+
+                @for (var bi = 0; bi < n; bi++)
+                {
+                    for (var bk = 0; bk < visible.Count; bk++)
+                    {
+                        if (bi >= visible[bk].Values.Count ||
+                            visible[bk].Values[bi] is not { } bv) continue;
+                        var by = Y(bv, min, max);
+                        var bx = L + (PlotW / n) * bi +
+                                 (PlotW / n - barGroupW) / 2 + bk * barW;
+                        var barH = Math.Abs(baseline - by);
+                        var barY = Math.Min(by, baseline);
+                        <rect x="@N(bx + 1)" y="@N(barY)"
+                              width="@N(Math.Max(1, barW - 2))"
+                              height="@N(barH)"
+                              fill="@visible[bk].Color"
+                              class="trend-bar"
+                              opacity="@(_hover == bi ? "1" : "0.82")"
+                              rx="2" ry="2" />
+                    }
+                }
+            }
+            else
+            {
+                <!-- Aires sous les courbes (effet de profondeur) -->
+                @foreach (var ls in visible)
+                {
+                    var areaPath = AreaPathOf(ls, n, min, max);
+                    if (!string.IsNullOrEmpty(areaPath))
+                    {
+                        <path d="@areaPath" class="trend-area"
+                              fill="@ls.Color" />
+                    }
+                }
+
+                <!-- Courbes -->
+                @foreach (var ls in visible)
+                {
+                    var linePath = PathOf(ls, n, min, max);
+                    if (!string.IsNullOrEmpty(linePath))
+                    {
+                        <path d="@linePath" class="trend-line"
+                              stroke="@ls.Color" />
+                    }
+                    @if (n <= 60)
+                    {
+                        for (var pi = 0; pi < n && pi < ls.Values.Count; pi++)
+                        {
+                            if (ls.Values[pi] is not { } pv) continue;
+                            <circle cx="@N(X(pi, n))" cy="@N(Y(pv, min, max))"
+                                    r="@(_hover == pi ? "5" : "3")"
+                                    fill="@ls.Color"
+                                    class="trend-dot" />
+                        }
+                    }
+                }
+            }
+
+            <!-- Colonnes de survol (zones interactives) -->
+            @for (var hi = 0; hi < n; hi++)
+            {
+                var idx = hi;
+                <rect x="@N(ColX(hi, n))" y="@N(T)" width="@N(ColW(n))"
+                      height="@N(PlotH)"
+                      class="hover-col @(_hover == hi ? "on" : "")"
+                      @onmouseover="() => _hover = idx" />
+            }
+
+            <!-- Infobulle -->
+            @if (_hover is int h && h < n)
+            {
+                var hx = X(h, n);
+                var boxW = 260.0;
+                var boxH = 32.0 + 22 * visible.Count;
+                var boxX = hx > W / 2 ? hx - boxW - 12 : hx + 12;
+                var boxY = T + 8;
+
+                <line x1="@N(hx)" y1="@N(T)" x2="@N(hx)" y2="@N(H - B)"
+                      class="hover-line" />
+
+                <rect x="@N(boxX)" y="@N(boxY)" width="@N(boxW)"
+                      height="@N(boxH)" rx="8" class="tip" />
+
+                @Txt(boxX + 12, boxY + 22, Labels[h], "#f8fafc", 12, "start", "600")
+
+                @for (var tk = 0; tk < visible.Count; tk++)
+                {
+                    var tip = visible[tk];
+                    var tv = h < tip.Values.Count ? tip.Values[h] : null;
+                    var ty = boxY + 44 + 22 * tk;
+                    <circle cx="@N(boxX + 18)" cy="@N(ty - 5)"
+                            r="5" fill="@tip.Color" />
+                    @Txt(boxX + 30, ty,
+                         tip.Name + " : " + (tv is { } v2 ? Fmt(v2) + tip.Unit : "—"),
+                         "#cbd5e1", 11.5, "start")
+                }
+            }
+        </svg>
+    }
+</div>
+
+@code {
+    private const double W = 900, H = 300, L = 55, R = 16, T = 16, B = 36;
+    private static double PlotW => W - L - R;
+    private static double PlotH => H - T - B;
+    private readonly HashSet<string> _hidden = new();
+    private int? _hover;
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public IReadOnlyList<string> Labels { get; set; } = Array.Empty<string>();
+    [Parameter] public IReadOnlyList<ChartSeries> Series { get; set; } = Array.Empty<ChartSeries>();
+    [Parameter] public bool Bars { get; set; }
+    [Parameter] public double? YMax { get; set; }
+
+    private IEnumerable<ChartSeries> Visible =>
+        Series.Where(s => !_hidden.Contains(s.Name));
+
+    private void Toggle(string name)
+    {
+        if (!_hidden.Remove(name)) _hidden.Add(name);
+    }
+
+    private (double Min, double Max) Range()
+    {
+        var values = Visible.SelectMany(s => s.Values)
+            .Where(v => v.HasValue).Select(v => v!.Value).ToList();
+        var min = values.Count > 0 ? Math.Min(0, values.Min()) : 0;
+        var max = YMax ?? (values.Count > 0 ? NiceCeil(values.Max()) : 1);
+        if (max <= min) max = min + 1;
+        return (min, max);
+    }
+
+    private static double NiceCeil(double v)
+    {
+        if (v <= 0) return 1;
+        var exp = Math.Pow(10, Math.Floor(Math.Log10(v)));
+        var f = v / exp;
+        return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * exp;
+    }
+
+    private double X(int i, int n) =>
+        Bars ? L + PlotW * (i + 0.5) / n
+             : n == 1 ? L + PlotW / 2 : L + PlotW * i / (n - 1);
+
+    private static double Y(double v, double min, double max) =>
+        T + PlotH * (1 - (Math.Clamp(v, min, max) - min) / (max - min));
+
+    private double ColW(int n) =>
+        Bars ? PlotW / n : n > 1 ? PlotW / (n - 1) : PlotW;
+
+    private double ColX(int i, int n) =>
+        Bars ? L + PlotW / n * i : X(i, n) - ColW(n) / 2;
+
+    private string PathOf(ChartSeries s, int n, double min, double max)
+    {
+        var sb = new StringBuilder();
+        var pen = false;
+        for (var i = 0; i < n && i < s.Values.Count; i++)
+        {
+            if (s.Values[i] is not { } v) { pen = false; continue; }
+            sb.Append(pen ? 'L' : 'M')
+              .Append(N(X(i, n))).Append(' ')
+              .Append(N(Y(v, min, max))).Append(' ');
+            pen = true;
+        }
+        return sb.ToString();
+    }
+
+    private string AreaPathOf(ChartSeries s, int n, double min, double max)
+    {
+        var sb = new StringBuilder();
+        var started = false;
+        var lastX = 0.0;
+        var firstX = 0.0;
+
+        for (var i = 0; i < n && i < s.Values.Count; i++)
+        {
+            if (s.Values[i] is not { } v) continue;
+            var x = X(i, n);
+            var y = Y(v, min, max);
+            if (!started)
+            {
+                sb.Append('M').Append(N(x)).Append(' ').Append(N(y));
+                firstX = x;
+                started = true;
+            }
+            else
+            {
+                sb.Append('L').Append(N(x)).Append(' ').Append(N(y));
+            }
+            lastX = x;
+        }
+
+        if (started)
+        {
+            var baseline = Y(Math.Max(min, 0), min, max);
+            sb.Append('L').Append(N(lastX)).Append(' ').Append(N(baseline));
+            sb.Append('L').Append(N(firstX)).Append(' ').Append(N(baseline));
+            sb.Append('Z');
+        }
+        return sb.ToString();
+    }
+
+    private static MarkupString Txt(double x, double y, string content,
+        string fill, double size, string anchor = "start",
+        string weight = "normal")
+    {
+        var encoded = System.Net.WebUtility.HtmlEncode(content ?? "");
+        return new MarkupString(
+            $"<text x=\"{N(x)}\" y=\"{N(y)}\" text-anchor=\"{anchor}\" " +
+            $"fill=\"{fill}\" font-size=\"{N(size)}\" font-weight=\"{weight}\" " +
+            $"font-family=\"system-ui,-apple-system,sans-serif\" " +
+            $"style=\"pointer-events:none\">{encoded}</text>");
+    }
+
+    private static string N(double v) =>
+        v.ToString("0.##", CultureInfo.InvariantCulture);
+
+    private static string Fmt(double v) =>
+        v.ToString(Math.Abs(v) >= 100 ? "0" : "0.#", CultureInfo.InvariantCulture);
+}

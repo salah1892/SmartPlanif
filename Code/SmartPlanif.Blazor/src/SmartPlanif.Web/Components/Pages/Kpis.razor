@@ -11,6 +11,7 @@
 </p>
 
 <div class="toolbar">
+    <button class="btn @(_tab == "history" ? "primary" : "")" @onclick='() => _tab = "history"'>Historique & qualité</button>
     <button class="btn @(_tab == "plan" ? "primary" : "")" @onclick='() => _tab = "plan"'>Période et jour</button>
     <button class="btn @(_tab == "real" ? "primary" : "")" @onclick='() => _tab = "real"'>Prévu vs réel</button>
 </div>
@@ -19,8 +20,11 @@
 {
     <div class="alert error">@_error</div>
 }
-
-@if (_tab == "plan")
+@if (_tab == "history")
+{
+    <HistoryTab />
+}
+else if (_tab == "plan")
 {
     var cov = _coverage;
     var totalTrips = cov.Sum(c => c.Trips);
@@ -238,7 +242,7 @@ else
 }
 
 @code {
-    private string _tab = "plan";
+    private string _tab = "history";
     private string? _error;
 
     // Période et jour

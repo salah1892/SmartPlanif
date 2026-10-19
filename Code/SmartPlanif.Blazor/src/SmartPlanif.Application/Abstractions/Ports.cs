@@ -218,9 +218,23 @@ public interface IKpiRepository
 
     /// <summary>Mêmes indicateurs par ligne (les plus modifiées d'abord).</summary>
     Task<IReadOnlyList<PlanVsRealStats>> GetPlanVsRealByLineAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct);
+
+    Task<IReadOnlyList<DayQuality>> GetDailyQualityAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct);
+    Task<IReadOnlyList<ResourceUsage>> GetBusUsageAsync(DateOnly from, DateOnly to, CancellationToken ct);
+    Task<IReadOnlyList<ResourceUsage>> GetAgentUsageAsync(DateOnly from, DateOnly to, CancellationToken ct);
+    Task<IReadOnlyList<ResourceDay>> GetResourceDailyAsync(bool isBus, long id, DateOnly from, DateOnly to, CancellationToken ct);
 }
 
+/// <summary>Qualité d'un jour de service (plan effectif = réel si renseigné, sinon prévu).</summary>
+public sealed record DayQuality(
+    DateOnly Day, int Trips, int Planned, int Realized, int BusesUsed, int AgentsUsed,
+    long DelayKnown, long OnTime, double? AvgDelaySeconds, long PlanAndReal, long Changed);
 
+/// <summary>Utilisation d'une ressource (bus ou agent) sur une période.</summary>
+public sealed record ResourceUsage(long Id, string Label, int Trips, int DaysUsed);
+
+/// <summary>Voyages d'une ressource sur un jour.</summary>
+public sealed record ResourceDay(DateOnly Day, int Trips);
 #endregion
 
 #region Congé (Leave)

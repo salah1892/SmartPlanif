@@ -87,6 +87,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29udmVyZ2VuY2VDaGFydC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Shared/HistoryTab.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcSGlzdG9yeVRhYi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Shared/TrendChart.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcVHJlbmRDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/Shared/UsageBars.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcVXNhZ2VCYXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/AAAA_Personal/4QUATRIEME_ANNEE/Master-SI-Bizerte/Stage de Fin d'Études/officiel/SmartPlanifProject/Code/SmartPlanif.Blazor/src/SmartPlanif.Web/Components/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

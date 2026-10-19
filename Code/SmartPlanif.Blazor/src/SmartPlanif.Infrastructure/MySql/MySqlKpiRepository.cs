@@ -114,4 +114,142 @@ public sealed class MySqlKpiRepository(IDbConnectionFactory db, IOptions<TripSou
             """, new { From = mappedFrom, ToExclusive = mappedFrom.AddDays(days), OnTime = onTimeSeconds }, cancellationToken: ct));
         return rows.Select(r => ToStats(r.Label ?? "?", r)).ToList();
     }
+
+    // ======================================================================== Historique & qualité
+    private const string DayExpr = "COALESCE(DATE(t.DEDATED), DATE(t.TIME_DEPART))";
+    private const string EffBus = "COALESCE(NULLIF(t.BUS_RE, 0), NULLIF(t.BUS_PR, 0))";
+    private const string EffDriver = "COALESCE(NULLIF(t.CHAUFF_RE, 0), NULLIF(t.CHAUFF_PR, 0))";
+    private const string EffReceiver = "COALESCE(NULLIF(t.REC_RE, 0), NULLIF(t.REC_PR, 0))";
+
+    private sealed class DailyRow
+    {
+        public DateTime Day { get; set; }
+        public long Trips { get; set; }
+        public long Planned { get; set; }
+        public long Realized { get; set; }
+        public long BusesUsed { get; set; }
+        public long DelayKnown { get; set; }
+        public long OnTime { get; set; }
+        public double? AvgDelay { get; set; }
+        public long PlanAndReal { get; set; }
+        public long Changed { get; set; }
+    }
+
+    private sealed class AgentDayRow { public DateTime Day { get; set; } public long AgentsUsed { get; set; } }
+    private sealed class UsageRow { public long Id { get; set; } public string? Label { get; set; } public long Trips { get; set; } public long DaysUsed { get; set; } }
+    private sealed class ResourceDayRow { public DateTime Day { get; set; } public long Trips { get; set; } }
+
+    /// <summary>Jour lu dans la table -> jour demandé (même décalage que l'année modèle).</summary>
+    private static DateOnly Unmap(DateTime day, DateTime mappedFrom, DateOnly from) =>
+        from.AddDays(DateOnly.FromDateTime(day).DayNumber - DateOnly.FromDateTime(mappedFrom).DayNumber);
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<DayQuality>> GetDailyQualityAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct)
+    {
+        var (mappedFrom, days) = MapRange(from, to);
+        var parameters = new { From = mappedFrom, ToExclusive = mappedFrom.AddDays(days), OnTime = onTimeSeconds };
+
+        static string Has(string c) => TripSql.Has("t." + c);
+        static string Changed(string pr, string re) => $"({Has(pr)} AND {Has(re)} AND t.{re} <> t.{pr})";
+        var plannedFull = $"({Has("BUS_PR")} AND {Has("CHAUFF_PR")} AND {Has("REC_PR")})";
+        var realFull = $"({Has("BUS_RE")} AND {Has("CHAUFF_RE")} AND {Has("REC_RE")})";
+        var anyPr = $"({Has("BUS_PR")} OR {Has("CHAUFF_PR")} OR {Has("REC_PR")})";
+        var anyRe = $"({Has("BUS_RE")} OR {Has("CHAUFF_RE")} OR {Has("REC_RE")})";
+        var anyChanged = $"({Changed("BUS_PR", "BUS_RE")} OR {Changed("CHAUFF_PR", "CHAUFF_RE")} OR {Changed("REC_PR", "REC_RE")})";
+        const string delay = "t.TIME_DEPART_R IS NOT NULL AND t.AVANCE_RETARD IS NOT NULL";
+
+        var sql = $"""
+            SELECT {DayExpr} AS Day, COUNT(*) AS Trips,
+                   {S($"({plannedFull} OR {realFull})", "Planned")},
+                   {S(realFull, "Realized")},
+                   CAST(COUNT(DISTINCT {EffBus}) AS SIGNED) AS BusesUsed,
+                   {S(delay, "DelayKnown")},
+                   {S($"{delay} AND t.AVANCE_RETARD <= @OnTime", "OnTime")},
+                   CAST(AVG(CASE WHEN {delay} THEN t.AVANCE_RETARD END) AS DOUBLE) AS AvgDelay,
+                   {S($"{anyPr} AND {anyRe}", "PlanAndReal")},
+                   {S(anyChanged, "Changed")}
+            FROM trips t {LineJoin}
+            WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL
+            GROUP BY 1 ORDER BY 1
+            """;
+
+        // Agents distincts par jour : chauffeurs et receveurs réunis (UNION ALL puis COUNT DISTINCT).
+        var agentSql = $"""
+            SELECT x.Day AS Day, CAST(COUNT(DISTINCT x.AgentId) AS SIGNED) AS AgentsUsed
+            FROM (
+                SELECT {DayExpr} AS Day, {EffDriver} AS AgentId FROM trips t {LineJoin}
+                WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL
+                UNION ALL
+                SELECT {DayExpr} AS Day, {EffReceiver} AS AgentId FROM trips t {LineJoin}
+                WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL
+            ) x
+            WHERE x.AgentId IS NOT NULL
+            GROUP BY x.Day
+            """;
+
+        await using var connection = await db.OpenAsync(ct);
+        var rows = (await connection.QueryAsync<DailyRow>(new CommandDefinition(sql, parameters, cancellationToken: ct))).ToList();
+        var agents = (await connection.QueryAsync<AgentDayRow>(new CommandDefinition(agentSql, parameters, cancellationToken: ct)))
+            .ToDictionary(r => r.Day.Date, r => r.AgentsUsed);
+
+        return rows.Select(r => new DayQuality(
+            Unmap(r.Day, mappedFrom, from), (int)r.Trips, (int)r.Planned, (int)r.Realized, (int)r.BusesUsed,
+            (int)agents.GetValueOrDefault(r.Day.Date), r.DelayKnown, r.OnTime, r.AvgDelay, r.PlanAndReal, r.Changed)).ToList();
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ResourceUsage>> GetBusUsageAsync(DateOnly from, DateOnly to, CancellationToken ct) =>
+        UsageAsync(true, from, to, ct);
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ResourceUsage>> GetAgentUsageAsync(DateOnly from, DateOnly to, CancellationToken ct) =>
+        UsageAsync(false, from, to, ct);
+
+    /// <summary>Voyages et jours d'activité de CHAQUE bus / agent (les ressources jamais utilisées apparaissent avec 0).</summary>
+    private async Task<IReadOnlyList<ResourceUsage>> UsageAsync(bool bus, DateOnly from, DateOnly to, CancellationToken ct)
+    {
+        var (mappedFrom, days) = MapRange(from, to);
+        var common = $"FROM trips t {LineJoin} WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL";
+        var sql = bus
+            ? $"""
+               SELECT v.DECODVH AS Id, COALESCE(v.DEMATRI, CONCAT('#', v.DECODVH)) AS Label,
+                      CAST(COUNT(x.Day) AS SIGNED) AS Trips, CAST(COUNT(DISTINCT x.Day) AS SIGNED) AS DaysUsed
+               FROM drvehic v
+               LEFT JOIN (SELECT {EffBus} AS ResId, {DayExpr} AS Day {common}) x ON x.ResId = v.DECODVH
+               GROUP BY v.DECODVH, v.DEMATRI
+               ORDER BY Trips DESC, v.DECODVH
+               """
+            : $"""
+               SELECT a.DECAGEN AS Id, COALESCE(a.DENAGEN, CONCAT('#', a.DECAGEN)) AS Label,
+                      CAST(COUNT(x.Day) AS SIGNED) AS Trips, CAST(COUNT(DISTINCT x.Day) AS SIGNED) AS DaysUsed
+               FROM dragent a
+               LEFT JOIN (
+                   SELECT {EffDriver} AS ResId, {DayExpr} AS Day {common}
+                   UNION ALL
+                   SELECT {EffReceiver} AS ResId, {DayExpr} AS Day {common}
+               ) x ON x.ResId = a.DECAGEN
+               GROUP BY a.DECAGEN, a.DENAGEN
+               ORDER BY Trips DESC, a.DECAGEN
+               """;
+
+        await using var connection = await db.OpenAsync(ct);
+        var rows = await connection.QueryAsync<UsageRow>(new CommandDefinition(
+            sql, new { From = mappedFrom, ToExclusive = mappedFrom.AddDays(days) }, cancellationToken: ct));
+        return rows.Select(r => new ResourceUsage(r.Id, r.Label ?? $"#{r.Id}", (int)r.Trips, (int)r.DaysUsed)).ToList();
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<ResourceDay>> GetResourceDailyAsync(bool isBus, long id, DateOnly from, DateOnly to, CancellationToken ct)
+    {
+        var (mappedFrom, days) = MapRange(from, to);
+        var condition = isBus ? $"{EffBus} = @Id" : $"({EffDriver} = @Id OR {EffReceiver} = @Id)";
+        await using var connection = await db.OpenAsync(ct);
+        var rows = await connection.QueryAsync<ResourceDayRow>(new CommandDefinition($"""
+            SELECT {DayExpr} AS Day, COUNT(*) AS Trips
+            FROM trips t {LineJoin}
+            WHERE {TripSql.DayFilter} AND t.TIME_DEPART IS NOT NULL AND {condition}
+            GROUP BY 1 ORDER BY 1
+            """, new { From = mappedFrom, ToExclusive = mappedFrom.AddDays(days), Id = id }, cancellationToken: ct));
+        return rows.Select(r => new ResourceDay(Unmap(r.Day, mappedFrom, from), (int)r.Trips)).ToList();
+    }
 }

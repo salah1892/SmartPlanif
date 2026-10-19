@@ -40,6 +40,18 @@ D:\work\SmartPlanif.Blazor\SmartPlanif.Blazor4\SmartPlanif.Blazor\src\SmartPlani
 D:\work\SmartPlanif.Blazor\SmartPlanif.Blazor4\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\ref\SmartPlanif.Web.dll
 D:\work\SmartPlanif.Blazor\SmartPlanif.Blazor4\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.sourcelink.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.csproj.AssemblyReference.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.lib.module.js
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.BrowserTools.js
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.BrowserTools.Config.js
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\browser-tools-key.public.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\browser-tools-key.private.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.GeneratedMSBuildEditorConfig.editorconfig
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.AssemblyInfoInputs.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.AssemblyInfo.cs
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.csproj.CoreCompileInputs.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.MvcApplicationPartsAssemblyInfo.cache
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.sourcelink.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\appsettings.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\App_Data\allocation-settings.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\SmartPlanif.Web.staticwebassets.runtime.json
@@ -60,18 +72,6 @@ D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\offic
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\SmartPlanif.Infrastructure.pdb
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\SmartPlanif.Application.pdb
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\SmartPlanif.Domain.pdb
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.lib.module.js
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.BrowserTools.js
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\Microsoft.NET.Sdk.BlazorWeb.DotNetWatch.BrowserTools.Config.js
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\browser-tools-key.public.json
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\dotnet-watch\browser-tools-key.private.json
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.GeneratedMSBuildEditorConfig.editorconfig
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.AssemblyInfoInputs.cache
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.AssemblyInfo.cs
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.csproj.CoreCompileInputs.cache
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.MvcApplicationPartsAssemblyInfo.cache
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.sourcelink.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -83,7 +83,6 @@ D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\offic
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\staticwebassets.development.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\swae.build.ex.cache
-D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPla.FE9B0A13.Up2Date
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.dll
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\refint\SmartPlanif.Web.dll

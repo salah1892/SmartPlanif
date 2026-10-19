@@ -509,4 +509,62 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
         }).ToList();
         return Task.FromResult(rows);
     }
+    // ---------------------------------------------------------------- historique (démo)
+    private (long Bus, long Driver, long Receiver)? Effective(long tripId)
+    {
+        if (_realized.TryGetValue(tripId, out var r)) return r;
+        if (_planned.TryGetValue(tripId, out var p)) return p;
+        return null;
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<DayQuality>> GetDailyQualityAsync(DateOnly from, DateOnly to, int onTimeSeconds, CancellationToken ct)
+    {
+        IReadOnlyList<DayQuality> list = Days(from, to).Select(d =>
+        {
+            var trips = GenerateTrips(d);
+            var eff = trips.Select(t => Effective(t.Id)).Where(e => e is not null).Select(e => e!.Value).ToList();
+            return new DayQuality(d, trips.Count, eff.Count, trips.Count(t => _realized.ContainsKey(t.Id)),
+                eff.Select(e => e.Bus).Distinct().Count(),
+                eff.SelectMany(e => new[] { e.Driver, e.Receiver }).Distinct().Count(), 0, 0, null, 0, 0);
+        }).ToList();
+        return Task.FromResult(list);
+    }
+
+    private IEnumerable<(long Id, DateOnly Day)> UsagePairs(bool bus, DateOnly from, DateOnly to)
+    {
+        foreach (var d in Days(from, to))
+            foreach (var t in GenerateTrips(d))
+            {
+                if (Effective(t.Id) is not { } e) continue;
+                if (bus) yield return (e.Bus, d);
+                else { yield return (e.Driver, d); yield return (e.Receiver, d); }
+            }
+    }
+
+    private IReadOnlyList<ResourceUsage> Usage(bool bus, DateOnly from, DateOnly to)
+    {
+        var pool = BuildPool(from);
+        var g = UsagePairs(bus, from, to).GroupBy(x => x.Id)
+            .ToDictionary(x => x.Key, x => (Trips: x.Count(), Days: x.Select(y => y.Day).Distinct().Count()));
+        return bus
+            ? pool.Buses.Select(b => new ResourceUsage(b.Id, b.Plate, g.GetValueOrDefault(b.Id).Trips, g.GetValueOrDefault(b.Id).Days)).ToList()
+            : pool.Agents.Select(a => new ResourceUsage(a.Id, a.Name, g.GetValueOrDefault(a.Id).Trips, g.GetValueOrDefault(a.Id).Days)).ToList();
+    }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ResourceUsage>> GetBusUsageAsync(DateOnly from, DateOnly to, CancellationToken ct) =>
+        Task.FromResult(Usage(true, from, to));
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ResourceUsage>> GetAgentUsageAsync(DateOnly from, DateOnly to, CancellationToken ct) =>
+        Task.FromResult(Usage(false, from, to));
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ResourceDay>> GetResourceDailyAsync(bool isBus, long id, DateOnly from, DateOnly to, CancellationToken ct)
+    {
+        IReadOnlyList<ResourceDay> list = UsagePairs(isBus, from, to).Where(x => x.Id == id)
+            .GroupBy(x => x.Day).Select(g => new ResourceDay(g.Key, g.Count())).OrderBy(r => r.Day).ToList();
+        return Task.FromResult(list);
+    }
 }

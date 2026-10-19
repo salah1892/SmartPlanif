@@ -183,5 +183,6 @@ public static class ApplicationServiceRegistration
             .AddTransient<BusQueryService>()
             .AddTransient<KpiService>()
             .AddTransient<LeaveService>()
-            .AddTransient<LineQueryService>();
+            .AddTransient<LineQueryService>()
+            .AddTransient<HistoryService>();
 }

@@ -12,3 +12,6 @@ public sealed class InlineProgress<T>(Action<T> handler) : IProgress<T>
     /// <inheritdoc />
     public void Report(T value) => handler(value);
 }
+
+/// <summary>Série d'un graphique : nom, couleur, valeurs (null = trou) et unité affichée dans l'infobulle.</summary>
+public sealed record ChartSeries(string Name, string Color, IReadOnlyList<double?> Values, string Unit = "");
