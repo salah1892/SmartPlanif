@@ -1,0 +1,10 @@
+# Ignorer un dossier spécifique (et tout son contenu)
+vidéo/
+
+# Ignorer tous les fichiers vidéo par extension
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.flv
+*.wmv

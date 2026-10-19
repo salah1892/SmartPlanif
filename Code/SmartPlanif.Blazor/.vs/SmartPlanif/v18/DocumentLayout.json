@@ -118,8 +118,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Infrastructure\\MySql\\MySqlBusRepository.cs",
               "ViewState": "AgIAAE4AAAAAAAAAAAAWwGgAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T17:13:29.643Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T17:13:29.643Z"
             },
             {
               "$type": "Document",
@@ -131,8 +130,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\TripAllocator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwgAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T15:56:12.221Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T15:56:12.221Z"
             },
             {
               "$type": "Document",
@@ -144,8 +142,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\DecisionExplainer.cs",
               "ViewState": "AgIAAKYAAAAAAAAAAAAAAKYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T15:58:57.239Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T15:58:57.239Z"
             },
             {
               "$type": "Document",
@@ -157,8 +154,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Application\\UseCases\\AllocateDay.cs",
               "ViewState": "AgIAAJsAAAAAAAAAAADwv6UAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-14T10:37:30.76Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-14T10:37:30.76Z"
             },
             {
               "$type": "Document",
@@ -183,8 +179,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\ObjectiveFunction.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAjwCAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:06:49.991Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:06:49.991Z"
             },
             {
               "$type": "Document",
@@ -196,8 +191,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Web\\Components\\Pages\\Buses.razor",
               "ViewState": "AgIAAHMBAAAAAAAAAAAIwLwBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-18T17:10:13.734Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T17:10:13.734Z"
             },
             {
               "$type": "Document",
@@ -209,8 +203,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Rules\\Contracts.cs",
               "ViewState": "AgIAABYAAAAAAAAAAAA8wAkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T15:48:07.111Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T15:48:07.111Z"
             },
             {
               "$type": "Document",
@@ -222,8 +215,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Web\\Components\\Pages\\Allocation.razor",
               "ViewState": "AgIAAEoBAAAAAAAAAAAIwBcBAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-14T10:38:15.182Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-14T10:38:15.182Z"
             },
             {
               "$type": "Document",
@@ -235,8 +227,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\PolicyValidator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:52:13.44Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:52:13.44Z"
             },
             {
               "$type": "Document",
@@ -248,8 +239,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Web\\wwwroot\\app.css",
               "ViewState": "AgIAALAEAAAAAAAAAAAQwP8EAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-10-18T16:24:56.284Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:24:56.284Z"
             },
             {
               "$type": "Document",
@@ -261,8 +251,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\Fairness.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:05:57.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:05:57.671Z"
             },
             {
               "$type": "Document",
@@ -274,8 +263,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\AllocationPolicy.cs",
               "ViewState": "AgIAACkAAAAAAAAAAAAmwGwAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:11:25.188Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:11:25.188Z"
             },
             {
               "$type": "Document",
@@ -287,8 +275,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Web\\Components\\Pages\\Constraints.razor",
               "ViewState": "AgIAAAsAAAAAAAAAAAAWwBsAAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-10-18T16:16:23.924Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:16:23.924Z"
             },
             {
               "$type": "Document",
@@ -300,8 +287,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Constraints\\ConstraintCatalog.cs",
               "ViewState": "AgIAALsAAAAAAAAAAAAQwM8AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:14:49.671Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:14:49.671Z"
             },
             {
               "$type": "Document",
@@ -313,8 +299,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\CandidateSelector.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAmwF0AAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:12:31.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:12:31.298Z"
             },
             {
               "$type": "Document",
@@ -326,8 +311,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Allocation\\AllocationState.cs",
               "ViewState": "AgIAACgAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T16:00:53.875Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T16:00:53.875Z"
             },
             {
               "$type": "Document",
@@ -339,8 +323,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Domain\\Rules\\Soft\\SoftRules.cs",
               "ViewState": "AgIAALcAAAAAAAAAAIA0wMwAAABtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-18T15:49:53.492Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-18T15:49:53.492Z"
             },
             {
               "$type": "Document",
@@ -352,8 +335,7 @@
               "RelativeToolTip": "src\\SmartPlanif.Web\\App_Data\\allocation-settings.json",
               "ViewState": "AgIAAG0AAAAAAAAAAAAAAHcAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-10-14T11:55:28.487Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-14T11:55:28.487Z"
             },
             {
               "$type": "Document",
