@@ -189,7 +189,15 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
                 cleared++;
         return Task.FromResult(cleared);
     }
-
+    /// <inheritdoc />
+    public Task<int> ClearTripsAsync(IReadOnlyList<long> tripIds, CancellationToken ct)
+    {
+        var cleared = 0;
+        foreach (var id in tripIds)
+            if (!_realized.ContainsKey(id) && _planned.Remove(id))
+                cleared++;
+        return Task.FromResult(cleared);
+    }
     /// <inheritdoc />
     public Task<IReadOnlyList<SavedTripAssignment>> GetSavedPlanAsync(DateOnly date, CancellationToken ct)
     {
@@ -433,6 +441,13 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
     public Task<bool> DeleteAsync(long id, DateTime notEndedBefore, CancellationToken ct) =>
         Task.FromResult(_leaves.RemoveAll(l => l.Id == id && l.EndAt > notEndedBefore) > 0);
 
+    /// <inheritdoc />
+    public Task<long> AddBusUnavailabilityAsync(long busId, DateTime startAt, DateTime endAt, string reason, string createdBy, CancellationToken ct)
+    {
+        var id = ++_leaveSeq;
+        // En démo, on ne stocke pas les indisponibilités bus séparément.
+        return Task.FromResult(id);
+    }
     /// <inheritdoc />
     public Task<IReadOnlyList<LeaveConflict>> GetConflictsAsync(long agentId, DateOnly firstDay, DateOnly lastDay,
         CancellationToken ct)

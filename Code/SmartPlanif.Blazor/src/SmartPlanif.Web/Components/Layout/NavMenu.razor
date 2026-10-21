@@ -74,7 +74,10 @@
                 <rect x="14" y="14" width="7" height="7"></rect>
                 <rect x="3" y="14" width="7" height="7"></rect>
             </svg>
-            @if (_expanded) { <span>Accueil</span> }
+            @if (_expanded)
+            {
+                <span>Accueil</span>
+            }
         </NavLink>
         
         <NavLink href="kpis" class="nav-tooltip" data-tooltip="Mesure de la performance et indicateurs clés">
@@ -84,7 +87,10 @@
                 <path d="M12 12l-4-4"></path>
                 <circle cx="12" cy="12" r="1"></circle>
             </svg>
-            @if (_expanded) { <span>Performance</span> }
+            @if (_expanded)
+            {
+                <span>Performance</span>
+            }
         </NavLink>
         @* <NavLink href="kpis" class="nav-tooltip" data-tooltip="Mesure de la performance et indicateurs clés"> *@
         @*     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> *@
@@ -107,7 +113,10 @@
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
-            @if (_expanded) { <span>Contraintes</span> }
+            @if (_expanded)
+            {
+                <span>Contraintes</span>
+            }
         </NavLink>
 
         <NavLink href="line-types" class="nav-tooltip" data-tooltip="Configurer les caractéristiques des lignes">
@@ -116,7 +125,10 @@
                 <line x1="2" y1="12" x2="22" y2="12"></line>
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
-            @if (_expanded) { <span>Types de ligne</span> }
+            @if (_expanded)
+            {
+                <span>Types de ligne</span>
+            }
         </NavLink>
 
         <NavLink href="parameters" class="nav-tooltip" data-tooltip="Ajuster les réglages globaux de l'application">
@@ -124,7 +136,10 @@
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
-            @if (_expanded) { <span>Paramètres</span> }
+            @if (_expanded)
+            {
+                <span>Paramètres</span>
+            }
         </NavLink>
 
         <NavLink href="diagnostics" class="nav-tooltip" data-tooltip="Analyser les erreurs et vérifier la faisabilité">
@@ -132,7 +147,10 @@
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            @if (_expanded) { <span>Diagnostic</span> }
+            @if (_expanded)
+            {
+                <span>Diagnostic</span>
+            }
         </NavLink>
 
         <NavLink href="allocation" class="nav-tooltip" data-tooltip="Générer et assigner le planning des ressources">
@@ -142,7 +160,21 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            @if (_expanded) { <span>Allocation</span> }
+            @if (_expanded)
+            {
+                <span>Allocation</span>
+            }
+        </NavLink>
+
+        <NavLink href="reassignment" class="nav-tooltip" data-tooltip="Réaffecter les voyages après un aléa (panne, absence)">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 4v6h6"></path>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+            @if (_expanded)
+            {
+                <span>Réaffectation</span>
+            }
         </NavLink>
 
         <NavLink href="saved-plan" class="nav-tooltip" data-tooltip="Consulter et gérer l'historique des plannings">
@@ -151,7 +183,10 @@
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            @if (_expanded) { <span>Plan enregistré</span> }
+            @if (_expanded)
+            {
+                <span>Plan enregistré</span>
+            }
         </NavLink>
 
         <NavLink href="agents" class="nav-tooltip" data-tooltip="Consulter et gérer la liste d'agents">
@@ -161,7 +196,10 @@
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            @if (_expanded) { <span>Agents</span> }
+            @if (_expanded)
+            {
+                <span>Agents</span>
+            }
         </NavLink>
 
         <NavLink href="buses" class="nav-tooltip" data-tooltip="Consulter et gérer la liste des bus">
@@ -173,7 +211,10 @@
                 <circle cx="6.5" cy="17.5" r="1.5"></circle>
                 <circle cx="15.5" cy="17.5" r="1.5"></circle>
             </svg>
-            @if (_expanded) { <span>Bus</span> }
+            @if (_expanded)
+            {
+                <span>Bus</span>
+            }
         </NavLink>
         <NavLink href="lines" class="nav-tooltip" data-tooltip="Consulter les lignes, leurs itinéraires et leurs voyages">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

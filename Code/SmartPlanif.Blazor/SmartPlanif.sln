@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.12.12308.306 insiders
+VisualStudioVersion = 18.12.12308.306
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A1B99476-1C18-4E74-90B9-AE746376DFC8}"
 EndProject

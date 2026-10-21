@@ -184,5 +184,8 @@ public static class ApplicationServiceRegistration
             .AddTransient<KpiService>()
             .AddTransient<LeaveService>()
             .AddTransient<LineQueryService>()
-            .AddTransient<HistoryService>();
+            .AddTransient<HistoryService>()
+            .AddTransient<ReassignHandler>();
+
+
 }

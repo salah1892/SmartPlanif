@@ -44,7 +44,15 @@ public sealed record SavedTripAssignment(
     long TripId, string LineLabel, DateTime Departure, DateTime? Arrival,
     long? BusId, string? BusPlate, long? DriverId, string? DriverName, long? ReceiverId, string? ReceiverName,
     string? RealBusPlate, string? RealDriverName, string? RealReceiverName, bool HasRealResources);
+/// <summary>Type d'aléa déclaré en cours de journée.</summary>
+public enum IncidentKind { BusBreakdown, DriverAbsence, ReceiverAbsence }
 
+/// <summary>Déclaration d'un aléa : ressource défaillante à partir d'une heure donnée.</summary>
+public sealed record IncidentDeclaration(
+    DateOnly Date, IncidentKind Kind, long ResourceId, DateTime FromTime, string Reason);
+
+/// <summary>Voyage impacté par un aléa : identifié pour réaffectation.</summary>
+public sealed record ImpactedTrip(long TripId, string LineLabel, DateTime Departure, DateTime? Arrival, string Role);
 /// <summary>Lecture et écriture du plan PRÉVU dans la table trips.</summary>
 public interface IAssignmentRepository
 {
@@ -59,6 +67,9 @@ public interface IAssignmentRepository
 
     /// <summary>Plan prévu enregistré pour un jour.</summary>
     Task<IReadOnlyList<SavedTripAssignment>> GetSavedPlanAsync(DateOnly date, CancellationToken ct);
+
+    /// <summary>Vide les colonnes *_PR de voyages PRÉCIS (réaffectation partielle). Les voyages effectués ne sont jamais touchés.</summary>
+    Task<int> ClearTripsAsync(IReadOnlyList<long> tripIds, CancellationToken ct);
 }
 
 /// <summary>Données de référence servant aux écrans de configuration (tables drtyli, drcatve).</summary>
@@ -268,8 +279,13 @@ public interface ILeaveRepository
     /// <summary>Supprime un congé, seulement s'il n'est pas terminé avant <paramref name="notEndedBefore"/>.</summary>
     Task<bool> DeleteAsync(long id, DateTime notEndedBefore, CancellationToken ct);
 
+    /// <summary>Déclare une indisponibilité pour un BUS (panne, maintenance en cours de journée).</summary>
+    Task<long> AddBusUnavailabilityAsync(long busId, DateTime startAt, DateTime endAt, string reason, string createdBy, CancellationToken ct);
+
     /// <summary>Voyages prévus (hors effectués) de l'agent entre deux jours inclus.</summary>
     Task<IReadOnlyList<LeaveConflict>> GetConflictsAsync(long agentId, DateOnly firstDay, DateOnly lastDay, CancellationToken ct);
+
+
 }
 
 

@@ -1,0 +1,294 @@
+﻿@page "/reassignment"
+@using System.Globalization
+@* @inject ReassignHandler ReassignHandler
+@inject PlanningCalendar Calendar
+@inject IBusRepository BusRepo
+@inject IAgentRepository AgentRepo *@
+@inject ReassignHandler ReassignHandler
+@inject PlanningCalendar Calendar
+@inject BusQueryService BusService
+@inject AgentQueryService AgentService
+
+<PageTitle>Réaffectation</PageTitle>
+
+<h1>Réaffectation dynamique (gestion des aléas)</h1>
+<p class="muted">
+    Un bus tombe en panne, un chauffeur ou receveur est absent en cours de journée : déclarez l'aléa,
+    l'application identifie les voyages impactés et les réalloue <strong>uniquement</strong>,
+    sans toucher aux autres affectations.
+</p>
+
+@if (_error is not null)
+{
+    <div class="alert error">@_error</div>
+}
+
+<div class="panel">
+    <div class="form-grid compact">
+        <label>
+            Jour de service
+            <input type="date" @bind="_dateInput" min="@Calendar.Today.ToString("yyyy-MM-dd")" disabled="@_running" />
+        </label>
+        <label>
+            Type d'aléa
+            <select @bind="_kind" disabled="@_running" @bind:after="ResetImpact">
+                <option value="@IncidentKind.BusBreakdown">Bus en panne</option>
+                <option value="@IncidentKind.DriverAbsence">Chauffeur absent</option>
+                <option value="@IncidentKind.ReceiverAbsence">Receveur absent</option>
+            </select>
+        </label>
+        <label>
+            Heure de l'aléa
+            <input type="time" @bind="_timeInput" disabled="@_running" />
+        </label>
+        <label>
+            Motif
+            <input type="text" @bind="_reason" placeholder="ex. Panne moteur, maladie…" disabled="@_running" />
+        </label>
+    </div>
+
+    @* Sélecteur de ressource selon le type d'aléa *@
+    <div class="form-grid compact" style="margin-top:.6rem">
+        @if (_kind == IncidentKind.BusBreakdown)
+        {
+            <label>
+                Bus concerné
+                <select @bind="_resourceId" disabled="@_running">
+                    <option value="0">— Choisir —</option>
+                    @foreach (var b in _buses)
+                    {
+                        <option value="@b.Id">@b.Plate (@b.CategoryLabel)</option>
+                    }
+                </select>
+            </label>
+        }
+        else
+        {
+            <label>
+                Agent concerné
+                <select @bind="_resourceId" disabled="@_running">
+                    <option value="0">— Choisir —</option>
+                    @foreach (var a in _agents)
+                    {
+                        <option value="@a.Id">@a.NameFr (#@a.Id)</option>
+                    }
+                </select>
+            </label>
+        }
+    </div>
+
+    <div class="toolbar">
+        <button class="btn" @onclick="IdentifyAsync" disabled="@(_running || _resourceId == 0)">
+            Identifier les voyages impactés
+        </button>
+    </div>
+</div>
+
+@if (_impact is not null)
+{
+    <h2>Voyages impactés</h2>
+    <div class="alert @(_impact.ImpactedTrips.Count > 0 ? "warn" : "ok")">
+        @_impact.Message
+    </div>
+
+    @if (_impact.ImpactedTrips.Count > 0)
+    {
+        <table class="grid">
+            <thead>
+                <tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Rôle impacté</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var t in _impact.ImpactedTrips)
+                {
+                    <tr>
+                        <td>@t.Departure.ToString("HH:mm")</td>
+                        <td>@(t.Arrival?.ToString("HH:mm") ?? "?")</td>
+                        <td>@t.LineLabel</td>
+                        <td><span class="badge hard">@t.Role</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="toolbar">
+            <label class="inline">
+                Méthode de réaffectation
+                <select @bind="_method">
+                    @foreach (var m in Enum.GetValues<AllocationMethod>())
+                    {
+                        <option value="@m">@MethodLabel(m)</option>
+                    }
+                </select>
+            </label>
+            <button class="btn primary" @onclick="ExecuteAsync" disabled="@_running">
+                Lancer la réaffectation
+            </button>
+            @if (_running)
+            {
+                <span class="muted">Calcul en cours…</span>
+            }
+        </div>
+    }
+}
+
+@if (_report is not null)
+{
+    <h2>Résultat de la réaffectation</h2>
+    <div class="alert @(_report.Reallocation?.UnassignedCount == 0 ? "ok" : "warn")">
+        @_report.Message
+    </div>
+
+    @if (_report.Reallocation is { } realloc)
+    {@* Afficher le résultat de la sauvegarde dans trips *@
+        @if (realloc.Save is not null)
+        {
+            <div class="alert @(realloc.Save.Success ? "ok" : "error")">
+                💾 Sauvegarde : @realloc.Save.Message
+                <br /><small>@realloc.Save.TripsAssigned voyage(s) écrit(s), @realloc.Save.TripsCleared vidé(s)</small>
+            </div>
+        }
+        else
+        {
+            <div class="alert warn">⚠️ Aucune sauvegarde n'a été tentée (SaveMode = None ?).</div>
+        }
+        <div class="kpis">
+            <div class="kpi @(_report.TripsCleared > 0 ? "good" : "")">
+                <span class="value">@_report.TripsCleared</span><span>voyages libérés</span>
+            </div>
+            <div class="kpi @(realloc.UnassignedCount == 0 ? "good" : "bad")">
+                <span class="value">@realloc.AssignedCount / @_impact!.ImpactedTrips.Count</span>
+                <span>réaffectés</span>
+            </div>
+            <div class="kpi @(realloc.UnassignedCount == 0 ? "good" : "bad")">
+                <span class="value">@realloc.UnassignedCount</span><span>encore sans ressource</span>
+            </div>
+        </div>
+        
+        @if (realloc.Assignments.Count > 0)
+        {
+            <h3>Nouvelles affectations</h3>
+            <table class="grid">
+                <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th></tr></thead>
+                <tbody>
+                    @foreach (var a in realloc.Assignments)
+                    {
+                        <tr title="@a.Justification">
+                            <td>@a.Trip.Departure.ToString("HH:mm")</td>
+                            <td>@a.Trip.Arrival.ToString("HH:mm")</td>
+                            <td>@a.Trip.LineLabel</td>
+                            <td>@a.Bus.Plate</td>
+                            <td>@a.Driver.Name</td>
+                            <td>@a.Receiver.Name</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (realloc.Failures.Count > 0)
+        {
+            <h3>Voyages non réaffectés (@realloc.Failures.Count)</h3>
+            <table class="grid">
+                <thead><tr><th>Départ</th><th>Ligne</th><th>Cause</th></tr></thead>
+                <tbody>
+                    @foreach (var f in realloc.Failures)
+                    {
+                        <tr class="row-hard">
+                            <td>@f.Trip.Departure.ToString("HH:mm")</td>
+                            <td>@f.Trip.LineLabel</td>
+                            <td>
+                                @string.Join(" ; ", f.RejectionsByCode.OrderByDescending(x => x.Value)
+                                                .Select(x => $"{ConstraintCatalog.DescribeCode(x.Key)} × {x.Value}"))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
+}
+
+@code {
+    private DateTime _dateInput;
+    private IncidentKind _kind = IncidentKind.BusBreakdown;
+    private TimeOnly? _timeInput = new TimeOnly(12, 0);
+    private string _reason = "";
+    private long _resourceId;
+    private AllocationMethod _method = AllocationMethod.PhasedConstruction;
+    private bool _running;
+    private string? _error;
+    private IncidentImpact? _impact;
+    private ReassignmentReport? _report;
+
+    private IReadOnlyList<BusListItem> _buses = Array.Empty<BusListItem>();
+    private IReadOnlyList<AgentListItem> _agents = Array.Empty<AgentListItem>();
+
+    private DateOnly SelectedDate => DateOnly.FromDateTime(_dateInput);
+
+    protected override async Task OnInitializedAsync()
+    {
+        _dateInput = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        try
+        {
+            _buses = await BusService.LoadAsync();
+            _agents = await AgentService.LoadAsync();
+        }
+        catch (Exception ex)
+        {
+            _error = "Chargement des ressources impossible : " + ex.Message;
+        }
+    }
+
+    private void ResetImpact()
+    {
+        _impact = null;
+        _report = null;
+        _resourceId = 0;
+    }
+
+    private async Task IdentifyAsync()
+    {
+        _error = null;
+        _report = null;
+        try
+        {
+            var fromTime = SelectedDate.ToDateTime(_timeInput ?? TimeOnly.MinValue);
+            var incident = new IncidentDeclaration(SelectedDate, _kind, _resourceId, fromTime,
+                string.IsNullOrWhiteSpace(_reason) ? "Aléa déclaré" : _reason);
+            _impact = await ReassignHandler.IdentifyImpactAsync(incident, CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _error = "Identification impossible : " + ex.Message;
+        }
+    }
+
+    private async Task ExecuteAsync()
+    {
+        if (_impact is null || _impact.ImpactedTrips.Count == 0) return;
+        _running = true;
+        _error = null;
+        try
+        {
+            var tripIds = _impact.ImpactedTrips.Select(t => t.TripId).ToList();
+            var incident = _impact.Incident;
+            _report = await ReassignHandler.ExecuteAsync(
+                incident, tripIds, _method, "planificateur", CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            _error = "Réaffectation impossible : " + ex.Message;
+        }
+        finally
+        {
+            _running = false;
+        }
+    }
+
+    private static string MethodLabel(AllocationMethod method) => method switch
+    {
+        AllocationMethod.GreedyChronological => "Glouton chronologique",
+        AllocationMethod.PhasedConstruction => "Construction par phases",
+        _ => "Construction par phases + ALNS",
+    };
+}

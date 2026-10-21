@@ -73,6 +73,18 @@ public sealed class MySqlLeaveRepository(IDbConnectionFactory db, IOptions<TripS
     }
 
     /// <inheritdoc />
+
+    /// <inheritdoc />
+    public async Task<long> AddBusUnavailabilityAsync(long busId, DateTime startAt, DateTime endAt, string reason, string createdBy, CancellationToken ct)
+    {
+        await using var connection = await db.OpenAsync(ct);
+        return await connection.ExecuteScalarAsync<long>(new CommandDefinition("""
+        INSERT INTO resource_unavailability (KIND, RESOURCE_ID, START_AT, END_AT, REASON, CREATED_BY)
+        VALUES ('BUS', @BusId, @StartAt, @EndAt, @Reason, @CreatedBy);
+        SELECT LAST_INSERT_ID();
+        """, new { BusId = busId, StartAt = startAt, EndAt = endAt, Reason = reason, CreatedBy = createdBy },
+            cancellationToken: ct));
+    }
     public async Task<IReadOnlyList<LeaveConflict>> GetConflictsAsync(long agentId, DateOnly firstDay, DateOnly lastDay, CancellationToken ct)
     {
         await using var connection = await db.OpenAsync(ct);

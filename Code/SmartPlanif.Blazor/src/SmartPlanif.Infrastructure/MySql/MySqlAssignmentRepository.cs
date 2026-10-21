@@ -81,6 +81,18 @@ public sealed class MySqlAssignmentRepository(IDbConnectionFactory db, Microsoft
     }
 
     /// <inheritdoc />
+    public async Task<int> ClearTripsAsync(IReadOnlyList<long> tripIds, CancellationToken ct)
+    {
+        if (tripIds.Count == 0) return 0;
+        await using var connection = await db.OpenAsync(ct);
+        return await connection.ExecuteAsync(new CommandDefinition(
+            $"UPDATE trips t SET t.BUS_PR = NULL, t.CHAUFF_PR = NULL, t.REC_PR = NULL " +
+            "WHERE t.ID IN @Ids AND " + TripSql.NotRealized +
+            " AND (COALESCE(t.BUS_PR, 0) > 0 OR COALESCE(t.CHAUFF_PR, 0) > 0 OR COALESCE(t.REC_PR, 0) > 0)",
+            new { Ids = tripIds }, cancellationToken: ct));
+    }
+
+    /// <inheritdoc />
     public async Task<IReadOnlyList<SavedTripAssignment>> GetSavedPlanAsync(DateOnly date, CancellationToken ct)
     {
         await using var connection = await db.OpenAsync(ct);

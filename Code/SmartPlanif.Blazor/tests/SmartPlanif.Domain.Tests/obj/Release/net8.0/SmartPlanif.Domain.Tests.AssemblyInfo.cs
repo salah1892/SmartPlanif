@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPlanif.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f6bfc1527477ee103be0e4315fc1a772d604962")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+137243953eb999d01f3986862e3d52d8071cf39e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPlanif.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPlanif.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
