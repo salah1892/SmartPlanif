@@ -29,7 +29,7 @@ else
         options => builder.Configuration.GetSection("Qualifications").Bind(options),
         options => builder.Configuration.GetSection("TripSource").Bind(options),
         options => builder.Configuration.GetSection("ResourceSource").Bind(options));
-    builder.Services.AddSingleton(new DataSourceInfo("Base MySQL Transport_Ai", false));
+    builder.Services.AddSingleton(new DataSourceInfo("Base MySQL SmartPlanif", false));
 }
 
 var app = builder.Build();

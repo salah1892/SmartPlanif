@@ -1,5 +1,6 @@
 # Ignorer un dossier spécifique (et tout son contenu)
 vidéo/
+Exemple-Master/
 
 # Ignorer tous les fichiers vidéo par extension
 *.mp4

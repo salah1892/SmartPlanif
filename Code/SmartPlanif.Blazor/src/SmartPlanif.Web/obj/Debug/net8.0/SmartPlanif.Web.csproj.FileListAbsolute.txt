@@ -89,3 +89,5 @@ D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\offic
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.pdb
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\SmartPlanif.Web.genruntimeconfig.cache
 D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\ref\SmartPlanif.Web.dll
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\bin\Debug\net8.0\appsettings.Development.json
+D:\AAAA_Personal\4QUATRIEME_ANNEE\Master-SI-Bizerte\Stage de Fin d'Études\officiel\SmartPlanifProject\Code\SmartPlanif.Blazor\src\SmartPlanif.Web\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

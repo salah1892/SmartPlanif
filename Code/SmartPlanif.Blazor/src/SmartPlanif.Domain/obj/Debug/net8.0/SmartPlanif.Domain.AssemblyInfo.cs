@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartPlanif.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5af7cd21058c8df89f1343216065bdd7ea4fd4e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f6bfc1527477ee103be0e4315fc1a772d604962")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartPlanif.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartPlanif.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
