@@ -27,4 +27,8 @@ public sealed class MySqlReferenceDataRepository(IDbConnectionFactory db) : IRef
         var rows = await connection.QueryAsync<Row>(new CommandDefinition(sql, cancellationToken: ct));
         return rows.Select(r => new ReferenceItem(r.Id, string.IsNullOrWhiteSpace(r.Label)?$"{fallbackPrefix} {r.Id}": r.Label!,string.IsNullOrWhiteSpace(r.LabelArabic) ? $"{fallbackPrefix} {r.Id}" : r.LabelArabic!)).ToList();
     }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ReferenceItem>> GetDelegationsAsync(CancellationToken ct) =>
+        QueryAsync("SELECT DECDELEG AS Id, LIBDELEGFR AS Label FROM drdeleg ORDER BY DECDELEG", "Délégation", ct);
 }

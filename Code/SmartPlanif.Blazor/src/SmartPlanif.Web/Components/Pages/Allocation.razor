@@ -3,6 +3,10 @@
 @inject AllocateDayHandler AllocateHandler
 @inject PreviewDayHandler PreviewHandler
 @inject PlanningCalendar Calendar
+@inject IReferenceDataRepository Reference
+@inject LineQueryService LineService
+@using System.Text.RegularExpressions
+
 
 <PageTitle>Allocation</PageTitle>
 
@@ -15,37 +19,70 @@
 
 <div class="panel @(IsPast ? "past" : "")">
     <div class="form-grid compact">
-        <label>Date (à partir du @Calendar.Today.ToString("dd/MM/yyyy"))
-            <input type="date" @bind="_dateInput" min="@Calendar.Today.ToString("yyyy-MM-dd")" disabled="@_running" /></label>
-        <label>Méthode
+        <label>
+            Date (à partir du @Calendar.Today.ToString("dd/MM/yyyy"))
+            <input type="date" @bind="_dateInput" min="@Calendar.Today.ToString("yyyy-MM-dd")" disabled="@_running" />
+        </label>
+        <label>
+            Méthode
             <select @bind="_method" disabled="@(_running || IsPast)">
                 @foreach (var method in Enum.GetValues<AllocationMethod>())
                 {
                     <option value="@method">@MethodLabel(method)</option>
                 }
-            </select></label>
+            </select>
+        </label>
         @* <label>Utilisateur
             <input type="text" @bind="_user" disabled="@(_running || IsPast)" /></label> *@
-        <label>Voyages déjà planifiés
+        <label>
+            Voyages déjà planifiés
             <select @bind="_existingMode" disabled="@(_running || IsPast)">
                 <option value="@ExistingPlanMode.FillMissingOnly">Compléter : garder les plans existants</option>
                 <option value="@ExistingPlanMode.ReplaceDay">Remplacer : replanifier toute la journée</option>
-            </select></label>
-        <label>Enregistrement dans la table trips
+            </select>
+        </label>
+        <label>
+            Enregistrement dans la table trips
             <select @bind="_saveMode" disabled="@(_running || IsPast)">
                 <option value="@SaveMode.None">Aucun (simulation)</option>
                 <option value="@SaveMode.CompleteDayOnly">Journée complète seulement</option>
                 <option value="@SaveMode.AllowPartial">Même si la journée est incomplète</option>
-            </select></label>
+            </select>
+        </label>
     </div>
     <div class="toolbar">
         <button class="btn" @onclick="PreviewAsync" disabled="@_running">Analyser la faisabilité</button>
         <button class="btn primary" @onclick="RunAsync" disabled="@(_running || IsPast)">Lancer l'allocation</button>
+        <button class="icon-btn help" title="Aide : l'allocation expliquée en phrases courtes (clic)"
+                @onclick="() => _showHelp = !_showHelp" aria-label="Aide allocation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        </button>
         @if (_running)
         {
             <button class="btn danger" @onclick="Cancel">Arrêter</button>
         }
     </div>
+    @if (_showHelp)
+    {
+        <div class="alert warn help-panel">
+            <strong>L'allocation en phrases courtes :</strong>
+            <ul>
+                <li>Chaque voyage reçoit <strong>un bus + un chauffeur + un receveur</strong> (deux personnes différentes).</li>
+                <li><strong>Règles dures</strong> = éliminatoires (chevauchement, repos, heures max…) : aucun score ne les compense.</li>
+                <li><strong>Règles souples</strong> = points de préférence (même centre, peu d'heures, continuité…) : elles départagent les ressources valides.</li>
+                <li><strong>Méthode 3 (recommandée)</strong> : construction par phases (types de ligne tendus d'abord), puis amélioration ALNS + recuit simulé.</li>
+                <li><strong>« Compléter »</strong> garde les plans déjà enregistrés ; <strong>« Remplacer »</strong> replanifie tout, sauf les voyages déjà effectués.</li>
+                <li><strong>Enregistrement</strong> : « Aucun » = simulation (rien n'est écrit dans trips) ; les autres modes écrivent BUS_PR / CHAUFF_PR / REC_PR.</li>
+                <li><strong>Objectif</strong> : plus petit = meilleur (voyages non affectés fortement pénalisés, puis score, puis équité de charge).</li>
+                <li><strong>Contrôle indépendant</strong> : rejoue les règles dures sur le plan final ; un plan invalide n'est jamais enregistré.</li>
+                <li>Icône <strong>?</strong> sur une ligne du plan : <strong>survol</strong> = pourquoi ce score ; <strong>clic</strong> = détail complet.</li>
+            </ul>
+        </div>
+    }
 </div>
 
 @if (IsPast)
@@ -157,8 +194,12 @@
                 @foreach (var phase in _report.Phases)
                 {
                     <tr class="@(phase.Tension > 1 ? "row-hard" : "")">
-                        <td>@phase.Label</td><td>@phase.TripCount</td><td>@phase.PeakDemand</td><td>@phase.CompatibleBuses</td>
-                        <td>@phase.Tension.ToString("0.00", CultureInfo.InvariantCulture)</td><td>@phase.Assigned / @phase.TripCount</td>
+                        <td>@phase.Label</td>
+                        <td>@phase.TripCount</td>
+                        <td>@phase.PeakDemand</td>
+                        <td>@phase.CompatibleBuses</td>
+                        <td>@phase.Tension.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                        <td>@phase.Assigned / @phase.TripCount</td>
                     </tr>
                 }
             </tbody>
@@ -179,8 +220,11 @@
                 @foreach (var op in _report.Alns.Operators)
                 {
                     <tr>
-                        <td>@op.Name</td><td>@(op.IsDestroy ? "Destruction" : "Réparation")</td><td>@op.Uses</td>
-                        <td>@op.TotalReward.ToString("0.#", CultureInfo.InvariantCulture)</td><td>@op.FinalWeight.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                        <td>@op.Name</td>
+                        <td>@(op.IsDestroy ? "Destruction" : "Réparation")</td>
+                        <td>@op.Uses</td>
+                        <td>@op.TotalReward.ToString("0.#", CultureInfo.InvariantCulture)</td>
+                        <td>@op.FinalWeight.ToString("0.00", CultureInfo.InvariantCulture)</td>
                     </tr>
                 }
             </tbody>
@@ -196,8 +240,10 @@
                 @foreach (var failure in _report.Failures)
                 {
                     <tr class="row-hard">
-                        <td>@failure.Trip.Departure.ToString("HH:mm")</td><td>@failure.Trip.Arrival.ToString("HH:mm")</td>
-                        <td>@failure.Trip.LineLabel</td><td>@string.Join(", ", failure.MissingRoles.Select(RoleLabel))</td>
+                        <td>@failure.Trip.Departure.ToString("HH:mm")</td>
+                        <td>@failure.Trip.Arrival.ToString("HH:mm")</td>
+                        <td>@failure.Trip.LineLabel</td>
+                        <td>@string.Join(", ", failure.MissingRoles.Select(RoleLabel))</td>
                         <td>@Causes(failure)</td>
                     </tr>
                 }
@@ -208,71 +254,143 @@
     @RenderFeasibilityIfProblem(_report.Feasibility)
 
     <h3>Plan d'allocation (@_report.Assignments.Count)</h3>
-    <div class="toolbar">
-        <input type="search" placeholder="Filtrer (ligne, bus, agent)…" @bind="_filter" @bind:event="oninput" />
+    var planRows = FilteredAssignments().ToList();
+
+    <div class="plan-filters">
+        <label class="filter-cell">
+            Recherche libre (code ou libellé)
+            <input type="search" placeholder="Ligne, matricule, nom…" @bind="_filter" @bind:event="oninput" />
+        </label>
+        <label class="filter-cell">
+            Ligne (DENUMLI)
+            <select @bind="_filterLineId">
+                <option value="">Toutes</option>
+                @foreach (var l in PlanLines())
+                {
+                    <option value="@l.Id">@l.Id — @l.Label</option>
+                }
+            </select>
+        </label>
+        <label class="filter-cell">
+            Bus (matricule / code)
+            <select @bind="_filterBusId">
+                <option value="">Tous</option>
+                @foreach (var b in PlanBuses())
+                {
+                    <option value="@b.Id">@b.Plate (code @b.Id)</option>
+                }
+            </select>
+        </label>
+        <label class="filter-cell">
+            Chauffeur (matricule / nom)
+            <select @bind="_filterDriverId">
+                <option value="">Tous</option>
+                @foreach (var d in PlanDrivers())
+                {
+                    <option value="@d.Id">@d.Id — @d.Name</option>
+                }
+            </select>
+        </label>
+        <label class="filter-cell">
+            Receveur (matricule / nom)
+            <select @bind="_filterReceiverId">
+                <option value="">Tous</option>
+                @foreach (var r in PlanReceivers())
+                {
+                    <option value="@r.Id">@r.Id — @r.Name</option>
+                }
+            </select>
+        </label>
+        <div class="filter-cell">
+            <button class="btn" @onclick="ResetPlanFilters" title="Réinitialiser les filtres du plan">Réinitialiser</button>
+        </div>
+        <div class="filter-count">@planRows.Count / @_report.Assignments.Count voyage(s) affiché(s)</div>
     </div>
     <table class="grid">
         <thead><tr><th>Départ</th><th>Arrivée</th><th>Ligne</th><th>Bus</th><th>Chauffeur</th><th>Receveur</th><th>Score</th><th></th></tr></thead>
         <tbody>
-            @foreach (var a in FilteredAssignments())
+            @foreach (var a in planRows)
             {
-                <tr title="@a.Justification">
-                    <td>@a.Trip.Departure.ToString("HH:mm")</td><td>@a.Trip.Arrival.ToString("HH:mm")</td>
-                    <td>@a.Trip.LineLabel</td><td>@a.Bus.Plate</td><td>@a.Driver.Name</td><td>@a.Receiver.Name</td>
+                <tr class="clickable" title="Clic : fiche complète du voyage — survol : justification du score"
+                    @onclick="() => OpenDetail(a)">
+                    <td>@a.Trip.Departure.ToString("HH:mm")</td>
+                    <td>@a.Trip.Arrival.ToString("HH:mm")</td>
+                    <td><code>@a.Trip.LineId</code> @a.Trip.LineLabel</td>
+                    <td>@a.Bus.Plate <span class="muted small">(code @a.Bus.Id)</span></td>
+                    <td>@a.Driver.Name <span class="muted small">(@a.Driver.Id)</span></td>
+                    <td>@a.Receiver.Name <span class="muted small">(@a.Receiver.Id)</span></td>
                     <td>
                         <div class="scorebar" title="@a.Justification">
                             <div class="fill" style="width:@Percent(a.Score, a.MaxScore)%"></div>
-                            <span>@a.Score.ToString("0.#", CultureInfo.InvariantCulture) / @a.MaxScore.ToString("0.#", CultureInfo.InvariantCulture)</span>
+                            <span>@Number(a.Score) / @Number(a.MaxScore)</span>
                         </div>
                     </td>
-                    <td><button class="btn small" @onclick="() => Explain(a.Trip.Id)">Pourquoi ?</button></td>
+                    <td>
+                        @* Garde ton icône « pourquoi » actuelle ; le stopPropagation évite d'ouvrir la fiche en cliquant dessus *@
+                        <button class="icon-btn" title="Pourquoi ce score ?"
+                                @onclick="() => Explain(a.Trip.Id)" @onclick:stopPropagation="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </button>
+                    </td>
                 </tr>
             }
-        </tbody>
-    </table>
-    <p class="muted small">Survolez une ligne pour voir la justification du score critère par critère.</p>
-
-
-@if (_report.Fairness is { } fairness)
-{
-    <h3>Équité du partage des ressources</h3>
-    <p class="muted small">
-        Indice de Jain : 1 = parfaitement égal. Coefficient de variation (CV) : plus il est bas, plus c'est équitable.
-        « Non utilisées » compte les ressources disponibles qui n'ont reçu aucun voyage.
-    </p>
-    <table class="grid">
-        <thead>
-            <tr>
-                <th>Indicateur</th>
-                <th>Ressources</th>
-                <th>Non utilisées</th>
-                <th>Moyenne</th>
-                <th>Min</th>
-                <th>Max</th>
-                <th>Écart-type</th>
-                <th>CV</th>
-                <th>Jain</th>
-                <th>Verdict</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var s in fairness.Indicators)
+            @if (planRows.Count == 0)
             {
-                <tr>
-                    <td>@s.Name</td>
-                    <td>@s.Count</td>
-                    <td>@s.Unused</td>
-                    <td>@Number(s.Mean) @s.Unit</td>
-                    <td>@Number(s.Min)</td>
-                    <td>@Number(s.Max)</td>
-                    <td>@Number(s.StdDev)</td>
-                    <td>@s.Cv.ToString("0.00", CultureInfo.InvariantCulture)</td>
-                    <td>@s.Jain.ToString("0.00", CultureInfo.InvariantCulture)</td>
-                    <td><span class="badge @(s.Css == "ok" ? "soft" : s.Css == "warn" ? "off" : "hard")">@s.Verdict</span></td>
-                </tr>
+                <tr><td colspan="8" class="muted">Aucun voyage ne correspond aux filtres.</td></tr>
             }
         </tbody>
     </table>
+    @* <p class="muted small">Survolez une ligne pour voir la justification du score critère par critère.</p> *@
+    <p class="muted small">
+        Cliquez sur une ligne pour ouvrir la fiche complète (voyage, bus, chauffeur, receveur, score).
+        Survolez une ligne pour voir la justification du score critère par critère.
+    </p>
+
+
+    @if (_report.Fairness is { } fairness)
+    {
+        <h3>Équité du partage des ressources</h3>
+        <p class="muted small">
+            Indice de Jain : 1 = parfaitement égal. Coefficient de variation (CV) : plus il est bas, plus c'est équitable.
+            « Non utilisées » compte les ressources disponibles qui n'ont reçu aucun voyage.
+        </p>
+        <table class="grid">
+            <thead>
+                <tr>
+                    <th>Indicateur</th>
+                    <th>Ressources</th>
+                    <th>Non utilisées</th>
+                    <th>Moyenne</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Écart-type</th>
+                    <th>CV</th>
+                    <th>Jain</th>
+                    <th>Verdict</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in fairness.Indicators)
+                {
+                    <tr>
+                        <td>@s.Name</td>
+                        <td>@s.Count</td>
+                        <td>@s.Unused</td>
+                        <td>@Number(s.Mean) @s.Unit</td>
+                        <td>@Number(s.Min)</td>
+                        <td>@Number(s.Max)</td>
+                        <td>@Number(s.StdDev)</td>
+                        <td>@s.Cv.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                        <td>@s.Jain.ToString("0.00", CultureInfo.InvariantCulture)</td>
+                        <td><span class="badge @(s.Css == "ok" ? "soft" : s.Css == "warn" ? "off" : "hard")">@s.Verdict</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
 }
 @if (_explanation is not null && _explained is not null)
@@ -293,11 +411,156 @@
         </div>
     </aside>
 }
+@if (_detail is not null)
+{
+    <div class="drawer-overlay" @onclick="CloseDetail"></div>
+    <aside class="drawer wide">
+        <div class="drawer-header">
+            <div>
+                <h2>Voyage #@_detail.Trip.Id — @_detail.Trip.Departure.ToString("dd/MM/yyyy")</h2>
+                <span class="muted small">@_detail.Trip.Departure.ToString("HH:mm") → @_detail.Trip.Arrival.ToString("HH:mm")</span>
+            </div>
+            <button class="drawer-close" @onclick="CloseDetail" title="Fermer">✕</button>
+        </div>
+        <div class="drawer-body">
+            <h3>Voyage</h3>
+            <table class="grid">
+                <tbody>
+                    <tr><td>Code ligne (DENUMLI)</td><td><code>@_detail.Trip.LineId</code></td></tr>
+                    <tr><td>Libellé ligne (Fr)</td><td>@_detail.Trip.LineLabel</td></tr>
+                    @* <tr><td>Libellé ligne (Ar)</td><td>@_detail.Trip.</td></tr> *@
+                    <tr><td>Type de ligne</td><td>@Ref(_lineTypeLabels, _detail.Trip.LineTypeId, "Type")</td></tr>
+                    <tr><td>Durée</td><td>@((int)_detail.Trip.Interval.Duration.TotalMinutes) min</td></tr>
+                    <tr><td>Distance</td><td>@Number(_detail.Trip.DistanceKm) km</td></tr>
+                    <tr><td>Centre de la ligne</td><td>@(_detail.Trip.CenterId?.ToString() ?? "—")</td></tr>
+                    <tr><td>Délégation de la ligne</td><td>@Ref(_delegationLabels, _detail.Trip.DelegationId, "Délégation")</td></tr>
+                    @* <tr><td>Station départ</td><td>@Station(_detail.Trip.OriginStationId)</td></tr>
+                    <tr><td>Station arrivée</td><td>@Station(_detail.Trip.DestinationStationId)</td></tr> *@
+                    <tr><td>Station départ (origine de la ligne)</td><td>@Station(_detailOrigin)</td></tr>
+                    <tr><td>Station arrivée (terminus de la ligne)</td><td>@Station(_detailDestination)</td></tr>
+                    <tr><td>Demande prévue</td><td>@(_detail.Trip.ExpectedPassengers?.ToString() ?? "inconnue (donnée absente de la base)")</td></tr>
+                </tbody>
+            </table>
+            <h3>Bus affecté</h3>
+            <table class="grid">
+                <tbody>
+                    <tr><td>Code bus (DECODVH)</td><td><code>@_detail.Bus.Id</code></td></tr>
+                    <tr><td>Matricule (DEMATRI)</td><td>@_detail.Bus.Plate</td></tr>
+                    <tr><td>Catégorie</td><td>@Ref(_categoryLabels, _detail.Bus.CategoryId, "Catégorie")</td></tr>
+                    <tr><td>Capacité</td><td>@_detail.Bus.Capacity places (@_detail.Bus.Seats assises + @_detail.Bus.Standing debout)</td></tr>
+                    <tr><td>Centre</td><td>@(_detail.Bus.CenterId?.ToString() ?? "—")</td></tr>
+                    <tr><td>Délégation</td><td>@Ref(_delegationLabels, _detail.Bus.DelegationId, "Délégation")</td></tr>
+                    <tr><td>Mise en circulation</td><td>@(_detail.Bus.InServiceSince?.ToString("dd/MM/yyyy") ?? "—")</td></tr>
+                    <tr><td>Actif</td><td>@(_detail.Bus.Active ? "oui" : "non")</td></tr>
+                </tbody>
+            </table>
+            <h3>Chauffeur</h3>
+            @AgentTable(_detail.Driver)
+            <h3>Receveur</h3>
+            @AgentTable(_detail.Receiver)
+            <h3>Score : @Number(_detail.Score) / @Number(_detail.MaxScore)</h3>
+            <ul class="small">
+                @foreach (var part in _detail.Justification.Split(" | ", StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <li>@part</li>
+                }
+            </ul>
+            <div class="toolbar">
+                <button class="btn primary" @onclick="LoadDetailWhy">Pourquoi ces ressources ? (analyse complète)</button>
+            </div>
+            @if (_detailWhy is not null)
+            {
+                @RenderDecision(_detailWhy.Bus)
+                @RenderDecision(_detailWhy.Driver)
+                @RenderDecision(_detailWhy.Receiver)
+            }
+        </div>
+    </aside>
+}
 @code {
+    // ------------------------------------------------------------------ filtres du plan (codes + libellés)
+    private long? _filterLineId;
+    private long? _filterBusId;
+    private long? _filterDriverId;
+    private long? _filterReceiverId;
+
+    // ------------------------------------------------------------------ fiche détail d'une affectation
+    private TripAssignment? _detail;
+    private TripExplanation? _detailWhy;
+
+    private async Task OpenDetail(TripAssignment a)
+    {
+        _detail = a;
+        _detailWhy = null;
+        _stationLabels = new Dictionary<long, (string, string?)>();
+        _detailOrigin = a.Trip.OriginStationId;
+        _detailDestination = a.Trip.DestinationStationId;
+        try
+        {
+            // Itinéraire de la ligne (dritin joint drstati) : arrêts triés par séquence.
+            var stops = (await LineService.GetItineraryAsync(a.Trip.LineId)).Stops
+                .OrderBy(s => s.Sequence).ToList();
+
+            _stationLabels = stops
+                .Where(s => s.StationId is not null)
+                .GroupBy(s => s.StationId!.Value)
+                .ToDictionary(g => g.Key,
+                              g => (g.First().NameFr ?? $"Station {g.Key}", g.First().NameAr));
+
+            // Le voyage ne porte pas de codes stations : on prend les deux terminus de l'itinéraire.
+            _detailOrigin ??= stops.FirstOrDefault()?.StationId;
+            _detailDestination ??= stops.LastOrDefault()?.StationId;
+
+            // Si votre record Trip expose Direction (1 = aller, 2 = retour), décommentez :
+            // if (a.Trip.Direction == 2) (_detailOrigin, _detailDestination) = (_detailDestination, _detailOrigin);
+        }
+        catch { /* itinéraire illisible : les stations s'affichent par leur code */ }
+    }
+    private void CloseDetail()
+    {
+        _detail = null;
+        _detailWhy = null;
+        _stationLabels = new Dictionary<long, (string, string?)>();
+        _detailOrigin = null;
+        _detailDestination = null;
+    }
+    private void LoadDetailWhy() { if (_detail is not null) _detailWhy = _report?.Explainer?.Explain(_detail.Trip.Id); }
+
+    /// <summary>Valeurs présentes dans le plan courant pour alimenter les filtres (codes + libellés).</summary>
+    private IReadOnlyList<(long Id, string Label)> PlanLines() =>
+        _report!.Assignments.Select(a => (a.Trip.LineId, a.Trip.LineLabel)).Distinct().OrderBy(x => x.LineId).ToList();
+    private IReadOnlyList<(long Id, string Plate)> PlanBuses() =>
+        _report!.Assignments.Select(a => (a.Bus.Id, a.Bus.Plate)).Distinct().OrderBy(x => x.Plate).ToList();
+    private IReadOnlyList<(long Id, string Name)> PlanDrivers() =>
+        _report!.Assignments.Select(a => (a.Driver.Id, a.Driver.Name)).Distinct().OrderBy(x => x.Name).ToList();
+    private IReadOnlyList<(long Id, string Name)> PlanReceivers() =>
+        _report!.Assignments.Select(a => (a.Receiver.Id, a.Receiver.Name)).Distinct().OrderBy(x => x.Name).ToList();
+
+    private void ResetPlanFilters() =>
+        (_filter, _filterLineId, _filterBusId, _filterDriverId, _filterReceiverId) = ("", null, null, null, null);
+
+    /// <summary>Libellé du type de ligne repris des phases de construction (à défaut : code brut).</summary>
+    private string LineTypeLabelOf(long? lineTypeId) =>
+        lineTypeId is null ? "—"
+        : _report!.Phases.FirstOrDefault(p => p.LineTypeId == lineTypeId)?.Label ?? $"Type {lineTypeId}";
+
+    private RenderFragment AgentTable(Agent a) => __builder =>
+    {
+        <table class="grid">
+            <tbody>
+                <tr><td>Matricule (DECAGEN)</td><td><code>@a.Id</code></td></tr>
+                <tr><td>Nom</td><td>@a.Name</td></tr>
+                <tr><td>Rôle</td><td>@RoleLabelFr(a.Role)</td></tr>
+                <tr><td>Jour de repos</td><td>@DayNameFr(a.RestDay)</td></tr>
+                <tr><td>Centre</td><td>@(a.CenterId?.ToString() ?? "—")</td></tr>
+                <tr><td>Délégation</td><td>@Ref(_delegationLabels, a.DelegationId, "Délégation")</td></tr>
+            </tbody>
+        </table>
+    };
     //============================================================//
     private TripExplanation? _explanation;
     private TripAssignment? _explained;
-
+    private bool _showHelp;
     private void Explain(long tripId)
     {
         _explained = _report!.Assignments.First(a => a.Trip.Id == tripId);
@@ -389,7 +652,27 @@
     /// <summary>Journée passée : tous les contrôles de planification sont grisés.</summary>
     private bool IsPast => !Calendar.IsEditable(SelectedDate);
 
-    protected override void OnInitialized() => _dateInput = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+    private IReadOnlyDictionary<long, string> _lineTypeLabels = new Dictionary<long, string>();
+    private IReadOnlyDictionary<long, string> _categoryLabels = new Dictionary<long, string>();
+    private IReadOnlyDictionary<long, string> _delegationLabels = new Dictionary<long, string>();
+    /// <summary>Noms des stations (drstati) : DELSTAT français + DELSTAA arabe, par code DECSTAT.</summary>
+    private IReadOnlyDictionary<long, (string Fr, string? Ar)> _stationLabels =
+        new Dictionary<long, (string, string?)>();
+    private long? _detailOrigin;
+    private long? _detailDestination;
+
+    private readonly CancellationTokenSource _cts = new();
+
+    //protected override void OnInitialized() => _dateInput = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+    protected override async Task OnInitializedAsync()
+    {
+        _dateInput = Calendar.Today.ToDateTime(TimeOnly.MinValue);
+        var ct = _cts.Token;
+        // Libellés des tables mères (drtyli, drcatve, drdeleg) : une seule lecture au chargement de la page.
+        try { _lineTypeLabels = (await Reference.GetLineTypesAsync(ct)).ToDictionary(x => x.Id, x => x.Label); } catch { }
+        try { _categoryLabels = (await Reference.GetBusCategoriesAsync(ct)).ToDictionary(x => x.Id, x => x.Label); } catch { }
+        try { _delegationLabels = (await Reference.GetDelegationsAsync(ct)).ToDictionary(x => x.Id, x => x.Label); } catch { }
+    }
 
     /// <summary>Phase 0 : volumes et diagnostic de faisabilité, sans rien modifier.</summary>
     private async Task PreviewAsync()
@@ -413,6 +696,8 @@
         _progress = null;
         _running = true;
         _cancellation = new CancellationTokenSource();
+        _detail = null;
+        _detailWhy = null;
         try
         {
             var progress = new InlineProgress<AlnsProgress>(p =>
@@ -440,14 +725,31 @@
 
     private IEnumerable<TripAssignment> FilteredAssignments()
     {
-        var all = _report!.Assignments;
-        if (string.IsNullOrWhiteSpace(_filter)) return all;
+        // var all = _report!.Assignments;
+        // if (string.IsNullOrWhiteSpace(_filter)) return all;
+        // var text = _filter.Trim();
+        // return all.Where(a =>
+        //     a.Trip.LineLabel.Contains(text, StringComparison.OrdinalIgnoreCase)
+        //     || a.Bus.Plate.Contains(text, StringComparison.OrdinalIgnoreCase)
+        //     || a.Driver.Name.Contains(text, StringComparison.OrdinalIgnoreCase)
+        //     || a.Receiver.Name.Contains(text, StringComparison.OrdinalIgnoreCase));
+        var all = _report!.Assignments.AsEnumerable();
+        if (_filterLineId is { } line) all = all.Where(a => a.Trip.LineId == line);
+        if (_filterBusId is { } bus) all = all.Where(a => a.Bus.Id == bus);
+        if (_filterDriverId is { } drv) all = all.Where(a => a.Driver.Id == drv);
+        if (_filterReceiverId is { } rec) all = all.Where(a => a.Receiver.Id == rec);
         var text = _filter.Trim();
-        return all.Where(a =>
-            a.Trip.LineLabel.Contains(text, StringComparison.OrdinalIgnoreCase)
-            || a.Bus.Plate.Contains(text, StringComparison.OrdinalIgnoreCase)
-            || a.Driver.Name.Contains(text, StringComparison.OrdinalIgnoreCase)
-            || a.Receiver.Name.Contains(text, StringComparison.OrdinalIgnoreCase));
+        if (text.Length > 0)
+            all = all.Where(a =>
+                a.Trip.LineLabel.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Trip.LineId.ToString().Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Bus.Plate.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Bus.Id.ToString().Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Driver.Name.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Driver.Id.ToString().Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Receiver.Name.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || a.Receiver.Id.ToString().Contains(text, StringComparison.OrdinalIgnoreCase));
+        return all;
     }
 
     private RenderFragment RenderFeasibility(IReadOnlyList<FeasibilityLine> lines) => __builder =>
@@ -458,7 +760,10 @@
                 @foreach (var line in lines)
                 {
                     <tr class="@(line.IsSufficient ? "" : "row-hard")">
-                        <td>@line.Scope</td><td>@line.Demand</td><td>@line.Supply</td><td>@line.Message</td>
+                        <td>@line.Scope</td>
+                        <td>@line.Demand</td>
+                        <td>@line.Supply</td>
+                        <td>@line.Message</td>
                     </tr>
                 }
             </tbody>
@@ -501,4 +806,76 @@
 
     private static string Percent(double score, double max) =>
         (max <= 0 ? 0 : Math.Clamp(score / max * 100, 0, 100)).ToString("0", CultureInfo.InvariantCulture);
+
+    /// <summary>Motif du score extrait de la justification : « B07=25 » -> « même centre que la ligne +25 ».</summary>
+    // private static readonly System.Text.RegularExpressions.Regex ScorePointsRegex =
+    //     new(@"\b(?<code>[A-Z]{1,2}P?\d{2})=(?<pts>\d+(?:[.,]\d+)?)", System.Text.RegularExpressions.RegOptions.Compiled);
+    /// <summary>Extrait les couples « CODE=points » de la justification (ex. « B07=25 »).</summary>
+    private static readonly System.Text.RegularExpressions.Regex ScorePointsRegex =
+        new(@"\b(?<code>[A-Z]{1,2}P?\d{2})=(?<pts>\d+(?:[.,]\d+)?)", System.Text.RegularExpressions.RegexOptions.Compiled);
+    /// <summary>Survol de l'icône « pourquoi » : le score expliqué en phrases courtes (une ligne par rôle).</summary>
+    private static string ScoreWhy(TripAssignment a)
+    {
+        if (string.IsNullOrWhiteSpace(a.Justification))
+            return $"Score {Number(a.Score)} / {Number(a.MaxScore)} : clic pour le détail complet.";
+        var sb = new System.Text.StringBuilder();
+        sb.Append($"Pourquoi ce score ({Number(a.Score)} / {Number(a.MaxScore)}) ? Points gagnés, par rôle :");
+        foreach (var segment in a.Justification.Split(" | ", StringSplitOptions.RemoveEmptyEntries))
+        {
+            sb.Append('\n').Append("• ");
+            var bracket = segment.IndexOf(" [", StringComparison.Ordinal);
+            sb.Append(bracket >= 0 ? segment[..bracket] : segment);
+            var details = ScorePointsRegex.Matches(segment);
+            if (details.Count > 0)
+            {
+                sb.Append(" → ");
+                sb.Append(string.Join(", ", details.Select(m =>
+                {
+                    var code = m.Groups["code"].Value;
+                    var name = ConstraintCatalog.FindDescriptor(code) is { } d ? d.Name.ToLowerInvariant() : code.ToLowerInvariant();
+                    var pts = double.TryParse(m.Groups["pts"].Value.Replace(',', '.'),
+                        NumberStyles.Float, CultureInfo.InvariantCulture, out var p) ? p : 0;
+                    return $"{name} +{Number(pts)}";
+                })));
+            }
+        }
+        sb.Append("\nClic : détail complet (rang, alternatives, rejets par règle dure).");
+        return sb.ToString();
+    }
+    /// <summary>Libellé de la table mère pour une clé étrangère : « LIBELLÉ (code) », sinon code seul.</summary>
+    private static string Ref(IReadOnlyDictionary<long, string> map, long? id, string prefix) =>
+        id is null ? "—"
+        : map.TryGetValue(id.Value, out var label) ? $"{label} (code {id})"
+        : $"{prefix} {id}";
+
+    /// <summary>Station complète : nom français + nom arabe + code (drstati.DELSTAT / DELSTAA).</summary>
+    private string Station(long? id)
+    {
+        if (id is null) return "—";
+        if (!_stationLabels.TryGetValue(id.Value, out var names))
+            return $"Station {id} (nom absent de drstati)";
+        var ar = string.IsNullOrWhiteSpace(names.Ar) ? null : $" — {names.Ar}";
+        return $"{names.Fr}{ar} (code {id})";
+    }
+
+    private static string DayNameFr(DayOfWeek? d) => d switch
+    {
+        DayOfWeek.Monday => "Lundi",
+        DayOfWeek.Tuesday => "Mardi",
+        DayOfWeek.Wednesday => "Mercredi",
+        DayOfWeek.Thursday => "Jeudi",
+        DayOfWeek.Friday => "Vendredi",
+        DayOfWeek.Saturday => "Samedi",
+        DayOfWeek.Sunday => "Dimanche",
+        _ => "—",
+    };
+
+    private static string RoleLabelFr(AgentRole r) => r switch
+    {
+        AgentRole.Driver => "Chauffeur",
+        AgentRole.Receiver => "Receveur",
+        AgentRole.Both => "Polyvalent (chauffeur ou receveur)",
+        _ => "Non planifiable",
+    };
+    
 }

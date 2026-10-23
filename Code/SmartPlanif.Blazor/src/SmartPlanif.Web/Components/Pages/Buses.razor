@@ -32,11 +32,11 @@ else
         <div class="kpi"><span class="value">@_all.Count</span><span>bus au total</span></div>
         <div class="kpi"><span class="value">@filtered.Count</span><span>correspondent aux filtres</span></div>
         <div class="kpi"><span class="value">@filtered.Sum(b => b.Capacity)</span><span>places (assises + debout) filtrées</span></div>
-        <div class="kpi"><span class="value">@_all.Count(b => b.ActiveFlag == 1)</span><span>avec DEACTIF = 1</span></div>
+        <div class="kpi"><span class="value">@_all.Count(b => b.ActiveFlag == 0)</span><span>Bus prêt</span></div>
         <div class="kpi"><span class="value">@_usageBusCount</span><span>bus utilisés le @_usageDate.ToString("dd/MM/yyyy")</span></div>
     </div>
 
-    @if (_all.Count > 0 && _all.All(b => b.ActiveFlag != 1))
+    @if (_all.Count > 0 && _all.All(b => b.ActiveFlag != 0))
     {
         <div class="alert warn">
             <code>DEACTIF</code> ne vaut 1 pour aucun bus : le champ semble non renseigné (le moteur traite alors tous les bus comme actifs, mode <code>Auto</code>).
@@ -104,8 +104,8 @@ else
             <label>Actif (DEACTIF)
                 <select @bind="_active" @bind:after="ResetPage">
                     <option value="">Indifférent</option>
-                    <option value="yes">DEACTIF = 1</option>
-                    <option value="no">DEACTIF ≠ 1</option>
+                    <option value="yes">Bus prêt = 0</option>
+                    <option value="no">Bus non prêt = 1</option>
                 </select></label>
         </div>
         <div class="toolbar">

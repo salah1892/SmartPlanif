@@ -582,4 +582,12 @@ public sealed class DemoDataStore : ITripRepository, IResourceRepository, IAssig
             .GroupBy(x => x.Day).Select(g => new ResourceDay(g.Key, g.Count())).OrderBy(r => r.Day).ToList();
         return Task.FromResult(list);
     }
+
+    /// <inheritdoc />
+    public Task<IReadOnlyList<ReferenceItem>> GetDelegationsAsync(CancellationToken ct) =>
+        Task.FromResult<IReadOnlyList<ReferenceItem>>(new[]
+        {
+        new ReferenceItem(1, "Délégation 1 (démo)", "Délégation 1 (démo)"),
+        new ReferenceItem(2, "Délégation 2 (démo)", "Délégation 2 (démo)"),
+        });
 }

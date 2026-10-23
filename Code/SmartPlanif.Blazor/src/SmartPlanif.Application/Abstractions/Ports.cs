@@ -80,6 +80,9 @@ public interface IReferenceDataRepository
 
     /// <summary>Catégories de véhicules (standard, confort...).</summary>
     Task<IReadOnlyList<ReferenceItem>> GetBusCategoriesAsync(CancellationToken ct);
+
+    /// <summary>Délégations (table drdeleg) : identifiant + libellé.</summary>
+    Task<IReadOnlyList<ReferenceItem>> GetDelegationsAsync(CancellationToken ct);
 }
 
 /// <summary>Persistance de la politique d'allocation (choix des contraintes, paramètres, ALNS).</summary>

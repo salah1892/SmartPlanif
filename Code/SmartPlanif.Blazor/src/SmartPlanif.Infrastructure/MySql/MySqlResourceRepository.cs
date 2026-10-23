@@ -26,8 +26,8 @@ public enum BusActiveMode
     /// <summary>Si au moins un bus a DEACTIF = 1, on utilise ce champ ; sinon (champ non renseigné) tous les bus sont actifs.</summary>
     Auto,
 
-    /// <summary>Strict : actif seulement si drvehic.DEACTIF = 1.</summary>
-    FlagIsOne,
+    /// <summary>Strict : actif seulement si drvehic.DEACTIF = 0.</summary>
+    FlagIsZero,
 
     /// <summary>Tous les bus sont actifs, quel que soit DEACTIF.</summary>
     AllActive,
@@ -82,8 +82,9 @@ public sealed class MySqlResourceRepository(
             """, cancellationToken: ct))).ToList();
 
         // Si DEACTIF n'est renseigné pour aucun bus (tous à 0), le champ n'est pas fiable : en mode Auto tous les bus sont actifs.
-        var anyFlagged = busRows.Any(r => r.Active == 1);
-        bool IsActive(BusRow r) => IsBusActive(resourceOptions.Value.BusActiveMode, anyFlagged, r.Active);
+        var anyInactive = busRows.Any(r => r.Active == 1);
+        //var anyFlagged = busRows.Any(r => r.Active == 1);
+        bool IsActive(BusRow r) => IsBusActive(resourceOptions.Value.BusActiveMode, anyInactive, r.Active);
 
         var buses = busRows
             .Select(r => new Bus(r.Id, r.Plate ?? $"#{r.Id}", IsActive(r), (int)r.Seats, (int)r.Standing,
@@ -131,9 +132,9 @@ public sealed class MySqlResourceRepository(
     /// <summary>Règle d'activité d'un bus selon le mode et selon que DEACTIF est renseigné (= 1) pour au moins un bus.</summary>
     public static bool IsBusActive(BusActiveMode mode, bool anyBusFlaggedActive, long flag) => mode switch
     {
-        BusActiveMode.FlagIsOne => flag == 1,
+        BusActiveMode.FlagIsZero => flag == 0,
         BusActiveMode.AllActive => true,
-        _ => !anyBusFlaggedActive || flag == 1,
+        _ => !anyBusFlaggedActive || flag == 0,
     };
 
     /// <summary>DECJOUR : 1=lundi..7=dimanche. DayOfWeek .NET : Sunday=0, Monday=1..Saturday=6 -> modulo 7.</summary>

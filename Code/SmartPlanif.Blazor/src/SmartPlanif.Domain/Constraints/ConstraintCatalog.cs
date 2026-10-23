@@ -120,7 +120,7 @@ public static class ConstraintCatalog
     // ------------------------------------------------------------------------------------------
     private static IReadOnlyList<ConstraintDefinition<Bus>> CreateBusDefinitions() => new[]
     {
-        LockedHard<Bus>("B02", "Bus actif", "Un bus inactif (drvehic.DEACTIF = 0) ne peut jamais être affecté.",
+        LockedHard<Bus>("B02", "Bus actif", "Un bus inactif (drvehic.DEACTIF = 1) ne peut jamais être affecté.",
             ConstraintTarget.Bus, () => new BusActiveRule()),
         LockedHard<Bus>("B03", "Pas de chevauchement (bus)", "Un bus ne peut pas effectuer deux voyages qui se chevauchent.",
             ConstraintTarget.Bus, () => new NoOverlapRule<Bus>("B03")),

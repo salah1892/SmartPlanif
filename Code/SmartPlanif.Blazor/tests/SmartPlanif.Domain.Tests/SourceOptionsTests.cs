@@ -66,7 +66,7 @@ public class SourceOptionsTests
     [Fact]
     public void Strict_and_permissive_bus_modes_ignore_detection()
     {
-        Assert.False(MySqlResourceRepository.IsBusActive(BusActiveMode.FlagIsOne, anyBusFlaggedActive: false, flag: 0));
+        Assert.False(MySqlResourceRepository.IsBusActive(BusActiveMode.FlagIsZero, anyBusFlaggedActive: false, flag: 0));
         Assert.True(MySqlResourceRepository.IsBusActive(BusActiveMode.AllActive, anyBusFlaggedActive: true, flag: 0));
     }
 }
