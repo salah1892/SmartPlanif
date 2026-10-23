@@ -159,4 +159,14 @@ public class ConstraintTests
         Assert.True(errors.Count >= 2);
         Assert.Empty(PolicyValidator.Validate(Policy()));
     }
+    /// <summary>
+    /// il verrouille la cohérence « profil équitable ⇒ politique valide
+    /// </summary>
+    [Fact]
+    public void Fair_profile_passes_validation()
+    {
+        var policy = Policy();
+        ConstraintCatalog.ApplyFairProfile(policy);
+        Assert.Empty(PolicyValidator.Validate(policy));
+    }
 }

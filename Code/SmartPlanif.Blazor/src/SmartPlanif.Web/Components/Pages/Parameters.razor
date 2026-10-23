@@ -38,48 +38,92 @@ else
 
     <h2>Limites métier</h2>
     <div class="form-grid">
-        <label>Durée de travail maximale par jour (heures) <small>A08</small>
-            <input type="number" step="any" min="0" @bind="MaxDailyWorkHours" /></label>
-        <label>Amplitude maximale (heures) <small>A10</small>
-            <input type="number" step="any" min="0" @bind="MaxAmplitudeHours" /></label>
-        <label>Repos minimal d'un agent entre deux voyages (minutes) <small>A07</small>
-            <input type="number" step="any" min="0" @bind="MinAgentRestMinutes" /></label>
-        <label>Remise en service d'un bus entre deux voyages (minutes) <small>B09</small>
-            <input type="number" step="any" min="0" @bind="MinBusTurnaroundMinutes" /></label>
-        <label>Nombre maximal de voyages par agent et par jour <small>A09</small>
-            <input type="number" step="1" min="1" @bind="_policy.MaxTripsPerAgentPerDay" /></label>
-        <label>Kilomètres maximaux par bus et par jour <small>B11</small>
-            <input type="number" step="any" min="0" @bind="_policy.MaxBusKmPerDay" /></label>
-        <label>Repos « saturé » pour le critère AP03 (heures)
-            <input type="number" step="any" min="0" @bind="RestSaturationHours" /></label>
+        <label>
+            Durée de travail maximale par jour (heures) <small>A08</small>
+            <input type="number" step="any" min="0" @bind="MaxDailyWorkHours" />
+        </label>
+        <label>
+            Amplitude maximale (heures) <small>A10</small>
+            <input type="number" step="any" min="0" @bind="MaxAmplitudeHours" />
+        </label>
+        <label>
+            Repos minimal d'un agent entre deux voyages (minutes) <small>A07</small>
+            <input type="number" step="any" min="0" @bind="MinAgentRestMinutes" />
+        </label>
+        <label>
+            Remise en service d'un bus entre deux voyages (minutes) <small>B09</small>
+            <input type="number" step="any" min="0" @bind="MinBusTurnaroundMinutes" />
+        </label>
+        <label>
+            Nombre maximal de voyages par agent et par jour <small>A09</small>
+            <input type="number" step="1" min="1" @bind="_policy.MaxTripsPerAgentPerDay" />
+        </label>
+        <label>
+            Kilomètres maximaux par bus et par jour <small>B11</small>
+            <input type="number" step="any" min="0" @bind="_policy.MaxBusKmPerDay" />
+        </label>
+        <label>
+            Repos « saturé » pour le critère AP03 (heures)
+            <input type="number" step="any" min="0" @bind="RestSaturationHours" />
+        </label>
     </div>
 
     <h2>Métaheuristique ALNS + recuit simulé</h2>
     <div class="form-grid">
-        <label>Itérations maximales
-            <input type="number" step="1" min="0" @bind="_policy.Alns.MaxIterations" /></label>
-        <label>Durée maximale (secondes)
-            <input type="number" step="any" min="0" @bind="_policy.Alns.MaxSeconds" /></label>
-        <label>Arrêt après N itérations sans amélioration
-            <input type="number" step="1" min="1" @bind="_policy.Alns.StagnationLimit" /></label>
-        <label>Part détruite — minimum (0 à 1)
-            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.DestroyFractionMin" /></label>
-        <label>Part détruite — maximum (0 à 1)
-            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.DestroyFractionMax" /></label>
-        <label>Température initiale
-            <input type="number" step="any" min="0" @bind="_policy.Alns.InitialTemperature" /></label>
-        <label>Facteur de refroidissement (0 à 1)
-            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.CoolingRate" /></label>
-        <label>Graine aléatoire (résultat reproductible)
-            <input type="number" step="1" @bind="_policy.Alns.Seed" /></label>
-        <label>Bruit d'insertion (0 à 1)
-            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.InsertionNoise" /></label>
-        <label>Pénalité par voyage non affecté
-            <input type="number" step="any" min="0" @bind="_policy.Alns.UnassignedPenalty" /></label>
-        <label>Poids de l'équité de charge
-            <input type="number" step="any" min="0" @bind="_policy.Alns.FairnessWeight" /></label>
-        <label>Vitesse d'adaptation des opérateurs (0 à 1)
-            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.ReactionFactor" /></label>
+        <label>
+            Itérations maximales
+            <input type="number" step="1" min="0" @bind="_policy.Alns.MaxIterations" />
+        </label>
+        <label>
+            Durée maximale (secondes)
+            <input type="number" step="any" min="0" @bind="_policy.Alns.MaxSeconds" />
+        </label>
+        <label>
+            Arrêt après N itérations sans amélioration
+            <input type="number" step="1" min="1" @bind="_policy.Alns.StagnationLimit" />
+        </label>
+        <label>
+            Part détruite — minimum (0 à 1)
+            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.DestroyFractionMin" />
+        </label>
+        <label>
+            Part détruite — maximum (0 à 1)
+            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.DestroyFractionMax" />
+        </label>
+        <label>
+            Température initiale
+            <input type="number" step="any" min="0" @bind="_policy.Alns.InitialTemperature" />
+        </label>
+        <label>
+            Facteur de refroidissement (0 à 1)
+            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.CoolingRate" />
+        </label>
+        <label>
+            Graine aléatoire (résultat reproductible)
+            <input type="number" step="1" @bind="_policy.Alns.Seed" />
+        </label>
+        <label>
+            Bruit d'insertion (0 à 1)
+            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.InsertionNoise" />
+        </label>
+        <label>
+            Pénalité par voyage non affecté
+            <input type="number" step="any" min="0" @bind="_policy.Alns.UnassignedPenalty" />
+        </label>
+        <label>
+            Poids de l'équité de charge
+            <input type="number" step="any" min="0" @bind="_policy.Alns.FairnessWeight" />
+        </label>
+        @* NOUVEAU CHAMP : équité bus *@
+        <label>
+            Poids de l'équité de charge (bus)
+            <input type="number" step="any" min="0" @bind="_policy.Alns.BusFairnessWeight" />
+        </label>
+
+        <label>
+            Vitesse d'adaptation des opérateurs (0 à 1)
+            <input type="number" step="any" min="0" max="1" @bind="_policy.Alns.ReactionFactor" />
+        </label>
     </div>
 }
 

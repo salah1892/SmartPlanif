@@ -1,0 +1,284 @@
+@page "/cconstraints"
+@using System.Globalization
+@inject AllocationSettingsService SettingsService
+
+<PageTitle>Contraintes</PageTitle>
+
+<h1>Contraintes d'allocation</h1>
+<p class="muted">
+    <span class="hard-text">Dure</span> : une ressource qui viole la règle est éliminée, quel que soit son score.
+    <span class="soft-text">Souple</span> : la règle ajoute des points (poids × valeur entre 0 et 1) pour départager les ressources valides.
+    Les règles marquées 🔒 sont des impossibilités physiques et ne sont pas modifiables.
+</p>
+
+@if (_policy is null)
+{
+    <p>Chargement…</p>
+}
+else
+{
+    var busSoftWeights = _policy.Constraints
+        .Where(kv => kv.Value.Mode == ConstraintMode.Soft && ConstraintCatalog.FindDescriptor(kv.Key)?.Target == ConstraintTarget.Bus)
+        .ToList();
+    var busTotal = busSoftWeights.Sum(kv => kv.Value.Weight);
+    
+    var agentSoftWeights = _policy.Constraints
+        .Where(kv => kv.Value.Mode == ConstraintMode.Soft && ConstraintCatalog.FindDescriptor(kv.Key)?.Target == ConstraintTarget.Agent)
+        .ToList();
+    var agentTotal = agentSoftWeights.Sum(kv => kv.Value.Weight);
+
+    <div class="toolbar">
+        <span class="badge hard">@CountOf(ConstraintMode.Hard) dures</span>
+        <span class="badge soft">@CountOf(ConstraintMode.Soft) souples</span>
+        <span class="badge off">@CountOf(ConstraintMode.Disabled) désactivées</span>
+        <span class="muted">Score maximal par voyage : <strong>@MaxScore.ToString("0.#", CultureInfo.InvariantCulture)</strong></span>
+        <span class="spacer"></span>
+        <button class="btn primary" @onclick="SaveAsync" disabled="@(_weightError is not null)">Enregistrer</button>
+        <button class="btn" @onclick="ResetAsync">Valeurs par défaut</button>
+        <button class="btn" @onclick="ApplyFair">Profil équitable</button>
+    </div>
+    @if (_weightError is not null)
+    {
+        <div class="alert error">⛔ @_weightError</div>
+    }
+    @if (_message is not null)
+    {
+        <div class="alert @(_success ? "ok" : "error")">@_message</div>
+    }
+    @if (_errors.Count > 0)
+    {
+        <div class="alert error">
+            <ul>
+                @foreach (var error in _errors)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        </div>
+    }
+
+    @foreach (var target in new[] { ConstraintTarget.Bus, ConstraintTarget.Agent })
+    {
+        var familyTotal = target == ConstraintTarget.Bus ? busTotal : agentTotal;
+        var familyName = target == ConstraintTarget.Bus ? "Bus" : "Chauffeurs et receveurs";
+
+        <h2>@familyName</h2>
+        @* Résumé de la famille *@
+        <div class="family-summary">
+            <span class="family-total">Total des poids souples : <strong>@familyTotal</strong></span>
+            <span class="muted small">plafond par critère : @MaxWeight.ToString("0", CultureInfo.InvariantCulture) — le total, lui, n'est pas plafonné</span>
+            @if (FamilyWeights(target).Any(w => w.Weight > MaxWeight))
+            {
+                <span class="badge hard">⚠️ Un poids dépasse @MaxWeight.ToString("0", CultureInfo.InvariantCulture)</span>
+            }
+            @if (FamilyWeights(target).Any(w => familyTotal > 0 && w.Weight / familyTotal > 1.0 / 3))
+            {
+                <span class="badge hard">⚠️ Un critère dépasse 1/3 du total</span>
+            }
+        </div>
+
+        @* <h2>@(target == ConstraintTarget.Bus ? "Bus" : "Chauffeurs et receveurs")</h2> *@
+        <table class="grid">
+            <thead>
+                <tr><th>Code</th><th>Contrainte</th><th>Traitement</th><th>Poids (souple) (0 – @MaxWeight)</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var descriptor in ConstraintCatalog.AllDescriptors.Where(d => d.Target == target))
+                {
+                    var familyLabel = target == ConstraintTarget.Bus ? "bus" : "agents";
+                    var setting = _policy.Constraints[descriptor.Code];
+                    var share = familyTotal > 0 && setting.Mode == ConstraintMode.Soft ? setting.Weight / familyTotal : 0;
+                    var sharePercent = share * 100;
+                    var isOverThird = share > 1.0 / 3;
+
+                    <tr class="@RowClass(setting.Mode) @(isOverThird ? "row-over" : "")">
+                        <td><code>@descriptor.Code</code></td>
+                        <td>
+                            <strong>@descriptor.Name</strong>
+                            @if (descriptor.IsLocked)
+                            {
+                                <span title="Non modifiable">🔒</span>
+                            }
+                            <div class="muted small">@descriptor.Description</div>
+                        </td>
+                        <td class="modes">
+                            @foreach (var mode in descriptor.SupportedModes)
+                            {
+                                var currentMode = mode;
+                                <label class="mode @ModeCss(currentMode)">
+                                    <input type="radio" name="@("mode-" + descriptor.Code)"
+                                           checked="@(setting.Mode == currentMode)"
+                                           disabled="@descriptor.IsLocked"
+                                           @onchange="() => SetMode(descriptor.Code, currentMode)" />
+                                    @ModeLabel(currentMode)
+                                </label>
+                            }
+                        </td>
+                        <td>
+                            <div class="weight-input" @(_refusedByCode.ContainsKey(descriptor.Code) ? "invalid" : "" )">
+                                <input type="number" class="weight" min="0" max="@MaxWeight" step="1"
+                                       title="Valeur autorisée : 0 à @MaxWeight"
+                                       @key="WeightInputKey(descriptor.Code)"
+                                       value="@FormatWeight(setting.Weight)"
+                                       disabled="@(descriptor.IsLocked || setting.Mode != ConstraintMode.Soft)"
+                                       @onchange="e => SetWeight(descriptor.Code, e.Value?.ToString())" />
+                                <span class="weight-range" title="Plage autorisée d'un poids souple">/ @MaxWeight.ToString("0", CultureInfo.InvariantCulture)</span>
+                                @if (setting.Mode == ConstraintMode.Soft)
+                                {
+                                    <span class="weight-percent" title="Part du total @familyLabel (règle : max 1/3)">
+                                        @sharePercent.ToString("0.#", CultureInfo.InvariantCulture) %
+                                        {
+                                        <span title="Dépasse 1/3 du total de la famille">⚠️</span>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                            @if (_refusedByCode.TryGetValue(descriptor.Code, out var reason))
+                            {
+                                <div class="field-error">⛔ @reason</div>
+                            }
+                        </td>
+                        <td>
+                            @if (setting.Mode == ConstraintMode.Soft)
+                            {
+                                <div class="share-bar" title="@(isOverThird ? "⚠️ Plus de 1/3 du total" : "Dans la limite")">
+                                    <div class="share-fill @(isOverThird ? "over" : "")" style="width:@sharePercent.ToString("0", CultureInfo.InvariantCulture)%"></div>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private AllocationPolicy? _policy;
+    private string? _message;
+    private bool _success;
+    private IReadOnlyList<string> _errors = Array.Empty<string>();
+    /// <summary>Clé de rendu de l'input poids : change à chaque refus pour recréer l'input et réafficher la valeur conservée.</summary>
+    private string WeightInputKey(string code) => "weight-" + code + "-" + _inputVersion;
+    /// <summary>Score maximal d'un voyage avec les choix en cours (somme des poids des critères souples actifs).</summary>
+    private double MaxScore => _policy is null ? 0 : new TripAllocator(_policy).MaxScorePerTrip;
+    /// <summary>Plafond d'un poids souple : même valeur que PolicyValidator.</summary>
+    public const double MaxWeight = 50;
+    private string? _weightError;
+    private int _inputVersion;   // incrémenté pour recréer l'input et réafficher la valeur conservée
+    /// <summary>Refus en cours, par code de contrainte : affiché sous le champ fautif.</summary>
+    private readonly Dictionary<string, string> _refusedByCode = new();
+
+    protected override async Task OnInitializedAsync() => _policy = await SettingsService.LoadAsync();
+
+    private int CountOf(ConstraintMode mode) => _policy!.Constraints.Values.Count(s => s.Mode == mode);
+
+    /// <summary>Change le traitement d'une contrainte ; un passage en mode souple garantit un poids non nul.</summary>
+    private void SetMode(string code, ConstraintMode mode)
+    {
+        var setting = _policy!.Constraints[code];
+        setting.Mode = mode;
+        if (mode == ConstraintMode.Soft && setting.Weight <= 0)
+        {
+            var defaultWeight = ConstraintCatalog.FindDescriptor(code)?.DefaultWeight ?? 0;
+            setting.Weight = defaultWeight > 0 ? defaultWeight : 10;
+        }
+        _message = null;
+    }
+
+    private void SetWeight(string code, string? text)
+    {
+        // if (double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var weight) && weight >= 0)
+        //     _policy!.Constraints[code].Weight = weight;
+        // _message = null;
+        _message = null;
+        if (!double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var weight))
+        {
+            Refuse(code, $"« {text} » n'est pas un nombre valide.");
+            return;
+        }
+        if (weight < 0)
+        {
+            Refuse(code, "un poids ne peut pas être négatif.");
+            return;
+        }
+        if (weight > MaxWeight)
+        {
+            Refuse(code, $"le plafond est {MaxWeight:0} — la valeur {weight:0.##} est refusée.");
+            return;
+        }
+        _policy!.Constraints[code].Weight = weight;
+        _refusedByCode.Remove(code);
+        _weightError = null;
+    }
+
+    /// <summary>Refus : message d'erreur bloquant + restauration de la valeur conservée dans l'input.</summary>
+    private void Refuse(string code, string reason)
+    {
+        _refusedByCode[code] = reason;
+        _weightError = $"Poids de {code} : {reason} La valeur précédente est conservée et l'enregistrement est bloqué.";
+        _inputVersion++;// force la recréation de l'input : la valeur tapée disparaît, l'ancienne réapparaît
+    }
+
+    /// <summary>Poids souples de la famille (bus ou agents), pour le total et les alertes.</summary>
+    private List<(string Code, double Weight)> FamilyWeights(ConstraintTarget target) =>
+        _policy!.Constraints
+            .Where(kv => kv.Value.Mode == ConstraintMode.Soft
+                         && ConstraintCatalog.FindDescriptor(kv.Key)?.Target == target)
+            .Select(kv => (kv.Key, kv.Value.Weight))
+            .ToList();
+
+    private async Task SaveAsync()
+    {
+        if (_refusedByCode.Count > 0)
+        {
+            _success = false;
+            _message = "Enregistrement impossible : corrigez d'abord les poids signalés en rouge (plafond " + MaxWeight.ToString("0", CultureInfo.InvariantCulture) + ").";
+            return;
+        }
+        var result = await SettingsService.SaveAsync(_policy!);
+        _success = result.Success;
+        _errors = result.Errors;
+        _message = result.Success ? "Contraintes enregistrées." : "Enregistrement refusé : corrigez les erreurs ci-dessous.";
+    }
+
+    private async Task ResetAsync()
+    {
+        await SettingsService.ResetAsync();
+        _policy = await SettingsService.LoadAsync();
+        _errors = Array.Empty<string>();
+        _success = true;
+        _message = "Valeurs par défaut restaurées.";
+        _refusedByCode.Clear();
+        _weightError = null;
+        _inputVersion++;
+    }
+
+    private static string FormatWeight(double weight) => weight.ToString("0.##", CultureInfo.InvariantCulture);
+
+    private static string ModeLabel(ConstraintMode mode) => mode switch
+    {
+        ConstraintMode.Disabled => "Désactivée",
+        ConstraintMode.Hard => "Dure",
+        _ => "Souple",
+    };
+
+    private static string ModeCss(ConstraintMode mode) => mode switch
+    {
+        ConstraintMode.Disabled => "off",
+        ConstraintMode.Hard => "hard",
+        _ => "soft",
+    };
+
+    private static string RowClass(ConstraintMode mode) => "row-" + ModeCss(mode);
+
+    private void ApplyFair()
+    {
+        ConstraintCatalog.ApplyFairProfile(_policy!);
+        _success = true;
+        _message = "Profil équitable appliqué (pensez à enregistrer).";
+        _refusedByCode.Clear();
+        _weightError = null;
+        _inputVersion++;
+    }
+}

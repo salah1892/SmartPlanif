@@ -1755,3 +1755,151 @@ body.drawer-open {
     text-align: right;
     color: #475569;
 }
+
+/* ============================================================
+   Contraintes : résumé famille et barre de part
+=============================================================== */
+/*.family-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.5rem 0 0.8rem;
+    padding: 0.5rem 0.8rem;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+}
+
+.family-total {
+    font-size: 0.95rem;
+}
+
+.weight-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.weight-percent {
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.share-bar {
+    width: 80px;
+    height: 12px;
+    background: #e8edf2;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.share-fill {
+    height: 100%;
+    background: #5b9bb5;
+    border-radius: 4px;
+    transition: width 0.2s ease;
+}
+
+    .share-fill.over {
+        background: var(--hard);
+    }
+
+table.grid tr.row-over td:first-child {
+    box-shadow: inset 3px 0 0 var(--hard);
+}
+
+table.grid tr.row-over {
+    background: var(--hard-bg);
+}*/
+
+/* Borne visible et refus de saisie sur les poids */
+/*.weight-range {
+    font-size: 0.8rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.weight-input.invalid input.weight {
+    border-color: var(--hard);
+    background: var(--hard-bg);
+}
+
+.field-error {
+    color: var(--hard);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+}*/
+/* Contraintes : saisie des poids, parts et refus */
+.family-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: .5rem 0 .8rem;
+    padding: .5rem .8rem;
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+}
+
+.weight-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .weight-input.invalid input.weight {
+        border-color: var(--hard);
+        background: var(--hard-bg);
+    }
+
+.weight-range {
+    font-size: .8rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.weight-percent {
+    font-size: .85rem;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-right: .4rem;
+}
+
+.over-third {
+    font-size: .85rem;
+}
+
+.field-error {
+    color: var(--hard);
+    font-size: .8rem;
+    margin-top: .25rem;
+}
+
+.share-bar {
+    width: 90px;
+    height: 12px;
+    background: #e8edf2;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.share-fill {
+    height: 100%;
+    background: #5b9bb5;
+    border-radius: 4px;
+    transition: width .2s ease;
+}
+
+    .share-fill.over {
+        background: var(--hard);
+    }
+
+table.grid tr.row-over td:first-child {
+    box-shadow: inset 3px 0 0 var(--hard);
+}
+
+table.grid tr.row-over {
+    background: var(--hard-bg);
+}

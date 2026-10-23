@@ -41,7 +41,7 @@
     },
     "B08": {
       "Mode": "Soft",
-      "Weight": 25
+      "Weight": 40
     },
     "BP03": {
       "Mode": "Soft",
@@ -117,7 +117,7 @@
     },
     "AP06": {
       "Mode": "Soft",
-      "Weight": 5
+      "Weight": 10
     }
   },
   "CategoryRules": [],

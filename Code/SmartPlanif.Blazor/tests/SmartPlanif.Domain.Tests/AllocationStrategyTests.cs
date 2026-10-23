@@ -236,4 +236,64 @@ public class AllocationStrategyTests
         Assert.Equal(5, line.Supply);
         Assert.False(line.IsSufficient);
     }
+    // -------------------------- validations PolicyValidator----------------------------------------
+
+    [Fact]
+    public void Weight_above_50_is_rejected()
+    {
+        var policy = Policy(p => p.Constraints["AP04"] = new ConstraintSetting(ConstraintMode.Soft, 60));
+        var errors = PolicyValidator.Validate(policy);
+        Assert.Contains(errors, e => e.Contains("AP04") && e.Contains("plafond"));
+    }
+
+    [Fact]
+    public void Weight_exceeding_one_third_of_family_is_rejected()
+    {
+        // AP04 = 40, total agents souples = 40 + 20 + 35 + 5 + 25 + 25 = 150
+        // 40/150 = 26.7% < 33% → OK
+        // Mais si on met AP04 = 80 (plafond dépassé), ça sera rejeté par le plafond
+        var policy = Policy(p =>
+        {
+            p.Constraints["AP03"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["AP04"] = new ConstraintSetting(ConstraintMode.Soft, 50);
+            p.Constraints["AP05"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["AP06"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["A11"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["A12"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+        });
+        // 50 / 75 = 66.7% > 33% → doit être rejeté
+        var errors = PolicyValidator.Validate(policy);
+        Assert.Contains(errors, e => e.Contains("AP04") && e.Contains("famille"));
+    }
+
+    [Fact]
+    public void Ratio_max_min_above_4_is_rejected()
+    {
+        var policy = Policy(p =>
+        {
+            p.Constraints["AP03"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["AP04"] = new ConstraintSetting(ConstraintMode.Soft, 30);
+            p.Constraints["AP05"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+            p.Constraints["AP06"] = new ConstraintSetting(ConstraintMode.Soft, 5);
+        });
+        // 30/5 = 6 > 4 → rejeté
+        var errors = PolicyValidator.Validate(policy);
+        Assert.Contains(errors, e => e.Contains("ratio") && e.Contains("agents"));
+    }
+
+    [Fact]
+    public void BusFairnessWeight_negative_is_rejected()
+    {
+        var policy = Policy(p => p.Alns.BusFairnessWeight = -5);
+        var errors = PolicyValidator.Validate(policy);
+        Assert.Contains(errors, e => e.Contains("BusFairnessWeight"));
+    }
+
+    [Fact]
+    public void Valid_policy_passes_all_checks()
+    {
+        var policy = Policy();
+        var errors = PolicyValidator.Validate(policy);
+        Assert.Empty(errors);
+    }
 }

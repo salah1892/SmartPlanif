@@ -201,7 +201,8 @@ public static class ConstraintCatalog
         void Soft(string code, double w) => p.Constraints[code] = new ConstraintSetting(ConstraintMode.Soft, w);
         Soft("BP06", 35); Soft("BP07", 35);          // bus : km et voyages
         Soft("AP04", 40); Soft("AP05", 35);          // agents : heures et postes
-        Soft("AP06", 5);                             // continuité de ligne : secondaire
+        //Soft("AP06", 5);                             // continuité de ligne : secondaire
+        Soft("AP06", 10);                             // continuité de ligne : secondaire
         Soft("B07", 25); Soft("A11", 25);            // le centre reste une préférence, plus un absolu
         p.Alns.FairnessWeight = 30; p.Alns.BusFairnessWeight = 30;
         p.RotateTies = true;
